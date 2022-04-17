@@ -33,23 +33,23 @@ const Login = () => {
         className="tw-absolute tw-inset-0 tw-h-full tw-w-full tw-object-cover"
       />
       <div className="tw-relative tw-w-1/2 tw-self-end">
-        <div className="tw-mx-auto tw-flex tw-min-h-[550px] tw-w-[280px] tw-flex-col tw-justify-center">
-          <div className="tw-flex tw-items-center tw-justify-center tw-gap-4">
+        <div className="tw-mx-auto tw-flex tw-min-h-[550px] tw-w-[350px] tw-flex-col tw-justify-center">
+          <div className="tw-mr-3 tw-flex tw-items-center tw-justify-center tw-gap-4">
             <img
               src="/images/icon.png"
               alt="logo"
               className="tw-h-10 tw-w-10"
             />
-            <h2 className="tw-mt-4 tw-text-center tw-text-3xl tw-font-medium tw-text-white">
+            <h2 className="tw-mt-4 tw-text-center tw-text-4xl tw-font-medium tw-text-white">
               Đăng nhập
             </h2>
           </div>
 
-          <form className="tw-mt-6 tw-space-y-4" onSubmit={handleSubmit}>
+          <form className="tw-mt-6 tw-space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
-                className="tw-block tw-font-medium tw-text-white"
+                className="tw-block tw-text-lg tw-font-medium tw-text-white"
               >
                 Tên đăng nhập
               </label>
@@ -58,7 +58,7 @@ const Login = () => {
                 id="email"
                 name="email"
                 placeholder="Tên đăng nhập"
-                className="tw-mt-1 tw-w-full tw-rounded-lg tw-border tw-border-gray-200 tw-px-3 tw-py-2 focus:tw-outline-none"
+                className="tw-mt-2 tw-w-full tw-rounded-lg tw-border tw-border-gray-200 tw-bg-gray-200 tw-px-5 tw-py-3 tw-text-base focus:tw-outline-none"
                 onChange={handleChange}
                 required
                 autoFocus
@@ -68,7 +68,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="tw-block tw-font-medium tw-text-white"
+                className="tw-block tw-text-lg tw-font-medium tw-text-white"
               >
                 Mật khẩu
               </label>
@@ -77,7 +77,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 placeholder="Mật khẩu"
-                className="tw-mt-1 tw-w-full tw-rounded-lg tw-border tw-border-gray-200 tw-px-3 tw-py-2 focus:tw-outline-none"
+                className="tw-mt-2 tw-w-full tw-rounded-lg tw-border tw-border-gray-200 tw-bg-gray-200 tw-px-5 tw-py-3 tw-text-base focus:tw-outline-none"
                 onChange={handleChange}
                 required
               />
@@ -87,7 +87,7 @@ const Login = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="tw-mt-8 tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-lg tw-py-6 tw-text-lg tw-font-medium"
+                className="tw-mt-10 tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-lg tw-py-6 tw-text-lg tw-font-medium"
               >
                 Đăng nhập
               </Button>
