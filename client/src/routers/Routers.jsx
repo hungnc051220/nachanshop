@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { WebLayout } from "../layouts";
-import { Home, Products, ProductDetail, ShoppingCart } from "../pages";
+import { Home, Products, ProductDetail, ShoppingCart, Login } from "../pages";
 
 const Routers = () => {
   return (
@@ -14,6 +14,7 @@ const Routers = () => {
         {/*<Route path="checkout" element={<Checkout />} />
         <Route path="checkout-success" element={<CheckoutSuccess />} /> */}
       </Route>
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 };

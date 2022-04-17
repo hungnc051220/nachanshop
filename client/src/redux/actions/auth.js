@@ -7,7 +7,7 @@ export const signIn = (formData, navigate) => async (dispatch) => {
 
     dispatch({ type: actionType.LOGIN, data });
 
-    navigate(-1);
+    navigate("/", { replace: true });
   } catch (error) {
     console.log(error);
   }
