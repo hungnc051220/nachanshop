@@ -1,8 +1,55 @@
 const express = require("express");
 const router = express.Router();
-const { getProducts, getProductById, addProduct, updateProduct, deleteProduct } = require("../controllers/products");
+const multer = require("multer");
 
-router.route("/").get(getProducts).post(addProduct);
-router.route("/:id").get(getProductById).patch(updateProduct).delete(deleteProduct);
+const {
+  getProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+  getProductBySearch,
+  addMultiProduct,
+  deleteMutliProduct
+} = require("../controllers/products");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter: fileFilter,
+});
+
+router.route("/search").get(getProductBySearch);
+router
+  .route("/")
+  .get(getProducts)
+  .post(upload.single("productImage"), addProduct);
+router
+  .route("/:id")
+  .get(getProductById)
+  .patch(updateProduct)
+  .delete(deleteProduct);
+  
+router.post("/multi", addMultiProduct);
+router.post("/deleteMulti", deleteMutliProduct);
 
 module.exports = router;

@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import Routers from "./routers/Routers";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import "./App.css";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <h1>App</h1>
-  )
-}
+    <QueryClientProvider client={queryClient}>
+      <Routers />
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;

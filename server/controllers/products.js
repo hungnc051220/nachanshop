@@ -1,10 +1,34 @@
 const mongoose = require("mongoose");
 const Product = require("../models/product");
+const { downloadFile } = require("../download2");
 
 const getProducts = async (req, res) => {
+  const { page, type, typeChild } = req.query;
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    const LIMIT = 15;
+    const startIndex = (Number(page) - 1) * LIMIT;
+
+    const dataSearch = {};
+    if (type) {
+      dataSearch.typeParentValue = { $regex: new RegExp(`^${type}$`, "i") };
+    }
+
+    if (typeChild) {
+      dataSearch.typeChildValue = { $regex: new RegExp(`^${typeChild}$`, "i") };
+    }
+
+    const products = await Product.find(dataSearch)
+      .limit(LIMIT)
+      .skip(startIndex);
+
+    const total = await Product.find(dataSearch).count();
+
+    res.status(200).json({
+      currentPage: Number(page) || 1,
+      pageSize: LIMIT,
+      total,
+      data: products,
+    });
   } catch (error) {
     res.status(404).json({ messsage: error.message });
   }
@@ -23,9 +47,34 @@ const getProductById = async (req, res) => {
   }
 };
 
+const getProductBySearch = async (req, res) => {
+  const { type } = req.query;
+  try {
+    const typeProduct = new RegExp(type, "i");
+
+    const products = await Product.find({ type: typeProduct });
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 const addProduct = async (req, res) => {
   const product = req.body;
-  const newProduct = new Product(product);
+  const { typeChild, typeParent } = product;
+
+  const typeParentData = JSON.parse(typeParent);
+  const typeChildData = typeChild ? JSON.parse(typeChild) : null;
+
+  const newProduct = new Product({
+    ...product,
+    productImage: req.file.path,
+    typeChildValue: typeChildData?.value || null,
+    typeChildName: typeChildData?.name || null,
+    typeParentValue: typeParentData.value,
+    typeParentName: typeParentData.name,
+  });
 
   try {
     await newProduct.save();
@@ -44,7 +93,8 @@ const updateProduct = async (req, res) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(
       _id,
-      { ...product, _id },
+      // { ...product, _id },
+      { price: product.price, description: product.description },
       { new: true }
     );
 
@@ -67,10 +117,42 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const deleteMutliProduct = async (req, res) => {
+  const products = req.body;
+
+  try {
+    await Product.deleteMany({ _id: { $in: products } });
+    res.status(200).json({ message: "Xoá sản phẩm thành công" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+const addMultiProduct = async (req, res) => {
+  const products = req.body;
+  const newList = await Promise.all(
+    products.map(async (item) => {
+      const fileName = await downloadFile(item.productImage);
+      item.productImage = fileName;
+      return item;
+    })
+  );
+
+  try {
+    const newListProduct = await Product.insertMany(newList);
+    res.json(newListProduct);
+  } catch (e) {
+    print(e);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   addProduct,
   updateProduct,
   deleteProduct,
+  getProductBySearch,
+  addMultiProduct,
+  deleteMutliProduct,
 };

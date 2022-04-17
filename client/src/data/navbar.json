@@ -1,0 +1,295 @@
+[
+  {
+    "title": "Collagen",
+    "route": "/products?type=collagen",
+    "icon": "https://japana.vn/uploads/category/1545300977-collagen.png",
+    "sub_items": [
+      {
+        "title": "Nước uống Collagen",
+        "route": "/products?type=collagen&typeChild=nuoc-uong-collagen"
+      },
+      {
+        "title": "Collagen dạng bột - Thạch ăn",
+        "route": "/products?type=collagen&typeChild=collagen-dang-bot-thach-an"
+      },
+      {
+        "title": "Collagen dạng viên uống",
+        "route": "/products?type=collagen&typeChild=collagen-dang-vien-uong"
+      }
+    ]
+  },
+  {
+    "title": "Thực phẩm làm đẹp",
+    "route": "/products?type=tpld",
+    "icon": "https://japana.vn/uploads/category/1536632955-icon2.png",
+    "sub_items": [
+      {
+        "title": "Trắng Da - Trị Nám",
+        "route": "/products?type=tpld&typeChild=trang-da-tri-nam"
+      },
+      {
+        "title": "Nhau Thai - Placenta",
+        "route": "/products?type=tpld&typeChild=nhau-thai-placenta"
+      },
+      {
+        "title": "Giấm Đen - Nghệ Đen - Tỏi Đen",
+        "route": "/products?type=tpld&typeChild=giam-den-nghe-den-toi-den"
+      },
+      {
+        "title": "Sữa Ong Chúa - Chống Lão Hóa",
+        "route": "/products?type=tpld&typeChild=sua-ong-chua-chong-lao-hoa"
+      }
+    ]
+  },
+  {
+    "title": "Giảm cân",
+    "route": "/products?type=gc",
+    "icon": "https://japana.vn/uploads/category/1536632988-icon4.png"
+  },
+  {
+    "title": "Chăm sóc sức khoẻ",
+    "route": "/products?type=cssk",
+    "icon": "https://japana.vn/uploads/category/1536633007-icon5.png",
+    "sub_items": [
+      {
+        "title": "Tảo xoắn",
+        "route": "/products?type=cssk&typeChild=tao-xoan"
+      },
+      {
+        "title": "Nấm linh chi",
+        "route": "/products?type=cssk&typeChild=nam-linh-chi"
+      },
+      {
+        "title": "Hỗ trợ điều trị ung thư",
+        "route": "/products?type=cssk&typeChild=ho-tro-dieu-tri-ung-thu"
+      },
+      {
+        "title": "Hỗ trợ xương khớp",
+        "route": "/products?type=cssk&typeChild=ho-tro-xuong-khop"
+      },
+      {
+        "title": "Hỗ trợ điều trị tai biến",
+        "route": "/products?type=cssk&typeChild=ho-tro-dieu-tri-tai-bien"
+      },
+      {
+        "title": "Hỗ trợ não và trí nhớ",
+        "route": "/products?type=cssk&typeChild=ho-tro-nao-va-tri-nho"
+      },
+      {
+        "title": "Thải độc gan",
+        "route": "/products?type=cssk&typeChild=thai-doc-gan"
+      },
+      {
+        "title": "Sức khoẻ & sinh lý nam",
+        "route": "/products?type=cssk&typeChild=suc-khoe-va-sinh-ly-nam"
+      },
+      {
+        "title": "Sức khoẻ & sinh lý nữ",
+        "route": "/products?type=cssk&typeChild=suc-khoe-va-sinh-ly-nu"
+      },
+      {
+        "title": "Chăm sóc mắt",
+        "route": "/products?type=cssk&typeChild=cham-soc-mat"
+      },
+      {
+        "title": "Chăm sóc hệ tiêu hoá",
+        "route": "/products?type=cssk&typeChild=cham-soc-he-tieu-hoa"
+      },
+      {
+        "title": "Vitamin tổng hợp",
+        "route": "/products?type=cssk&typeChild=vitamin-tong-hop"
+      },
+      {
+        "title": "Điều trị khác",
+        "route": "/products?type=cssk&typeChild=dieu-tri-khac"
+      }
+    ]
+  },
+  {
+    "title": "Trang điểm",
+    "route": "/products?type=td",
+    "icon": "https://japana.vn/uploads/category/1539922102-Make-up.png",
+    "sub_items": [
+      {
+        "title": "Phấn nền - Kem nền",
+        "route": "/products?type=td&typeChild=phan-nen-kem-nen"
+      },
+      {
+        "title": "Son môi",
+        "route": "/products?type=td&typeChild=son-moi"
+      },
+      {
+        "title": "Tẩy trang",
+        "route": "/products?type=td&typeChild=tay-trang"
+      },
+      {
+        "title": "Trang điểm mắt - Mi - Mày",
+        "route": "/products?type=td&typeChild=trang-diem-mat-my-may"
+      }
+    ]
+  },
+  {
+    "title": "Chăm sóc da mặt",
+    "route": "/products?type=csdm",
+    "icon": "https://japana.vn/uploads/category/1536633054-icon7.png",
+    "sub_items": [
+      {
+        "title": "Dưỡng trắng",
+        "route": "/products?type=csdm&typeChild=duong-trang"
+      },
+      {
+        "title": "Chống lão hoá",
+        "route": "/products?type=csdm&typeChild=chong-lao-hoa"
+      },
+      {
+        "title": "Dưỡng ẩm",
+        "route": "/products?type=csdm&typeChild=duong-am"
+      },
+      {
+        "title": "Chống nắng",
+        "route": "/products?type=csdm&typeChild=chong-nang"
+      },
+      {
+        "title": "Đăc trị nám",
+        "route": "/products?type=csdm&typeChild=dac-tri-nam"
+      },
+      {
+        "title": "Đặc trị mụn",
+        "route": "/products?type=csdm&typeChild=dac-tri-mun"
+      },
+      {
+        "title": "Serum - Tinh chất",
+        "route": "/products?type=csdm&typeChild=serum-tinh chat"
+      },
+      {
+        "title": "Kem dưỡng mắt",
+        "route": "/products?type=csdm&typeChild=kem-duong-mat"
+      },
+      {
+        "title": "Sữa rửa mặt",
+        "route": "/products?type=csdm&typeChild=sua-rua-mat"
+      },
+      {
+        "title": "Mặt nạ",
+        "route": "/products?type=csdm&typeChild=mat-na"
+      },
+      {
+        "title": "Nước hoa hồng & Cân bằng",
+        "route": "/products?type=csdm&typeChild=nuoc-hoa-hong-va-can-bang"
+      },
+      {
+        "title": "Bộ chăm sóc da mặt",
+        "route": "/products?type=csdm&typeChild=bo-cham-soc-da-mat"
+      },
+      {
+        "title": "Kem dưỡng da mặt",
+        "route": "/products?type=csdm&typeChild=kem-duong-da-mat"
+      }
+    ]
+  },
+  {
+    "title": "Chăm sóc cơ thể",
+    "route": "/products?type=csct",
+    "icon": "https://japana.vn/uploads/category/1536633071-icon8.png",
+    "sub_items": [
+      {
+        "title": "Chăm sóc tóc",
+        "route": "/products?type=csdm&typeChild=cham-soc-toc"
+      },
+      {
+        "title": "Sữa tắm",
+        "route": "/products?type=csdm&typeChild=sua-tam"
+      },
+      {
+        "title": "Dưỡng thể",
+        "route": "/products?type=csdm&typeChild=duong-the"
+      },
+      {
+        "title": "Vệ sinh cá nhân",
+        "route": "/products?type=csdm&typeChild=ve-sinh-ca-nhan"
+      },
+      {
+        "title": "Tẩy tế bào chết",
+        "route": "/products?type=csdm&typeChild=tay-te-bao-chet"
+      },
+      {
+        "title": "Bộ chăm sóc cơ thể",
+        "route": "/products?type=csdm&typeChild=bo-cham-soc-co-the"
+      }
+    ]
+  },
+  {
+    "title": "Mẹ và bé",
+    "route": "/products?type=mvb",
+    "icon": "https://japana.vn/uploads/category/1536633117-icon9.png",
+    "sub_items": [
+      {
+        "title": "Sữa nhật",
+        "route": "/products?type=mvb&typeChild=sua-nhat"
+      },
+      {
+        "title": "Bình sữa-Phụ kiện",
+        "route": "/products?type=mvb&typeChild=binh-sua-phu-kien"
+      },
+      {
+        "title": "Ngũ cốc Nhật Bản",
+        "route": "/products?type=mvb&typeChild=ngu-coc-nhat-ban"
+      },
+      {
+        "title": "Thực phẩm ăn dạm",
+        "route": "/products?type=mvb&typeChild=thuc-pham-an-dam"
+      },
+      {
+        "title": "Sức khoẻ cho bé",
+        "route": "/products?type=mvb&typeChild=suc-khoe-cho-be"
+      },
+      {
+        "title": "Thực phẩm tăng chiều cao",
+        "route": "/products?type=mvb&typeChild=thuc-pham-tang-chieu-cao"
+      },
+      {
+        "title": "Chăm sóc vệ sinh",
+        "route": "/products?type=mvb&typeChild=cham-soc-ve-sinh"
+      },
+      {
+        "title": "Dành cho mẹ",
+        "route": "/products?type=mvb&typeChild=danh-cho-me"
+      }
+    ]
+  },
+  {
+    "title": "Thực phẩm Nhật Bản",
+    "route": "/products?type=tpnb",
+    "icon": "https://japana.vn/uploads/category/1536633142-icon11.png",
+    "sub_items": [
+      {
+        "title": "Bánh kẹo",
+        "route": "/products?type=tpnb&typeChild=banh-keo"
+      },
+      {
+        "title": "Trà Nhật Bản",
+        "route": "/products?type=tpnb&typeChild=tra-nhat-ban"
+      },
+      {
+        "title": "Hộp quà tết",
+        "route": "/products?type=tpnb&typeChild=hop-qua-tet"
+      },
+      {
+        "title": "Rượu Nhật Bản",
+        "route": "/products?type=tpnb&typeChild=ruou-nhat-ban"
+      },
+      {
+        "title": "Đồ uống và giải khát",
+        "route": "/products?type=tpnb&typeChild=do-uong-va-giai-khat"
+      },
+      {
+        "title": "Thực phẩm khô",
+        "route": "/products?type=tpnb&typeChild=thuc-pham-kho"
+      },
+      {
+        "title": "Gia vị",
+        "route": "/products?type=tpnb&typeChild=gia-vi"
+      }
+    ]
+  }
+]
