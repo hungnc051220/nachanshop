@@ -1,42 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Badge, Avatar } from "antd";
-import { FaShoppingCart, FaSearch } from "react-icons/fa";
-import { Input } from "antd";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import { BsCart3, BsSearch } from "react-icons/bs";
 
 const MainHeader = () => {
   return (
-    <div className="tw-shadow">
-      <div className="tw-mx-auto tw-flex tw-max-w-7xl tw-items-center tw-justify-between tw-py-4 tw-space-x-4">
+    <div className="shadow">
+      <div className="mx-auto flex max-w-7xl items-center justify-between space-x-4 py-4">
         <Link to="/">
-          <img
-            src="/images/logo.png"
-            alt="logo"
-            className="tw-w-48 tw-h-auto"
-          />
+          <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
         </Link>
-        <Input
-          placeholder="Tìm kiếm sản phẩm"
-          size="large"
-          prefix={<FaSearch />}
-          className="tw-rounded-lg tw-text-gray-300"
+        <OutlinedInput
+          className="flex-1 rounded-lg"
+          placeholder="Nhập tên sản phẩm"
+          color="warning"
+          size="small"
+          endAdornment={
+            <InputAdornment position="end">
+              <BsSearch />
+            </InputAdornment>
+          }
         />
 
         <Link
           to="/shopping-cart"
-          className="tw-flex tw-justify-center tw-items-center tw-gap-4"
+          className="flex items-center justify-center gap-4"
         >
-          <Badge count={5}>
-            <Avatar
-              className="tw-bg-gray-200 tw-text-red-500 tw-text-lg tw-flex tw-items-center tw-justify-center"
-              shape="round"
-              size="large"
-              icon={<FaShoppingCart />}
-            />
-          </Badge>
+          <IconButton
+            size="large"
+            aria-label="Sản phẩm trong giỏ"
+            color="inherit"
+          >
+            <Badge badgeContent={2} color="error">
+              <BsCart3 />
+            </Badge>
+          </IconButton>
           <div>
-            <span className="tw-text-sm tw-text-gray-500">Tổng tiền</span>
-            <h5 className="tw-text-base tw-font-semibold">9,000,000₫</h5>
+            <span className="text-sm text-gray-500">Tổng tiền</span>
+            <h5 className="text-base font-semibold">9,000,000₫</h5>
           </div>
         </Link>
       </div>

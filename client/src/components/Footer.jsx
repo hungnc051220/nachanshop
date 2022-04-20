@@ -92,46 +92,43 @@ const navigation = {
 
 const Footer = () => {
   return (
-    <footer className="tw-bg-gray-900" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="tw-sr-only">
+    <footer className="bg-gray-900" aria-labelledby="footer-heading">
+      <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="tw-max-w-7xl tw-mx-auto tw-pt-12 tw-pb-4 tw-px-4 sm:tw-px-6 lg:tw-pt-16 lg:tw-px-8">
-        <div className="xl:tw-grid xl:tw-grid-cols-3 xl:tw-gap-8">
-          <div className="tw-space-y-8 xl:tw-col-span-1">
-            <img className="tw-h-10" src="/images/icon.png" alt="Nachanshop" />
-            <p className="tw-text-white tw-text-base">
+      <div className="mx-auto max-w-7xl px-4 pt-12 pb-4 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="space-y-8 xl:col-span-1">
+            <img className="h-10" src="/images/icon.png" alt="Nachanshop" />
+            <p className="text-base text-white">
               Making the world a better place through constructing elegant
               hierarchies.
             </p>
-            <div className="tw-flex tw-space-x-6">
+            <div className="flex space-x-6">
               {navigation.social.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="tw-text-white hover:tw-text-white"
+                  className="text-white hover:text-white"
                 >
-                  <span className="tw-sr-only">{item.name}</span>
-                  <item.icon className="tw-h-6 tw-w-6" aria-hidden="true" />
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
               ))}
             </div>
           </div>
-          <div className="tw-mt-12 tw-grid tw-grid-cols-2 tw-gap-8 xl:tw-mt-0 xl:tw-col-span-2">
-            <div className="md:tw-grid md:tw-grid-cols-2 md:tw-gap-8">
+          <div className="mt-12 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="tw-text-sm tw-font-semibold tw-text-gray-400 tw-tracking-wider tw-uppercase">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
                   Solutions
                 </h3>
-                <ul
-                  role="list"
-                  className="tw-mt-4 tw-space-y-4 tw-list-none tw-pl-0"
-                >
+                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="tw-text-base tw-text-white hover:tw-text-gray-900"
+                        className="text-base text-white hover:text-gray-900"
                       >
                         {item.name}
                       </a>
@@ -139,19 +136,16 @@ const Footer = () => {
                   ))}
                 </ul>
               </div>
-              <div className="tw-mt-12 md:tw-mt-0">
-                <h3 className="tw-text-sm tw-font-semibold tw-text-gray-400 tw-tracking-wider tw-uppercase">
+              <div className="mt-12 md:mt-0">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
                   Support
                 </h3>
-                <ul
-                  role="list"
-                  className="tw-mt-4 tw-space-y-4 tw-list-none tw-pl-0"
-                >
+                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="tw-text-base tw-text-white hover:tw-text-gray-900"
+                        className="text-base text-white hover:text-gray-900"
                       >
                         {item.name}
                       </a>
@@ -160,20 +154,17 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div className="md:tw-grid md:tw-grid-cols-2 md:tw-gap-8">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="tw-text-sm tw-font-semibold tw-text-gray-400 tw-tracking-wider tw-uppercase">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
                   Company
                 </h3>
-                <ul
-                  role="list"
-                  className="tw-mt-4 tw-space-y-4 tw-list-none tw-pl-0"
-                >
+                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="tw-text-base tw-text-white hover:tw-text-gray-900"
+                        className="text-base text-white hover:text-gray-900"
                       >
                         {item.name}
                       </a>
@@ -181,19 +172,16 @@ const Footer = () => {
                   ))}
                 </ul>
               </div>
-              <div className="tw-mt-12 md:tw-mt-0">
-                <h3 className="tw-text-sm tw-font-semibold tw-text-gray-400 tw-tracking-wider tw-uppercase">
+              <div className="mt-12 md:mt-0">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
                   Legal
                 </h3>
-                <ul
-                  role="list"
-                  className="tw-mt-4 tw-space-y-4 tw-list-none tw-pl-0"
-                >
+                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="tw-text-base tw-text-white hover:tw-text-gray-900"
+                        className="text-base text-white hover:text-gray-900"
                       >
                         {item.name}
                       </a>
@@ -204,8 +192,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="tw-mt-12 tw-border-t tw-border-gray-200 tw-pt-8">
-          <p className="tw-text-base tw-text-white xl:tw-text-center">
+        <div className="mt-12 border-t border-gray-200 pt-8">
+          <p className="text-base text-white xl:text-center">
             &copy; 2022 Nachanshop, Inc. All rights reserved.
           </p>
         </div>

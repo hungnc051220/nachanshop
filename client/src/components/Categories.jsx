@@ -1,7 +1,6 @@
 import React from "react";
 import { useProducts } from "../hooks/useProductsData";
 import { Link } from "react-router-dom";
-import { Spin } from "antd";
 import { BsCart } from "react-icons/bs";
 import { formatMoney } from "../utils/commonFunction";
 
@@ -84,775 +83,741 @@ const Categories = () => {
   );
 
   return (
-    <div className="tw-mx-auto tw-max-w-7xl tw-my-10">
-      <div className="tw-pt-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+    <div className="mx-auto my-10 max-w-7xl">
+      <div className="pt-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Collagen
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingCollagen}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataCollagen?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataCollagen?.data?.map((product) => {
+              return (
+                <div
+                  className="group overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600">{product.title}</h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Thực phẩm làm đẹp */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Thực phẩm làm đẹp
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingTpld}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataTpld?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataTpld?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Giảm cân */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Giảm cân
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingGc}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataGc?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataGc?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Chăm sóc sức khoẻ */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Chăm sóc sức khoẻ
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingCssk}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataCssk?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataCssk?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Trang điểm */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Trang điểm
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingTd}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataTd?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataTd?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Chăm sóc da mặt */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Chăm sóc da mặt
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingCsdm}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataCsdm?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataCsdm?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Chăm sóc cơ thể */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Chăm sóc cơ thể
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingCsct}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6">
-              {dataCsct?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataCsct?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Mẹ và bé */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Mẹ và bé
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingMvb}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6 tw-grid-rows-2">
-              {dataMvb?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 grid-rows-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataMvb?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Thực phẩm Nhật Bản */}
-      <div className="tw-py-10">
-        <div class="tw-px-4 sm:tw-px-6 sm:tw-flex sm:tw-items-center sm:tw-justify-between lg:tw-px-8 xl:tw-px-0">
+      <div className="py-10">
+        <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            class="tw-text-2xl tw-font-semibold tw-tracking-tight tw-text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900"
           >
             Thực phẩm Nhật Bản
           </h2>
           <a
             href="#"
-            class="tw-hidden tw-text-sm tw-font-semibold tw-text-indigo-600 hover:tw-text-indigo-500 sm:tw-block"
+            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
           >
             Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
           </a>
         </div>
 
-        <div className="tw-relative">
-          <Spin spinning={isLoadingTpnb}>
-            <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-5 md:tw-grid-cols-4 tw-gap-6 tw-grid-rows-2">
-              {dataTpnb?.data?.map((product) => {
-                return (
-                  <div
-                    className="tw-group tw-grid tw-grid-rows-[1fr_2fr] tw-border tw-border-gray-200 tw-border-solid tw-rounded-lg hover:tw-shadow-xl tw-overflow-hidden tw-transition-all tw-duration-200 tw-ease-in-out"
-                    key={product._id}
-                  >
-                    <div className="tw-relative tw-p-5">
-                      <Link
-                        to={`/products/${product._id}`}
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <img
-                          src={
-                            import.meta.env.VITE_API_URL + product.productImage
-                          }
-                          alt={product.name}
-                          className="product-img default"
-                        />
-                      </Link>
+        <div className="relative">
+          <div className="grid grid-cols-2 grid-rows-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {dataTpnb?.data?.map((product) => {
+              return (
+                <div
+                  className="group grid grid-rows-[1fr_2fr] overflow-hidden rounded-lg border border-solid border-gray-200 transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={
+                          import.meta.env.VITE_API_URL + product.productImage
+                        }
+                        alt={product.name}
+                        className="product-img default"
+                      />
+                    </Link>
 
-                      <div className="tw-absolute tw-top-2 tw-right-2 tw-text-xl tw-transition-all tw-duration-200 tw-ease-in-out tw-z-10">
-                        <button className="tw-h-8 tw-w-8 tw-flex tw-items-center tw-justify-center tw-rounded-lg tw-border-solid tw-border tw-border-gray-200 tw-bg-white tw-shadow-md focus:tw-outline-none hover:tw-bg-red-500 focus:tw-bg-red-700 focus:tw-text-white hover:tw-text-white tw-cursor-pointer tw-transform tw-translate-x-12 group-hover:tw-translate-x-0">
-                          <BsCart />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="tw-p-5 tw-grid tw-grid-rows-[auto_1fr_auto]">
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-uppercase tw-text-red-500 tw-font-medium tw-text-base"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {product?.typeChildName}
-                      </Link>
-
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="tw-inline-block tw-py-2"
-                        onClick={() => {
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        <h3 className="tw-text-gray-600 tw-text-sm">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="price-box">
-                        <p className="tw-font-semibold tw-text-xl tw-mb-0">
-                          {formatMoney(product.price)}₫
-                        </p>
-                      </div>
+                    <div className="absolute top-2 right-2 z-10 text-xl transition-all duration-200 ease-in-out">
+                      <button className="flex h-8 w-8 translate-x-12 transform cursor-pointer items-center justify-center rounded-lg border border-solid border-gray-200 bg-white shadow-md hover:bg-red-500 hover:text-white focus:bg-red-700 focus:text-white focus:outline-none group-hover:translate-x-0">
+                        <BsCart />
+                      </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </Spin>
+
+                  <div className="grid grid-rows-[auto_1fr_auto] p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-medium uppercase text-red-500"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {product?.typeChildName}
+                    </Link>
+
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="price-box">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

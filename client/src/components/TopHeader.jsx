@@ -11,21 +11,21 @@ const TopHeader = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="tw-bg-gray-900">
-      <div className="tw-mx-auto tw-flex tw-h-10 tw-max-w-7xl tw-items-center tw-justify-between">
-        <p className="tw-flex-1 tw-text-center tw-text-sm tw-font-medium tw-text-white lg:tw-flex-none tw-mb-0">
+    <div className="bg-gray-900">
+      <div className="mx-auto flex h-10 max-w-7xl items-center justify-between">
+        <p className="mb-0 flex-1 text-center text-sm font-medium text-white lg:flex-none">
           Miễn phí vận chuyển cho đơn hàng trên 1,000,000đ
         </p>
 
-        <div className="tw-hidden lg:tw-flex lg:tw-flex-1 lg:tw-items-center lg:tw-justify-end lg:tw-space-x-6">
+        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
           {user ? (
-            <div className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-text-white">
-              <span className="tw-text-sm tw-border-r tw-border-gray-300 tw-pr-3">
+            <div className="flex items-center justify-center gap-2 text-white">
+              <span className="border-r border-gray-300 pr-3 text-sm">
                 Xin chào, <b>{user.name}</b>
               </span>
               <a
                 onClick={() => dispatch(logOut(navigate))}
-                className="tw-text-sm tw-font-medium tw-text-white hover:tw-text-gray-100"
+                className="text-sm font-medium text-white hover:text-gray-100"
               >
                 Đăng xuất
               </a>
@@ -34,17 +34,14 @@ const TopHeader = () => {
             <>
               <a
                 href="#"
-                className="tw-text-sm tw-font-medium tw-text-white hover:tw-text-gray-100"
+                className="text-sm font-medium text-white hover:text-gray-100"
               >
                 Đăng ký tài khoản
               </a>
-              <span
-                className="tw-h-6 tw-w-px tw-bg-gray-600"
-                aria-hidden="true"
-              />
+              <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
               <Link
                 to="/login"
-                className="tw-text-sm tw-font-medium tw-text-white hover:tw-text-gray-100"
+                className="text-sm font-medium text-white hover:text-gray-100"
               >
                 Đăng nhập
               </Link>

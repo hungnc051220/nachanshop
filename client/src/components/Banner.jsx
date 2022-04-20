@@ -2,9 +2,9 @@ import React from "react";
 
 const Banner = () => {
   return (
-    <div className="tw-max-w-7xl tw-mx-auto">
+    <div className="mx-auto max-w-7xl">
       <img
-        className="tw-w-full tw-h-full tw-rounded-lg"
+        className="h-full w-full rounded-lg"
         src="/images/banner.jpg"
         alt="banner"
       />

@@ -1,5 +1,4 @@
 import React from "react";
-import { Tag, InputNumber, Divider, Spin, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
@@ -62,94 +61,57 @@ const ShoppingCart = () => {
   };
 
   return (
-    <div className="tw-bg-white">
-      <div className="tw-max-w-2xl tw-mx-auto tw-pt-10 tw-pb-24 tw-px-4 md:tw-px-6 lg:tw-px-0 lg:tw-max-w-7xl">
-        <h1 className="tw-text-3xl tw-font-extrabold tw-racking-tight tw-text-gray-900 sm:tw-text-4xl">
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 md:px-6 lg:max-w-7xl lg:px-0">
+        <h1 className="racking-tight text-3xl font-extrabold text-gray-900 sm:text-4xl">
           Giỏ hàng của bạn
         </h1>
-        <form className="tw-mt-12 lg:tw-grid lg:tw-grid-cols-12 lg:tw-gap-x-12 lg:tw-items-start xl:tw-gap-x-16">
-          <section aria-labelledby="cart-heading" className="lg:tw-col-span-7">
+        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <ul
               role="list"
-              className="tw-divide-y tw-divide-gray-200"
+              className="divide-y divide-gray-200"
               style={{
                 borderTop: "1px solid #bdbdbd",
                 borderBottom: "1px solid #bdbdbd",
               }}
             >
               {cartItems.map((product, productIdx) => (
-                <li key={product._id} className="tw-flex tw-py-6 sm:tw-py-10">
-                  <div className="tw-flex-shrink-0">
+                <li key={product._id} className="flex py-6 sm:py-10">
+                  <div className="flex-shrink-0">
                     <img
                       src={product.productImage}
                       alt={product.sku}
-                      className="tw-w-24 tw-h-24 tw-rounded-md tw-object-center tw-object-cover sm:tw-w-48 sm:tw-h-48"
+                      className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                     />
                   </div>
 
-                  <div className="tw-ml-4 tw-flex-1 tw-flex tw-flex-col tw-justify-between sm:tw-ml-6">
-                    <div className="tw-relative tw-pr-9 sm:tw-grid sm:tw-grid-cols-2 sm:tw-gap-x-6 sm:tw-pr-0">
+                  <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+                    <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                       <div>
-                        <div className="tw-flex tw-justify-between">
-                          <h3 className="tw-text-sm">
+                        <div className="flex justify-between">
+                          <h3 className="text-sm">
                             <a
                               href={product?.href}
-                              className="tw-font-medium tw-text-gray-500 hover:tw-text-gray-600"
+                              className="font-medium text-gray-500 hover:text-gray-600"
                             >
                               {product.title}
                             </a>
                           </h3>
                         </div>
-                        <p className="tw-mt-1 tw-text-base tw-font-medium tw-text-gray-900">
+                        <p className="mt-1 text-base font-medium text-gray-900">
                           {product.price}₫
                         </p>
                       </div>
 
-                      <div className="tw-mt-4 sm:tw-mt-0 sm:tw-pr-9">
-                        <Input.Group
-                          compact
-                          className="tw-w-[150px] tw-flex tw-gap-[1px]"
-                        >
-                          <Button
-                            disabled={product.quantity < 2}
-                            onClick={() =>
-                              updateCart(product.productId, "minus")
-                            }
-                          >
-                            -
-                          </Button>
-                          <InputNumber
-                            controls={false}
-                            min={1}
-                            value={product.quantity}
-                            defaultValue={product.quantity}
-                            formatter={(value) =>
-                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            }
-                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                            onChange={(value) =>
-                              updateCart(record.productId, null, value)
-                            }
-                          />
-                          <Button
-                            onClick={() =>
-                              updateCart(product.productId, "plus")
-                            }
-                          >
-                            +
-                          </Button>
-                        </Input.Group>
-
-                        <div className="tw-absolute tw-top-0 tw-right-0">
+                      <div className="mt-4 sm:mt-0 sm:pr-9">
+                        <div className="absolute top-0 right-0">
                           <button
                             type="button"
-                            className="tw--m-2 tw-p-2 tw-inline-flex tw-text-gray-300 hover:tw-text-gray-400 tw-bg-transparent tw-border-none tw-cursor-pointer"
+                            className="-m-2 inline-flex cursor-pointer border-none bg-transparent p-2 text-gray-300 hover:text-gray-400"
                           >
-                            <span className="tw-sr-only">Remove</span>
-                            <FaTimes
-                              className="tw-h-5 tw-w-5"
-                              aria-hidden="true"
-                            />
+                            <span className="sr-only">Remove</span>
+                            <FaTimes className="h-5 w-5" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
@@ -163,28 +125,28 @@ const ShoppingCart = () => {
           {/* Order summary */}
           <section
             aria-labelledby="summary-heading"
-            className="tw-mt-16 tw-bg-gray-50 tw-rounded-lg tw-px-4 tw-py-6 sm:tw-p-6 lg:tw-p-8 lg:tw-mt-0 lg:tw-col-span-5"
+            className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
           >
             <h2
               id="summary-heading"
-              className="tw-text-lg tw-font-medium tw-text-gray-900"
+              className="text-lg font-medium text-gray-900"
             >
               Thông tin hoá đơn
             </h2>
 
-            <div className="tw-border-t tw-border-gray-200 tw-pt-4 tw-flex tw-items-center tw-justify-between">
-              <dt className="tw-text-base tw-font-medium tw-text-gray-900">
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="text-base font-medium text-gray-900">
                 Tổng cộng:
               </dt>
-              <dd className="tw-text-base tw-font-medium tw-text-gray-900">
+              <dd className="text-base font-medium text-gray-900">
                 {formatMoney(getCartSubTotal())}₫
               </dd>
             </div>
 
-            <div className="tw-mt-6">
+            <div className="mt-6">
               <button
                 type="submit"
-                className="tw-w-full tw-bg-[#df2027] tw-border tw-border-transparent tw-rounded-md tw-shadow-sm tw-py-3 px-4 tw-text-base tw-font-medium tw-text-white focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-offset-gray-50 focus:tw-ring-red-500 tw-cursor-pointer"
+                className="w-full cursor-pointer rounded-md border border-transparent bg-[#df2027] px-4 py-3 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >
                 Đi tới thanh toán
               </button>

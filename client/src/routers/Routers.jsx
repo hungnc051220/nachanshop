@@ -1,7 +1,14 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { WebLayout } from "../layouts";
-import { Home, Products, ProductDetail, ShoppingCart, Login } from "../pages";
+import {
+  Home,
+  Products,
+  ProductDetail,
+  ShoppingCart,
+  Login,
+  Dashboard,
+} from "../pages";
 
 const Routers = () => {
   return (
@@ -15,6 +22,7 @@ const Routers = () => {
         <Route path="checkout-success" element={<CheckoutSuccess />} /> */}
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 };
