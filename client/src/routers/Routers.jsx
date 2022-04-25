@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { WebLayout } from "../layouts";
+import { WebLayout, AdminLayout } from "../layouts";
 import {
   Home,
   Products,
@@ -8,7 +8,16 @@ import {
   ShoppingCart,
   Login,
   Dashboard,
+  UserManagement,
+  ProductManagement,
+  OrderManagement,
+  History,
+  Report,
+  Setting,
+  Support,
+  Security,
 } from "../pages";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const Routers = () => {
   return (
@@ -21,8 +30,20 @@ const Routers = () => {
         {/*<Route path="checkout" element={<Checkout />} />
         <Route path="checkout-success" element={<CheckoutSuccess />} /> */}
       </Route>
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/user-management" element={<UserManagement />} />
+          <Route path="/product-management" element={<ProductManagement />} />
+          <Route path="/order-management" element={<OrderManagement />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/security" element={<Security />} />
+        </Route>
+      </Route>
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 };

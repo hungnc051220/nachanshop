@@ -5,12 +5,12 @@ const { downloadFile } = require("../download2");
 const getProducts = async (req, res) => {
   const { page, type, typeChild } = req.query;
   try {
-    const LIMIT = 15;
+    const LIMIT = 5;
     const startIndex = (Number(page) - 1) * LIMIT;
 
     const dataSearch = {};
     if (type) {
-      dataSearch.typeParentValue = { $regex: new RegExp(`^${type}$`, "i") };
+      dataSearch.typeParent = { $regex: new RegExp(`^${type}$`, "i") };
     }
 
     if (typeChild) {
@@ -62,18 +62,14 @@ const getProductBySearch = async (req, res) => {
 
 const addProduct = async (req, res) => {
   const product = req.body;
-  const { typeChild, typeParent } = product;
 
-  const typeParentData = JSON.parse(typeParent);
-  const typeChildData = typeChild ? JSON.parse(typeChild) : null;
+  const images = req.files.map((item) => {
+    return item.path;
+  });
 
   const newProduct = new Product({
     ...product,
-    productImage: req.file.path,
-    typeChildValue: typeChildData?.value || null,
-    typeChildName: typeChildData?.name || null,
-    typeParentValue: typeParentData.value,
-    typeParentName: typeParentData.name,
+    productImage: images,
   });
 
   try {

@@ -21,13 +21,6 @@ const productSchema = mongoose.Schema({
   typeChildName: {
     type: String,
   },
-  typeParent: {
-    type: String,
-  },
-  typeName: {
-    type: String,
-    require: true,
-  },
   price: {
     type: Number,
     default: 0,
@@ -43,10 +36,7 @@ const productSchema = mongoose.Schema({
   description: {
     type: String,
   },
-  productImage: {
-    type: String,
-    required: true,
-  },
+  productImage: Array,
   color: {
     type: String,
   },

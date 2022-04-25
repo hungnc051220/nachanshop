@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "./commonFunction";
+import { useAuth } from "../utils/commonFunction";
 import { useEffect } from "react";
 
 const ProtectedRoutes = () => {

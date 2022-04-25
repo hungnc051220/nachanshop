@@ -72,17 +72,19 @@ const ShoppingCart = () => {
               role="list"
               className="divide-y divide-gray-200"
               style={{
-                borderTop: "1px solid #bdbdbd",
-                borderBottom: "1px solid #bdbdbd",
+                borderTop: "1px solid rgb(229 231 235)",
+                borderBottom: "1px solid rgb(229 231 235)",
               }}
             >
-              {cartItems.map((product, productIdx) => (
+              {cartItems.map((product) => (
                 <li key={product._id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.productImage}
+                      src={`${import.meta.env.VITE_API_URL}/${
+                        product.productImage[0]
+                      }`}
                       alt={product.sku}
-                      className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
+                      className="h-10 w-10 rounded-md object-cover object-center sm:h-20 sm:w-20"
                     />
                   </div>
 
@@ -100,7 +102,7 @@ const ShoppingCart = () => {
                           </h3>
                         </div>
                         <p className="mt-1 text-base font-medium text-gray-900">
-                          {product.price}₫
+                          {formatMoney(product.price)}₫
                         </p>
                       </div>
 
@@ -109,8 +111,10 @@ const ShoppingCart = () => {
                           <button
                             type="button"
                             className="-m-2 inline-flex cursor-pointer border-none bg-transparent p-2 text-gray-300 hover:text-gray-400"
+                            onClick={() =>
+                              dispatch(removeFromCart(product._id))
+                            }
                           >
-                            <span className="sr-only">Remove</span>
                             <FaTimes className="h-5 w-5" aria-hidden="true" />
                           </button>
                         </div>

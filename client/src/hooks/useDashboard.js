@@ -1,10 +1,13 @@
 import { useQuery } from "react-query";
 import { fetchDashboard } from "../api";
 
-export const useDashboard = (onSuccess, onError) => {
+export const useDashboard = () => {
   return useQuery("dashboard", fetchDashboard, {
-    onSuccess,
-    onError,
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
 };
-

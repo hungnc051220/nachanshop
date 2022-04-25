@@ -10,7 +10,7 @@ const {
   deleteProduct,
   getProductBySearch,
   addMultiProduct,
-  deleteMutliProduct
+  deleteMutliProduct,
 } = require("../controllers/products");
 
 const storage = multer.diskStorage({
@@ -42,13 +42,13 @@ router.route("/search").get(getProductBySearch);
 router
   .route("/")
   .get(getProducts)
-  .post(upload.single("productImage"), addProduct);
+  .post(upload.array("productImage", 10), addProduct);
 router
   .route("/:id")
   .get(getProductById)
   .patch(updateProduct)
   .delete(deleteProduct);
-  
+
 router.post("/multi", addMultiProduct);
 router.post("/deleteMulti", deleteMutliProduct);
 

@@ -1,4 +1,5 @@
 import * as actionTypes from "../constants/cart";
+import toast from "react-hot-toast";
 
 const cartFromLocal = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart"))
@@ -12,20 +13,20 @@ const cart = (state = CART_INITIAL_STATE, action) => {
     case actionTypes.ADD_TO_CART:
       const item = action.payload;
 
-      const existItem = state.cartItems.find(
-        (x) => x.productId === item.productId
-      );
+      const existItem = state.cartItems.find((x) => x._id === item._id);
 
       if (existItem) {
+        toast.success("Đã thêm vào giỏ hàng", { id: "addToCart" });
         return {
           ...state,
           cartItems: state.cartItems.map((x) =>
-            x.productId === existItem.productId
+            x._id === existItem._id
               ? { ...x, quantity: x.quantity + item.quantity }
               : x
           ),
         };
       } else {
+        toast.success("Đã thêm vào giỏ hàng", { id: "addToCart" });
         return {
           ...state,
           cartItems: [...state.cartItems, item],
@@ -36,7 +37,7 @@ const cart = (state = CART_INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: state.cartItems.map((x) =>
-          x.productId === action.payload.productId
+          x._id === action.payload._id
             ? {
                 ...x,
                 quantity:
@@ -53,12 +54,10 @@ const cart = (state = CART_INITIAL_STATE, action) => {
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
-        cartItems: state.cartItems.filter(
-          (x) => x.productId !== action.payload
-        ),
+        cartItems: state.cartItems.filter((x) => x._id !== action.payload),
       };
 
-      case actionTypes.CLEAR_CART:
+    case actionTypes.CLEAR_CART:
       return {
         ...state,
         cartItems: [],
