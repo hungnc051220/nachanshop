@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { formatMoney } from "../utils/commonFunction";
 import Button from "@mui/material/Button";
+import { addToCart } from "../redux/actions/cart";
+import { useDispatch } from "react-redux";
 
 const Categories = () => {
+  const dispatch = useDispatch();
   const onSuccess = () => {};
   const onError = () => {
     toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
@@ -92,7 +95,12 @@ const Categories = () => {
                     <p className="mb-0 text-xl font-semibold">
                       {formatMoney(product.price)}₫
                     </p>
-                    <Button variant="contained" color="error" size="small">
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      onClick={() => dispatch(addToCart(product._id, 1))}
+                    >
                       Đặt mua
                     </Button>
                   </div>

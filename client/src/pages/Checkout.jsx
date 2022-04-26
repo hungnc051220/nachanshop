@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/solid";
 import TextField from "@mui/material/TextField";
@@ -7,34 +8,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { getDistricts, getProvinces, getWards } from "../api/provinceApi";
+import { useSelector } from "react-redux";
+import { formatMoney } from "../utils/commonFunction";
+import Button from "@mui/material/Button";
+import { addOrder } from "../redux/actions/orders";
+import { useDispatch } from "react-redux";
 
-const products = [
-  {
-    id: 1,
-    title: "Basic Tee",
-    href: "#",
-    price: "$32.00",
-    color: "Black",
-    size: "Large",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/checkout-page-02-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-  },
-  // More products...
-];
 const deliveryMethods = [
   {
     id: 1,
-    title: "Standard",
-    turnaround: "4–10 business days",
-    price: "$5.00",
+    title: "Thông thường",
+    turnaround: "4 - 10 ngày",
+    price: "30,000đ",
   },
-  { id: 2, title: "Express", turnaround: "2–5 business days", price: "$16.00" },
-];
-const paymentMethods = [
-  { id: "credit-card", title: "Credit card" },
-  { id: "paypal", title: "PayPal" },
-  { id: "etransfer", title: "eTransfer" },
+  { id: 2, title: "Hoả tốc", turnaround: "1-2 ngày", price: "40,000đ" },
 ];
 
 function classNames(...classes) {
@@ -42,31 +29,58 @@ function classNames(...classes) {
 }
 
 const Checkout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0]
   );
 
-  const [age, setAge] = useState("");
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+
+  const getCartSubTotal = () => {
+    return cartItems.reduce(
+      (price, item) => item.price * item.quantity + price,
+      0
+    );
+  };
 
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [selectedWard, setSelectedWard] = useState(null);
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedWard, setSelectedWard] = useState("");
 
   const [orderInfo, setOrderInfo] = useState({
     name: "",
     phone: "",
-    city: "",
+    province: "",
     district: "",
     ward: "",
     address: "",
     note: "",
   });
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const newOrder = {
+      ...orderInfo,
+      cartItems,
+      total:
+        getCartSubTotal() > 999999
+          ? getCartSubTotal()
+          : getCartSubTotal() + 30000,
+      shippingFee: getCartSubTotal() > 999999 ? 0 : 30000,
+      status: 0,
+    };
+
+    dispatch(addOrder(newOrder, navigate));
+  };
+
+  const handleChangeInput = (e) => {
+    setOrderInfo({ ...orderInfo, [e.target.name]: e.target.value });
   };
 
   const handleChangeProvinces = (e, { props }) => {
@@ -74,7 +88,7 @@ const Checkout = () => {
     setSelectedProvince(provinceCode);
     setOrderInfo({
       ...orderInfo,
-      city: props.children,
+      province: props.children,
     });
     fetchDistricts(provinceCode);
   };
@@ -92,6 +106,10 @@ const Checkout = () => {
   const handleChangeWards = (e, { props }) => {
     const wardCode = e.target.value;
     setSelectedWard(wardCode);
+    setOrderInfo({
+      ...orderInfo,
+      ward: props.children,
+    });
   };
 
   const fetchDistricts = async (provinceCode) => {
@@ -117,10 +135,13 @@ const Checkout = () => {
 
   return (
     <div className="">
-      <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Checkout</h2>
 
-        <form className="rounded-xl bg-white p-5 shadow md:p-10 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+        <form
+          className="rounded-xl bg-white p-5 shadow md:p-10 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
+          onSubmit={onSubmit}
+        >
           <div>
             <div>
               <h2 className="text-lg font-medium text-gray-900">
@@ -130,16 +151,19 @@ const Checkout = () => {
               <div className="mt-4 space-y-4">
                 <TextField
                   required
-                  id="outlined-required"
                   label="Họ tên"
+                  name="name"
                   fullWidth
+                  onChange={handleChangeInput}
+                  autoFocus
                 />
 
                 <TextField
                   required
-                  id="outlined-required"
                   label="Điện thoại"
+                  name="phone"
                   fullWidth
+                  onChange={handleChangeInput}
                 />
 
                 <FormControl fullWidth>
@@ -147,9 +171,6 @@ const Checkout = () => {
                     Tỉnh/Thành phố
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Age"
                     value={selectedProvince}
                     onChange={handleChangeProvinces}
                   >
@@ -181,13 +202,7 @@ const Checkout = () => {
 
                 <FormControl fullWidth required>
                   <InputLabel className="bg-white pr-1">Phường/Xã</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedWard}
-                    label="Age"
-                    onChange={handleChangeWards}
-                  >
+                  <Select value={selectedWard} onChange={handleChangeWards}>
                     {wards.map((item) => (
                       <MenuItem key={item.codename} value={item.code}>
                         {item.name}
@@ -198,12 +213,20 @@ const Checkout = () => {
 
                 <TextField
                   required
-                  id="outlined-required"
                   label="Địa chỉ"
+                  name="address"
                   fullWidth
+                  onChange={handleChangeInput}
                 />
 
-                <TextField label="Ghi chú" multiline maxRows={4} fullWidth />
+                <TextField
+                  label="Ghi chú"
+                  multiline
+                  maxRows={4}
+                  fullWidth
+                  name="note"
+                  onChange={handleChangeInput}
+                />
               </div>
             </div>
 
@@ -224,7 +247,7 @@ const Checkout = () => {
                       className={({ checked, active }) =>
                         classNames(
                           checked ? "border-transparent" : "border-gray-300",
-                          active ? "ring-2 ring-indigo-500" : "",
+                          active ? "ring-0 ring-indigo-500" : "",
                           "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none"
                         )
                       }
@@ -255,16 +278,14 @@ const Checkout = () => {
                           </div>
                           {checked ? (
                             <CheckCircleIcon
-                              className="h-5 w-5 text-indigo-600"
+                              className="h-5 w-5 text-red-600"
                               aria-hidden="true"
                             />
                           ) : null}
                           <div
                             className={classNames(
                               active ? "border" : "border-2",
-                              checked
-                                ? "border-indigo-500"
-                                : "border-transparent",
+                              checked ? "border-red-500" : "border-transparent",
                               "pointer-events-none absolute -inset-px rounded-lg"
                             )}
                             aria-hidden="true"
@@ -287,12 +308,14 @@ const Checkout = () => {
             <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
               <h3 className="sr-only">Items in your cart</h3>
               <ul role="list" className="divide-y divide-gray-200">
-                {products.map((product) => (
-                  <li key={product.id} className="flex py-6 px-4 sm:px-6">
+                {cartItems.map((product) => (
+                  <li key={product._id} className="flex py-6 px-4 sm:px-6">
                     <div className="flex-shrink-0">
                       <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
+                        src={`${import.meta.env.VITE_API_URL}/${
+                          product.productImage[0]
+                        }`}
+                        alt={product.sku}
                         className="w-20 rounded-md"
                       />
                     </div>
@@ -301,56 +324,22 @@ const Checkout = () => {
                       <div className="flex">
                         <div className="min-w-0 flex-1">
                           <h4 className="text-sm">
-                            <a
-                              href={product.href}
+                            <Link
+                              to={`/products/${product._id}`}
                               className="font-medium text-gray-700 hover:text-gray-800"
                             >
                               {product.title}
-                            </a>
+                            </Link>
                           </h4>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.color}
-                          </p>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.size}
-                          </p>
-                        </div>
-
-                        <div className="ml-4 flow-root flex-shrink-0">
-                          <button
-                            type="button"
-                            className="-m-2.5 flex items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
-                          >
-                            <span className="sr-only">Remove</span>
-                            <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                          </button>
+                          <p className="mt-1 text-sm text-gray-500"></p>
+                          <p className="mt-1 text-sm text-gray-500"></p>
                         </div>
                       </div>
 
                       <div className="flex flex-1 items-end justify-between pt-2">
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {product.price}
+                          {formatMoney(product.price)}₫
                         </p>
-
-                        <div className="ml-4">
-                          <label htmlFor="quantity" className="sr-only">
-                            Quantity
-                          </label>
-                          <select
-                            id="quantity"
-                            name="quantity"
-                            className="rounded-md border border-gray-300 text-left text-base font-medium text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                          >
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
-                          </select>
-                        </div>
                       </div>
                     </div>
                   </li>
@@ -358,32 +347,38 @@ const Checkout = () => {
               </ul>
               <dl className="space-y-6 border-t border-gray-200 py-6 px-4 sm:px-6">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm">Subtotal</dt>
-                  <dd className="text-sm font-medium text-gray-900">$64.00</dd>
+                  <dt className="text-sm">Tổng tiền hàng</dt>
+                  <dd className="text-sm font-medium text-gray-900">
+                    {formatMoney(getCartSubTotal())}₫
+                  </dd>
                 </div>
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm">Shipping</dt>
-                  <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-                </div>
-                <div className="flex items-center justify-between">
-                  <dt className="text-sm">Taxes</dt>
-                  <dd className="text-sm font-medium text-gray-900">$5.52</dd>
+                  <dt className="text-sm">Phí vận chuyển</dt>
+                  <dd className="text-sm font-medium text-gray-900">
+                    {getCartSubTotal() > 999999 ? "Miễn phí" : "30,000₫"}
+                  </dd>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-                  <dt className="text-base font-medium">Total</dt>
+                  <dt className="text-base font-medium">Tổng tiền</dt>
                   <dd className="text-base font-medium text-gray-900">
-                    $75.52
+                    {getCartSubTotal() > 999999
+                      ? formatMoney(getCartSubTotal())
+                      : formatMoney(getCartSubTotal() + 30000)}
+                    ₫
                   </dd>
                 </div>
               </dl>
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                <button
+                <Button
+                  variant="contained"
+                  color="error"
                   type="submit"
-                  className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium uppercase text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  fullWidth
+                  size="large"
                 >
                   Đặt hàng
-                </button>
+                </Button>
               </div>
             </div>
           </div>

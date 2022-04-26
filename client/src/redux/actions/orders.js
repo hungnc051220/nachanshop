@@ -12,13 +12,14 @@ export const getOrders = () => async (dispatch) => {
   }
 };
 
-export const addOrder = (order) => async (dispatch) => {
+export const addOrder = (order, navigate) => async (dispatch) => {
   try {
     const { data } = await api.addOrder(order);
 
     dispatch({ type: actionTypes.ADD_ORDER, payload: data });
-    localStorage.removeItem('cart');
+    localStorage.removeItem("cart");
     dispatch({ type: actionTypesCart.CLEAR_CART });
+    navigate("/success");
   } catch (error) {
     console.log(error.message);
   }
@@ -29,7 +30,6 @@ export const updateOrder = (id, order) => async (dispatch) => {
     const { data } = await api.updateOrder(id, order);
 
     dispatch({ type: actionTypes.UPDATE_ORDER, payload: data });
-    
   } catch (error) {
     console.log(error.message);
   }

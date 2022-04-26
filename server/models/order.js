@@ -2,14 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = mongoose.Schema(
   {
-    code: {
-      type: String,
-    },
     name: {
-      type: String,
-      require: true,
-    },
-    address: {
       type: String,
       require: true,
     },
@@ -17,19 +10,25 @@ const orderSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    email: {
+    address: {
       type: String,
+      require: true,
+    },
+    province: {
+      type: String,
+      require: true,
+    },
+    district: {
+      type: String,
+      require: true,
+    },
+    ward: {
+      type: String,
+      require: true,
     },
     total: Number,
     shippingFee: Number,
-    cartItems: [
-      {
-        productId: String,
-        name: String,
-        price: Number,
-        quantity: Number,
-      },
-    ],
+    cartItems: Array,
     status: Number,
   },
   {
