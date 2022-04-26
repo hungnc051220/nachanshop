@@ -15,7 +15,7 @@ const Navbar = () => {
               {item.title}
             </Link>
             {item?.sub_items && (
-              <ul className="invisible absolute top-full mt-14 min-w-[200px] overflow-hidden rounded-lg bg-white opacity-0 shadow-lg transition-all duration-500 group-hover:visible group-hover:mt-0 group-hover:opacity-100">
+              <ul className="custom-shadow invisible absolute top-full z-50 mt-14 min-w-[200px] overflow-hidden rounded-lg bg-white opacity-0 transition-all duration-500 group-hover:visible group-hover:mt-0 group-hover:opacity-100">
                 {item.sub_items.map((subItem) => (
                   <li key={subItem.title}>
                     <Link

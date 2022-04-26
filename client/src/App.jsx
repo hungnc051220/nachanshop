@@ -3,6 +3,8 @@ import Routers from "./routers/Routers";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Toaster } from "react-hot-toast";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const queryClient = new QueryClient();
 

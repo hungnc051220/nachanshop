@@ -5,10 +5,14 @@ import { Footer, MainHeader, Navbar, TopHeader } from "../components";
 const WebLayout = () => {
   return (
     <>
-      <TopHeader />
-      <MainHeader />
-      <Navbar />
-      <Outlet />
+      <header>
+        <TopHeader />
+        <MainHeader />
+        <Navbar />
+      </header>
+      <main className="bg-gray-50">
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

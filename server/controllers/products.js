@@ -5,7 +5,7 @@ const { downloadFile } = require("../download2");
 const getProducts = async (req, res) => {
   const { page, type, typeChild } = req.query;
   try {
-    const LIMIT = 5;
+    const LIMIT = 100;
     const startIndex = (Number(page) - 1) * LIMIT;
 
     const dataSearch = {};

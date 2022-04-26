@@ -12,3 +12,4 @@ export { default as Report } from "./Report";
 export { default as Setting } from "./Setting";
 export { default as Support } from "./Support";
 export { default as Security } from "./Security";
+export { default as Checkout } from "./Checkout";

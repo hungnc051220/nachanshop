@@ -1,50 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
 import { removeFromCart, updateToCart } from "../redux/actions/cart";
-import { FaTimes } from "react-icons/fa";
-
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    price: "$32.00",
-    color: "Sienna",
-    inStock: true,
-    size: "Large",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in sienna.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "#",
-    price: "$32.00",
-    color: "Black",
-    inStock: false,
-    leadTime: "3–4 weeks",
-    size: "Large",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-  },
-  {
-    id: 3,
-    name: "Nomad Tumbler",
-    href: "#",
-    price: "$35.00",
-    color: "White",
-    inStock: true,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg",
-    imageAlt: "Insulated bottle with white base and black snap lid.",
-  },
-];
+import { ArrowLeftIcon, ArrowSmRightIcon, XIcon } from "@heroicons/react/solid";
+import Button from "@mui/material/Button";
 
 const ShoppingCart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -56,17 +19,13 @@ const ShoppingCart = () => {
     );
   };
 
-  const updateCart = (productId, type, value) => {
-    dispatch(updateToCart(productId, value, type));
-  };
-
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 md:px-6 lg:max-w-7xl lg:px-0">
-        <h1 className="racking-tight text-3xl font-extrabold text-gray-900 sm:text-4xl">
+    <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 md:px-6 lg:max-w-7xl lg:px-0 ">
+      <div className="rounded-lg bg-white p-10 shadow">
+        <h1 className="racking-tight text-2xl font-extrabold text-gray-900">
           Giỏ hàng của bạn
         </h1>
-        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+        <form className="mt-6 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <ul
               role="list"
@@ -77,7 +36,16 @@ const ShoppingCart = () => {
               }}
             >
               {cartItems.map((product) => (
-                <li key={product._id} className="flex py-6 sm:py-10">
+                <li key={product._id} className="relative flex py-6 sm:py-6">
+                  <div className="absolute top-4 right-4">
+                    <button
+                      type="button"
+                      className="-m-2 inline-flex cursor-pointer border-none bg-transparent p-2 text-gray-300 hover:text-gray-400"
+                      onClick={() => dispatch(removeFromCart(product._id))}
+                    >
+                      <XIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
                   <div className="flex-shrink-0">
                     <img
                       src={`${import.meta.env.VITE_API_URL}/${
@@ -93,12 +61,12 @@ const ShoppingCart = () => {
                       <div>
                         <div className="flex justify-between">
                           <h3 className="text-sm">
-                            <a
-                              href={product?.href}
+                            <Link
+                              to={`/products/${product._id}`}
                               className="font-medium text-gray-500 hover:text-gray-600"
                             >
                               {product.title}
-                            </a>
+                            </Link>
                           </h3>
                         </div>
                         <p className="mt-1 text-base font-medium text-gray-900">
@@ -107,15 +75,31 @@ const ShoppingCart = () => {
                       </div>
 
                       <div className="mt-4 sm:mt-0 sm:pr-9">
-                        <div className="absolute top-0 right-0">
+                        <div className="flex items-center">
                           <button
                             type="button"
-                            className="-m-2 inline-flex cursor-pointer border-none bg-transparent p-2 text-gray-300 hover:text-gray-400"
+                            className="h-8 w-8 border border-gray-200"
+                            disabled={product.quantity === 1}
                             onClick={() =>
-                              dispatch(removeFromCart(product._id))
+                              dispatch(updateToCart(product._id, "minus"))
                             }
                           >
-                            <FaTimes className="h-5 w-5" aria-hidden="true" />
+                            -
+                          </button>
+                          <input
+                            value={product.quantity}
+                            className="h-8 w-12 border-y border-gray-200 text-center focus:outline-none"
+                            min={1}
+                            readOnly
+                          />
+                          <button
+                            type="button"
+                            className="h-8 w-8 border border-gray-200"
+                            onClick={() =>
+                              dispatch(updateToCart(product._id, "plus"))
+                            }
+                          >
+                            +
                           </button>
                         </div>
                       </div>
@@ -124,6 +108,13 @@ const ShoppingCart = () => {
                 </li>
               ))}
             </ul>
+
+            <Link
+              to="/"
+              className="flex items-center gap-2 pt-10 text-sm text-indigo-500 hover:font-medium"
+            >
+              <ArrowLeftIcon className="h-4 w-4" /> Tiếp tục mua hàng
+            </Link>
           </section>
 
           {/* Order summary */}
@@ -138,22 +129,43 @@ const ShoppingCart = () => {
               Thông tin hoá đơn
             </h2>
 
-            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-              <dt className="text-base font-medium text-gray-900">
-                Tổng cộng:
-              </dt>
-              <dd className="text-base font-medium text-gray-900">
-                {formatMoney(getCartSubTotal())}₫
-              </dd>
-            </div>
+            <dl className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <dt className="text-gray-600">Tổng tiền hàng</dt>
+                <dd className="font-medium text-gray-900">
+                  {formatMoney(getCartSubTotal())}₫
+                </dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-gray-600">Phí vận chuyển</dt>
+                <dd className="font-medium text-gray-900">
+                  {getCartSubTotal() > 999999 ? "Miễn phí" : "30,000₫"}
+                </dd>
+              </div>
 
+              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                <dt className="text-base font-medium text-gray-900">
+                  Tổng cộng:
+                </dt>
+                <dd className="text-base font-medium text-gray-900">
+                  {getCartSubTotal() > 999999
+                    ? formatMoney(getCartSubTotal())
+                    : formatMoney(getCartSubTotal() + 30000)}
+                  ₫
+                </dd>
+              </div>
+            </dl>
             <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full cursor-pointer rounded-md border border-transparent bg-[#df2027] px-4 py-3 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
+                fullWidth
+                endIcon={<ArrowSmRightIcon className="h-5 w-5" />}
+                onClick={() => navigate("/checkout")}
               >
                 Đi tới thanh toán
-              </button>
+              </Button>
             </div>
           </section>
         </form>

@@ -22,7 +22,7 @@ const incentives = [
 
 const Incentives = () => {
   return (
-    <div className="bg-gray-50">
+    <section className="bg-white">
       <div className="mx-auto max-w-7xl py-10 sm:px-2 lg:px-4 ">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-10 gap-x-8 px-4 lg:max-w-none lg:grid-cols-3">
           {incentives.map((incentive) => (
@@ -51,7 +51,7 @@ const Incentives = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

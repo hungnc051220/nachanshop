@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { formatMoney } from "../utils/commonFunction";
 import { addToCart } from "../redux/actions/cart";
 import Button from "@mui/material/Button";
-import { useProduct } from "../hooks/useProductsData";
+import { useProduct, useProducts } from "../hooks/useProductsData";
 import Rating from "@mui/material/Rating";
 import { AiOutlineShopping } from "react-icons/ai";
+import Slider from "react-slick";
+import { Breadcrumbs } from "../components";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -16,41 +19,53 @@ const ProductDetail = () => {
   const [indexImage, setIndexImage] = useState(0);
 
   const { isLoading, data } = useProduct(id);
+  const { data: dataProduct } = useProducts();
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 3000,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    pauseOnHover: true,
+    accessibility: true,
+  };
 
   const addToCartHandler = () => {
     dispatch(addToCart(data._id, Number(quantity)));
   };
 
   return (
-    <section className="mx-auto mt-4 mb-20 max-w-7xl">
+    <section className="mx-auto max-w-7xl pb-20">
+      <div className="py-2">
+        <Breadcrumbs />
+      </div>
       {data && (
         <>
-          <div className="mb-16 grid grid-cols-2 gap-5">
-            <div>
-              <div>
-                <img
-                  className="mx-auto h-[600px] w-[600px] rounded-2xl shadow-lg transition duration-300 ease-in-out"
-                  src={`${import.meta.env.VITE_API_URL}/${
-                    data.productImage[indexImage]
-                  }`}
-                  alt={data.title}
-                />
-              </div>
-              <div className="mt-3 ml-3 flex gap-4">
+          <div className="mb-16 grid grid-cols-2 gap-5 rounded-2xl bg-white p-10 shadow">
+            <div className="py-5">
+              <img
+                className="mx-auto h-[500px] w-[500px] rounded-2xl shadow transition duration-300 ease-in-out"
+                src={`${import.meta.env.VITE_API_URL}/${
+                  data.productImage[indexImage]
+                }`}
+                alt={data.title}
+              />
+              <div className="mt-4 ml-16 flex gap-4">
                 {data.productImage.map((image, index) => (
-                  <div className="pointer rounded-lg border border-gray-200 p-1">
-                    <img
-                      key={index}
-                      className="h-20 w-20 cursor-pointer"
-                      src={`${import.meta.env.VITE_API_URL}/${image}`}
-                      alt={data.title}
-                      onMouseOver={() => setIndexImage(index)}
-                    />
-                  </div>
+                  <img
+                    key={index}
+                    className="h-20 w-20 cursor-pointer rounded-lg shadow"
+                    src={`${import.meta.env.VITE_API_URL}/${image}`}
+                    alt={data.title}
+                    onMouseOver={() => setIndexImage(index)}
+                  />
                 ))}
               </div>
             </div>
-            <div className="px-16 pb-12">
+            <div className="pr-16 pb-12">
               <h3 className="mt-4 mb-2 text-4xl font-semibold">{data.title}</h3>
               <Rating name="read-only" value={5} readOnly />
               <h4 className="mb-2 mt-6 text-3xl font-medium text-red-500">
@@ -114,6 +129,55 @@ const ProductDetail = () => {
           </div>
         </>
       )}
+
+      <div>
+        <h2 className="text-medium mb-2 text-2xl">Các sản phẩm liên quan</h2>
+        <Slider {...settings}>
+          {dataProduct &&
+            dataProduct.data.map((product) => (
+              <div className="p-2">
+                <div
+                  className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
+                  key={product._id}
+                >
+                  <div className="relative p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <img
+                        src={`${import.meta.env.VITE_API_URL}/${
+                          product.productImage[0]
+                        }`}
+                        alt={product.name}
+                      />
+                    </Link>
+                  </div>
+
+                  <div className="p-5">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="inline-block h-14 py-2"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    </Link>
+
+                    <div className="flex items-center justify-between">
+                      <p className="mb-0 text-xl font-semibold">
+                        {formatMoney(product.price)}₫
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </Slider>
+      </div>
     </section>
   );
 };

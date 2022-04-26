@@ -37,13 +37,11 @@ const cart = (state = CART_INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: state.cartItems.map((x) =>
-          x._id === action.payload._id
+          x._id === action.payload.id
             ? {
                 ...x,
                 quantity:
-                  action.payload.typeUpdate === null
-                    ? Number(action.payload.quantity)
-                    : action.payload.typeUpdate === "minus"
+                  action.payload.type === "minus"
                     ? x.quantity - 1
                     : x.quantity + 1,
               }

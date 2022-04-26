@@ -8,17 +8,10 @@ const productSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  typeParentValue: {
-    type: String,
-    require: true,
-  },
-  typeParentName: {
+  typeParent: {
     type: String,
   },
-  typeChildValue: {
-    type: String,
-  },
-  typeChildName: {
+  typeChild: {
     type: String,
   },
   price: {

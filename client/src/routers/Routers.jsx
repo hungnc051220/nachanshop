@@ -16,6 +16,7 @@ import {
   Setting,
   Support,
   Security,
+  Checkout,
 } from "../pages";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -27,8 +28,8 @@ const Routers = () => {
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="shopping-cart" element={<ShoppingCart />} />
-        {/*<Route path="checkout" element={<Checkout />} />
-        <Route path="checkout-success" element={<CheckoutSuccess />} /> */}
+        <Route path="checkout" element={<Checkout />} />
+        {/*<Route path="checkout-success" element={<CheckoutSuccess />} /> */}
       </Route>
       <Route element={<ProtectedRoutes />}>
         <Route element={<AdminLayout />}>
