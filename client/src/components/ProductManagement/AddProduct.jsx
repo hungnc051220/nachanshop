@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import TextField from "@mui/material/TextField";
@@ -8,13 +8,15 @@ import Button from "@mui/material/Button";
 import { typeParent, typeChild } from "../../data/categogiesSelect";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addProduct } from "../../api/productsApi";
+import { addProduct, generateLink } from "../../api/productsApi";
 import { useAddProduct } from "../../hooks/useProductsData";
 
 const AddProduct = () => {
   const [open, setOpen] = useState(false);
   const [selectedParent, setSelectedParent] = React.useState("");
   const [childData, setChildData] = useState([]);
+  const [link, setLink] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     status: 1,
@@ -35,6 +37,19 @@ const AddProduct = () => {
     if (typeChild[event.target.value])
       setChildData(typeChild[event.target.value]);
     else setChildData([]);
+  };
+
+  const getInfo = async () => {
+    try {
+      const data = await generateLink(link);
+      setFormData({
+        ...formData,
+        name: data.title,
+        description: data.description,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -114,6 +129,36 @@ const AddProduct = () => {
                             htmlFor="name"
                             className="block text-sm font-medium text-gray-700"
                           >
+                            Link sản phẩm từ web Japana
+                          </label>
+                          <div className="mt-1">
+                            <TextField
+                              id="link"
+                              name="link"
+                              variant="outlined"
+                              fullWidth
+                              size="small"
+                              onChange={(e) => setLink(e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <Button
+                            variant="contained"
+                            onClick={getInfo}
+                            className="mt-6"
+                            color="warning"
+                          >
+                            Thêm nhanh
+                          </Button>
+                        </div>
+
+                        <div className="sm:col-span-7">
+                          <label
+                            htmlFor="name"
+                            className="block text-sm font-medium text-gray-700"
+                          >
                             Tên sản phẩm
                           </label>
                           <div className="mt-1">
@@ -123,6 +168,7 @@ const AddProduct = () => {
                               variant="outlined"
                               fullWidth
                               size="small"
+                              value={formData.name}
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
@@ -290,6 +336,7 @@ const AddProduct = () => {
                           </label>
                           <div className="mt-1">
                             <CKEditor
+                              data={formData.description}
                               editor={ClassicEditor}
                               onChange={(event, editor) => {
                                 const data = editor.getData();
