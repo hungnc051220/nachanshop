@@ -44,29 +44,29 @@ const ProductDetail = () => {
       </div>
       {data && (
         <>
-          <div className="mb-16 grid grid-cols-2 gap-5 rounded-2xl bg-white p-10 shadow">
+          <div className="mb-6 grid grid-cols-2 gap-5 rounded-2xl bg-white p-10 shadow">
             <div className="py-5">
               <img
-                className="mx-auto h-[500px] w-[500px] rounded-2xl shadow transition duration-300 ease-in-out"
+                className="mx-auto h-[500px] w-[500px] rounded-2xl object-cover object-center shadow transition duration-300 ease-in-out"
                 src={`${import.meta.env.VITE_API_URL}/${
                   data.productImage[indexImage]
                 }`}
-                alt={data.title}
+                alt={data.name}
               />
               <div className="mt-4 ml-16 flex gap-4">
                 {data.productImage.map((image, index) => (
                   <img
                     key={index}
-                    className="h-20 w-20 cursor-pointer rounded-lg shadow"
+                    className="h-20 w-20 cursor-pointer rounded-lg object-cover object-center shadow"
                     src={`${import.meta.env.VITE_API_URL}/${image}`}
-                    alt={data.title}
+                    alt={data.name}
                     onMouseOver={() => setIndexImage(index)}
                   />
                 ))}
               </div>
             </div>
             <div className="pr-16 pb-12">
-              <h3 className="mt-4 mb-2 text-4xl font-semibold">{data.title}</h3>
+              <h3 className="mt-4 mb-2 text-4xl font-semibold">{data.name}</h3>
               <Rating name="read-only" value={5} readOnly />
               <h4 className="mb-2 mt-6 text-3xl font-medium text-red-500">
                 {formatMoney(data.price)}₫
@@ -119,10 +119,13 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="col-12">
+          <div className="rounded-lg bg-white p-8 shadow">
+            <div>
+              <h1 className="mb-10 text-center text-2xl font-semibold">
+                Mô tả sản phẩm
+              </h1>
               <div
-                className="description mt-4"
+                className=""
                 dangerouslySetInnerHTML={{ __html: data.description }}
               ></div>
             </div>
@@ -130,12 +133,12 @@ const ProductDetail = () => {
         </>
       )}
 
-      <div>
-        <h2 className="text-medium mb-2 text-2xl">Các sản phẩm liên quan</h2>
+      <div className="mt-10 rounded-lg bg-white p-8 shadow">
+        <h2 className="mb-2 text-xl font-semibold">Các sản phẩm liên quan</h2>
         <Slider {...settings}>
           {dataProduct &&
             dataProduct.data.map((product) => (
-              <div className="p-2">
+              <div className="p-2" key={product._id}>
                 <div
                   className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
                   key={product._id}
@@ -171,6 +174,9 @@ const ProductDetail = () => {
                       <p className="mb-0 text-xl font-semibold">
                         {formatMoney(product.price)}₫
                       </p>
+                      <Button variant="contained" color="error" size="small">
+                        Đặt mua
+                      </Button>
                     </div>
                   </div>
                 </div>

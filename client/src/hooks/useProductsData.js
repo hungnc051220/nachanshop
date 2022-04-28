@@ -4,17 +4,22 @@ import {
   getProduct,
   addProduct,
   deleteProduct,
+  deleteMultiProduct,
   getProductsBySearch,
 } from "../api/productsApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export const useProducts = (page, type, typeChild, onSuccess, onError) => {
-  return useQuery(["products", page, type, typeChild], () => getProducts(page, type, typeChild), {
-    keepPreviousData: true,
-    staleTime: 60000,
-    onSuccess,
-    onError,
-  });
+  return useQuery(
+    ["products", page, type, typeChild],
+    () => getProducts(page, type, typeChild),
+    {
+      keepPreviousData: true,
+      staleTime: 60000,
+      onSuccess,
+      onError,
+    }
+  );
 };
 
 export const useProductsBySearch = (type, onSuccess, onError) => {
@@ -49,13 +54,26 @@ export const useAddProduct = () => {
       toast.success("Thêm sản phẩm thành công");
       queryClient.invalidateQueries("products");
     },
-    onError: () => {},
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 };
 
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteProduct, {
+    onSuccess: () => {
+      toast.success("Xoá sản phẩm thành công");
+      queryClient.invalidateQueries("products");
+    },
+    onError: () => {},
+  });
+};
+
+export const useDeleteMultiProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteMultiProduct, {
     onSuccess: () => {
       toast.success("Xoá sản phẩm thành công");
       queryClient.invalidateQueries("products");

@@ -386,7 +386,6 @@ const Products = () => {
                                     product.productImage[0]
                                   }`}
                                   alt={product.name}
-                                  className="product-img default"
                                 />
                               </Link>
                             </div>
@@ -410,7 +409,7 @@ const Products = () => {
                                 }}
                               >
                                 <h3 className="text-sm text-gray-600">
-                                  {product.title}
+                                  {product.name}
                                 </h3>
                               </Link>
 

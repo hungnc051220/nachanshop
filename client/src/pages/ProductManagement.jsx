@@ -1,7 +1,11 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { useLayoutEffect, useRef, useState } from "react";
-import { useProducts } from "../hooks/useProductsData";
+import {
+  useDeleteMultiProduct,
+  useDeleteProduct,
+  useProducts,
+} from "../hooks/useProductsData";
 import TablePagination from "@mui/material/TablePagination";
 import { AddProduct } from "../components";
 
@@ -18,6 +22,9 @@ const ProductManagement = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
+  const { mutateAsync: deleteProduct } = useDeleteProduct();
+  const { mutateAsync: deleteMultiProduct } = useDeleteMultiProduct();
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -25,6 +32,11 @@ const ProductManagement = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const onMultiDelete = () => {
+    deleteMultiProduct(selectedPeople);
+    setSelectedPeople([]);
   };
 
   const onSuccess = () => {};
@@ -67,9 +79,6 @@ const ProductManagement = () => {
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <AddProduct />
-          <Button variant="contained" className="bg-indigo-500">
-            Thêm sản phẩm
-          </Button>
         </div>
       </div>
       <div className="mt-8 flex flex-col">
@@ -78,7 +87,12 @@ const ProductManagement = () => {
             <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
               {selectedPeople.length > 0 && (
                 <div className="absolute top-0 left-12 flex h-12 items-center space-x-3 bg-gray-50 sm:left-16">
-                  <Button variant="contained" size="small" color="error">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    onClick={onMultiDelete}
+                  >
                     Xoá tất
                   </Button>
                 </div>
@@ -94,8 +108,9 @@ const ProductManagement = () => {
                         type="checkbox"
                         className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
                         ref={checkbox}
-                        checked={checked}
+                        checked={data?.data?.length === 0 ? false : checked}
                         onChange={toggleAll}
+                        disabled={data?.data?.length === 0}
                       />
                     </th>
                     <th
@@ -103,12 +118,6 @@ const ProductManagement = () => {
                       className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
                     >
                       STT
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      SKU
                     </th>
                     <th
                       scope="col"
@@ -130,10 +139,27 @@ const ProductManagement = () => {
                     </th>
                     <th
                       scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      <span className="sr-only">Edit</span>
+                      Giá tiền
                     </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Số lượng
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Trạng thái
+                    </th>
+
+                    <th
+                      scope="col"
+                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                    ></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
@@ -175,16 +201,22 @@ const ProductManagement = () => {
                         {data?.pageSize * (data?.currentPage - 1) + index + 1}
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                        {person.sku}
+                        {person.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                        {person.title}
+                        {person.typeParent}
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                        {person.typeParentName}
+                        {person.typeChild}
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                        {person.typeChildName}
+                        {person.price}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                        {person.countInStock}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                        {person.status === 1 ? "Còn hàng" : "Hết hàng"}
                       </td>
                       <td className="space-x-4 whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <a
@@ -193,8 +225,12 @@ const ProductManagement = () => {
                         >
                           Sửa<span className="sr-only">, {person.name}</span>
                         </a>
-                        <a href="#" className="text-red-600">
-                          Xoá<span className="sr-only">, {person.name}</span>
+                        <a
+                          href="#"
+                          className="text-red-600"
+                          onClick={() => deleteProduct({ id: person._id })}
+                        >
+                          Xoá
                         </a>
                       </td>
                     </tr>

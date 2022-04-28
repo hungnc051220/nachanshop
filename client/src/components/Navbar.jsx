@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import navbarItems from "../data/navbar.json";
+import categories from "../data/categories.json";
 
 const Navbar = () => {
   return (
-    <nav className="z-10 mx-auto max-w-7xl">
+    <nav className="z-10 mx-auto hidden max-w-7xl lg:block">
       <ul className="flex items-center justify-between">
-        {navbarItems.map((item) => (
+        {categories.map((item) => (
           <li key={item.title} className="group relative">
             <Link
               to={item.route}

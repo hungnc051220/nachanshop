@@ -6,3 +6,9 @@
 .custom-shadow {
   box-shadow: -2px 2px 70px -25px rgb(0 0 0 / 30%);
 }
+
+.ck-editor__editable_inline {
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+}
