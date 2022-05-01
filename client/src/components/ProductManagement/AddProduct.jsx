@@ -13,19 +13,19 @@ import { useAddProduct } from "../../hooks/useProductsData";
 
 const AddProduct = () => {
   const [open, setOpen] = useState(false);
-  const [selectedParent, setSelectedParent] = React.useState("");
+  const [selectedParent, setSelectedParent] = useState(typeParent[0].value);
   const [childData, setChildData] = useState([]);
   const [link, setLink] = useState("");
 
   const [formData, setFormData] = useState({
-    name: "",
+    nameProduct: "",
     status: 1,
-    typeParent: null,
-    typeChild: null,
+    typeParent: '',
+    typeChild: '',
     countInStock: 1,
     price: 1,
     productImage: [],
-    description: null,
+    description: '',
   });
 
   const { mutateAsync: addProduct, isLoading: isLoadingAdd } = useAddProduct();
@@ -42,11 +42,10 @@ const AddProduct = () => {
   const getInfo = async () => {
     try {
       const data = await generateLink(link);
-      setFormData({
-        ...formData,
-        name: data.title,
-        description: data.description,
-      });
+      const { title, description } = data;
+      setFormData({ ...formData, nameProduct: title })
+      setFormData({ ...formData, description: description })
+
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +55,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     const fd = new FormData();
-    fd.append("name", formData.name);
+    fd.append("name", formData.nameProduct);
     fd.append("status", formData.status);
     fd.append("typeParent", formData.typeParent);
     fd.append("typeChild", formData.typeChild);
@@ -168,11 +167,11 @@ const AddProduct = () => {
                               variant="outlined"
                               fullWidth
                               size="small"
-                              value={formData.name}
+                              value={formData.nameProduct}
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
-                                  name: e.target.value,
+                                  nameProduct: e.target.value,
                                 })
                               }
                             />
@@ -189,9 +188,9 @@ const AddProduct = () => {
                           <div className="mt-1">
                             <Select
                               id="status"
-                              name="status"
                               fullWidth
                               size="small"
+                              value={formData.status}
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
@@ -215,13 +214,12 @@ const AddProduct = () => {
                           <div className="mt-1">
                             <Select
                               id="typeParent"
-                              name="typeParent"
                               fullWidth
                               size="small"
                               value={selectedParent}
                               onChange={handleChange}
                             >
-                              {typeParent.map((item) => (
+                              {typeParent?.map((item) => (
                                 <MenuItem key={item.value} value={item.value}>
                                   {item.name}
                                 </MenuItem>
@@ -240,18 +238,18 @@ const AddProduct = () => {
                           <div className="mt-1">
                             <Select
                               id="typeChild"
-                              name="typeChild"
                               fullWidth
                               size="small"
+                              value={formData.typeChild}
                               disabled={childData.length === 0}
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
-                                  typeChild: e.target.value || null,
+                                  typeChild: e.target.value || '',
                                 })
                               }
                             >
-                              {childData.map((item) => (
+                              {childData?.map((item) => (
                                 <MenuItem key={item.value} value={item.value}>
                                   {item.name}
                                 </MenuItem>
@@ -262,13 +260,14 @@ const AddProduct = () => {
 
                         <div className="sm:col-span-3">
                           <label
-                            htmlFor="typeParant"
+                            htmlFor="countInStock"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Số lượng
                           </label>
                           <div className="mt-1">
                             <TextField
+                              id="countInStock"
                               type="number"
                               defaultValue={1}
                               min={1}
@@ -286,13 +285,14 @@ const AddProduct = () => {
                         </div>
                         <div className="sm:col-span-3">
                           <label
-                            htmlFor="typeParant"
+                            htmlFor="price"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Giá tiền
                           </label>
                           <div className="mt-1">
                             <TextField
+                              id="price"
                               type="number"
                               defaultValue={1}
                               min={1}
@@ -329,7 +329,7 @@ const AddProduct = () => {
 
                         <div className="sm:col-span-9">
                           <label
-                            htmlFor="typeParant"
+                            htmlFor="description"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Miêu tả sản phẩm
