@@ -8,6 +8,7 @@ import {
 } from "../hooks/useProductsData";
 import TablePagination from "@mui/material/TablePagination";
 import { AddProduct } from "../components";
+import { formatMoney } from "../utils/commonFunction";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -127,7 +128,7 @@ const ProductManagement = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-[150px]"
                     >
                       Loại hàng cha
                     </th>
@@ -145,13 +146,13 @@ const ProductManagement = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-[100px]"
                     >
                       Số lượng
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-[100px]"
                     >
                       Trạng thái
                     </th>
@@ -210,7 +211,7 @@ const ProductManagement = () => {
                         {person.typeChild}
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                        {person.price}
+                        {formatMoney(person.price)}₫
                       </td>
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                         {person.countInStock}

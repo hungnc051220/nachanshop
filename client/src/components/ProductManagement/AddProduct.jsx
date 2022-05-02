@@ -1,19 +1,52 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { typeParent, typeChild } from "../../data/categogiesSelect";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addProduct, generateLink } from "../../api/productsApi";
+import { generateLink } from "../../api/productsApi";
 import { useAddProduct } from "../../hooks/useProductsData";
+import NumberFormat from 'react-number-format';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="₫"
+    />
+  );
+});
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  typeParent: yup.string().required(),
+})
 
 const AddProduct = () => {
+  const { handleSubmit, control, register, watch, reset, setValue, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  });
+
   const [open, setOpen] = useState(false);
-  const [selectedParent, setSelectedParent] = useState(typeParent[0].value);
   const [childData, setChildData] = useState([]);
   const [link, setLink] = useState("");
 
@@ -31,7 +64,6 @@ const AddProduct = () => {
   const { mutateAsync: addProduct, isLoading: isLoadingAdd } = useAddProduct();
 
   const handleChange = (event) => {
-    setSelectedParent(event.target.value);
     setFormData({ ...formData, typeParent: event.target.value });
 
     if (typeChild[event.target.value])
@@ -43,33 +75,39 @@ const AddProduct = () => {
     try {
       const data = await generateLink(link);
       const { title, description } = data;
-      setFormData({ ...formData, nameProduct: title })
-      setFormData({ ...formData, description: description })
+
+      setValue('name', title, { shouldValidate: true })
+      setValue('description', description);
 
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+
+
+  const onSubmit = async (data) => {
+    const { name, status, typeParent, typeChild, countInStock, price, description, productImage } = data;
 
     const fd = new FormData();
-    fd.append("name", formData.nameProduct);
-    fd.append("status", formData.status);
-    fd.append("typeParent", formData.typeParent);
-    fd.append("typeChild", formData.typeChild);
-    fd.append("countInStock", formData.countInStock);
-    fd.append("price", formData.price);
-    fd.append("description", formData.description);
+    fd.append("name", name);
+    fd.append("status", status);
+    fd.append("typeParent", typeParent);
+    fd.append("typeChild", typeChild);
+    fd.append("countInStock", countInStock);
+    fd.append("price", price);
+    fd.append("description", description);
 
-    for (let i = 0; i < formData.productImage.length; i++) {
-      fd.append("productImage", formData.productImage[i]);
+    for (let i = 0; i < productImage.length; i++) {
+      fd.append("productImage", productImage[i]);
     }
 
     await addProduct(fd);
+    reset();
     setOpen(false);
   };
+
+  watch('productImage');
 
   return (
     <>
@@ -94,7 +132,7 @@ const AddProduct = () => {
             <div className="pointer-events-auto w-screen max-w-3xl">
               <form
                 className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit(onSubmit)}
               >
                 <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
                   <div className="bg-indigo-700 py-6 px-4 sm:px-6">
@@ -116,7 +154,7 @@ const AddProduct = () => {
                     <div className="mt-1">
                       <p className="text-sm text-indigo-300">
                         Bắt đầu bằng cách điền thông tin bên dưới để thêm sản
-                        phẩm mớI mới.
+                        phẩm mới mới.
                       </p>
                     </div>
                   </div>
@@ -154,159 +192,80 @@ const AddProduct = () => {
                         </div>
 
                         <div className="sm:col-span-7">
-                          <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Tên sản phẩm
-                          </label>
-                          <div className="mt-1">
-                            <TextField
-                              id="name"
-                              name="name"
-                              variant="outlined"
-                              fullWidth
-                              size="small"
-                              value={formData.nameProduct}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  nameProduct: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
+                          <Controller
+                            name="name"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => <TextField {...field} variant="outlined" label="Tên sản phẩm" size="small" fullWidth error={!!errors.name}
+                              helperText={errors.name ? errors.name?.message : ''} />}
+                          />
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label
-                            htmlFor="status"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Trạng thái
-                          </label>
-                          <div className="mt-1">
-                            <Select
-                              id="status"
-                              fullWidth
-                              size="small"
-                              value={formData.status}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  status: e.target.value,
-                                })
-                              }
-                            >
+                          <Controller
+                            name="status"
+                            control={control}
+                            defaultValue={1}
+                            render={({ field }) => <TextField {...field} select variant="outlined" label="Trạng thái" size="small" fullWidth error={!!errors.status}
+                              helperText={errors.status ? errors.status?.message : ''}>
                               <MenuItem value={1}>Còn hàng</MenuItem>
                               <MenuItem value={0}>Hết hàng</MenuItem>
-                            </Select>
-                          </div>
+                            </TextField>}
+                          />
                         </div>
 
                         <div className="sm:col-span-3">
-                          <label
-                            htmlFor="typeParant"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Loại hàng cha
-                          </label>
-                          <div className="mt-1">
-                            <Select
-                              id="typeParent"
-                              fullWidth
-                              size="small"
-                              value={selectedParent}
-                              onChange={handleChange}
-                            >
+                          <Controller
+                            name="typeParent"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => <TextField select onChange={(e) => { onChange(e); handleChange(e) }} value={value} variant="outlined" label="Loại hàng cha" size="small" fullWidth error={!!errors.typeParent}
+                              helperText={errors.typeParent ? errors.typeParent?.message : ''}>
                               {typeParent?.map((item) => (
                                 <MenuItem key={item.value} value={item.value}>
                                   {item.name}
                                 </MenuItem>
                               ))}
-                            </Select>
-                          </div>
+                            </TextField>}
+                          />
                         </div>
 
                         <div className="sm:col-span-3">
-                          <label
-                            htmlFor="typeChild"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Loại hàng con
-                          </label>
-                          <div className="mt-1">
-                            <Select
-                              id="typeChild"
-                              fullWidth
-                              size="small"
-                              value={formData.typeChild}
-                              disabled={childData.length === 0}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  typeChild: e.target.value || '',
-                                })
-                              }
+                          <Controller
+                            name="typeChild"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => <TextField {...field} select variant="outlined" label="Loại hàng con" size="small" fullWidth
                             >
                               {childData?.map((item) => (
                                 <MenuItem key={item.value} value={item.value}>
                                   {item.name}
                                 </MenuItem>
                               ))}
-                            </Select>
-                          </div>
+                            </TextField>}
+                          />
                         </div>
 
                         <div className="sm:col-span-3">
-                          <label
-                            htmlFor="countInStock"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Số lượng
-                          </label>
-                          <div className="mt-1">
-                            <TextField
-                              id="countInStock"
-                              type="number"
-                              defaultValue={1}
-                              min={1}
-                              variant="outlined"
-                              fullWidth
-                              size="small"
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  countInStock: Number(e.target.value),
-                                })
-                              }
-                            />
-                          </div>
+                          <Controller
+                            name="countInStock"
+                            control={control}
+                            defaultValue={1}
+                            render={({ field }) => <TextField type="number" {...field} variant="outlined" label="Số lượng" size="small" fullWidth error={!!errors.countInStock}
+                              helperText={errors.countInStock ? errors.countInStock?.message : ''} />}
+                          />
                         </div>
+
                         <div className="sm:col-span-3">
-                          <label
-                            htmlFor="price"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Giá tiền
-                          </label>
-                          <div className="mt-1">
-                            <TextField
-                              id="price"
-                              type="number"
-                              defaultValue={1}
-                              min={1}
-                              variant="outlined"
-                              fullWidth
-                              size="small"
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  price: Number(e.target.value),
-                                })
-                              }
-                            />
-                          </div>
+                          <Controller
+                            name="price"
+                            control={control}
+                            defaultValue={1}
+                            render={({ field }) => <TextField {...field} variant="outlined" label="Giá tiền" size="small" InputProps={{
+                              inputComponent: NumberFormatCustom,
+                            }} fullWidth error={!!errors.countInStock}
+                              helperText={errors.countInStock ? errors.countInStock?.message : ''} />}
+                          />
                         </div>
 
                         <div className="sm:col-span-9">
@@ -315,14 +274,9 @@ const AddProduct = () => {
                           </label>
                           <div className="mt-1">
                             <input
+                              {...register("productImage")}
                               type="file"
                               multiple
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  productImage: e.target.files,
-                                })
-                              }
                             />
                           </div>
                         </div>
@@ -335,14 +289,21 @@ const AddProduct = () => {
                             Miêu tả sản phẩm
                           </label>
                           <div className="mt-1">
-                            <CKEditor
-                              data={formData.description}
-                              editor={ClassicEditor}
-                              onChange={(event, editor) => {
-                                const data = editor.getData();
-                                setFormData({ ...formData, description: data });
-                              }}
+                            <Controller
+                              name="description"
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => <CKEditor {...field}
+                                data={field.value}
+                                editor={ClassicEditor}
+                                onChange={(event, editor) => {
+                                  const data = editor.getData();
+                                  setValue('description', data);
+                                }}
+                              />}
                             />
+
+
                           </div>
                         </div>
                       </div>
