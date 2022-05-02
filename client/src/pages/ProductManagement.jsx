@@ -20,6 +20,8 @@ const ProductManagement = () => {
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState([]);
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
@@ -79,7 +81,7 @@ const ProductManagement = () => {
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <AddProduct />
+          <AddProduct product={selectedProduct} setSelectedProduct={setSelectedProduct}/>
         </div>
       </div>
       <div className="mt-8 flex flex-col">
@@ -223,6 +225,7 @@ const ProductManagement = () => {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => setSelectedProduct(person)}
                         >
                           Sửa<span className="sr-only">, {person.name}</span>
                         </a>

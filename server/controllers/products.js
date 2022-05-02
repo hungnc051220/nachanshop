@@ -83,14 +83,24 @@ const addProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   const { id: _id } = req.params;
   const product = req.body;
+
+  let newProduct = {...product};
+
+  if (req?.files && req.files.length > 0) {
+    const images = req.files.map((item) => {
+      return item.path;
+    });
+
+    newProduct.productImage = images;
+  }
+
   try {
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(404).send({ messsage: "Không có sản phẩm này" });
 
     const updatedProduct = await Product.findByIdAndUpdate(
       _id,
-      // { ...product, _id },
-      { price: product.price, description: product.description },
+      newProduct,
       { new: true }
     );
 

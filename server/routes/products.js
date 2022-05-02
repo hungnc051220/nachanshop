@@ -46,7 +46,7 @@ router
 router
   .route("/:id")
   .get(getProductById)
-  .patch(updateProduct)
+  .post(upload.array("productImage", 10), updateProduct)
   .delete(deleteProduct);
 
 router.post("/multi", addMultiProduct);

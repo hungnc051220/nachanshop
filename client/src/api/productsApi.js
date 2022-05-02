@@ -5,8 +5,7 @@ const axiosInstance = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 export const getProducts = async (page, type, typeChild) => {
   try {
     const { data } = await axiosInstance.get(
-      `products?page=${page}${type ? `&type=${type}` : ""}${
-        typeChild ? `&typeChild=${typeChild}` : ""
+      `products?page=${page}${type ? `&type=${type}` : ""}${typeChild ? `&typeChild=${typeChild}` : ""
       }`
     );
     return data;
@@ -35,9 +34,16 @@ export const getProduct = async (id) => {
 
 export const addProduct = async (newProduct) => {
   try {
-    const { data } = await axiosInstance.post(`products`, newProduct, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const { data } = await axiosInstance.post(`products`, newProduct);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProduct = async (id, product) => {
+  try {
+    const { data } = await axiosInstance.post(`products/${id}`, product);
     return data;
   } catch (error) {
     console.log(error);

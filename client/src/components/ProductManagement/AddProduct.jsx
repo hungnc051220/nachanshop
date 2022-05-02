@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import { typeParent, typeChild } from "../../data/categogiesSelect";
+import { typeParent, typeChild as typesChild } from "../../data/categogiesSelect";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { generateLink } from "../../api/productsApi";
@@ -13,6 +13,7 @@ import NumberFormat from 'react-number-format';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { updateProduct } from '../../api/productsApi';
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -41,10 +42,33 @@ const schema = yup.object().shape({
   typeParent: yup.string().required(),
 })
 
-const AddProduct = () => {
+const AddProduct = ({ product, setSelectedProduct }) => {
   const { handleSubmit, control, register, watch, reset, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
+
+  useEffect(() => {
+    if (product) {
+      const { name, status, typeParent, typeChild, countInStock, price, description } = product;
+      setOpen(true);
+
+      setValue('name', name);
+      setValue('status', status);
+      setValue('typeParent', typeParent);
+
+      if (typesChild[typeParent])
+        setChildData(typesChild[typeParent]);
+      else setChildData([]);
+
+      setValue('typeChild', typeChild);
+      setValue('countInStock', countInStock);
+      setValue('price', price);
+      setValue('description', description);
+    }
+    else {
+      reset()
+    }
+  }, [product])
 
   const [open, setOpen] = useState(false);
   const [childData, setChildData] = useState([]);
@@ -64,10 +88,8 @@ const AddProduct = () => {
   const { mutateAsync: addProduct, isLoading: isLoadingAdd } = useAddProduct();
 
   const handleChange = (event) => {
-    setFormData({ ...formData, typeParent: event.target.value });
-
-    if (typeChild[event.target.value])
-      setChildData(typeChild[event.target.value]);
+    if (typesChild[event.target.value])
+      setChildData(typesChild[event.target.value]);
     else setChildData([]);
   };
 
@@ -102,19 +124,22 @@ const AddProduct = () => {
       fd.append("productImage", productImage[i]);
     }
 
-    await addProduct(fd);
-    reset();
+    if (product) {
+      await updateProduct(product._id, fd);
+    }
+    else {
+      await addProduct(fd);
+      reset();
+    }
     setOpen(false);
   };
-
-  watch('productImage');
 
   return (
     <>
       <Button
         variant="contained"
         className="bg-indigo-500 px-6"
-        onClick={() => setOpen(true)}
+        onClick={() => { setSelectedProduct(null); setOpen(true) }}
       >
         Thêm sản phẩm
       </Button>
@@ -138,7 +163,7 @@ const AddProduct = () => {
                   <div className="bg-indigo-700 py-6 px-4 sm:px-6">
                     <div className="flex items-start justify-between">
                       <h2 className="text-lg font-medium text-white">
-                        Thêm sản phẩm
+                        {product ? "Sửa" : "Thêm"} sản phẩm
                       </h2>
                       <div className="ml-3 flex h-7 items-center justify-center gap-4">
                         <button
@@ -153,43 +178,36 @@ const AddProduct = () => {
                     </div>
                     <div className="mt-1">
                       <p className="text-sm text-indigo-300">
-                        Bắt đầu bằng cách điền thông tin bên dưới để thêm sản
-                        phẩm mới mới.
+                        Bắt đầu bằng cách điền thông tin bên dưới để {product ? "sửa" : "thêm"} sản
+                        phẩm.
                       </p>
                     </div>
                   </div>
                   <div className="relative flex flex-1 flex-col">
                     <div className="divide-y divide-gray-200 px-4 sm:px-6">
                       <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 pt-6 pb-5 sm:grid-cols-9">
-                        <div className="sm:col-span-7">
-                          <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Link sản phẩm từ web Japana
-                          </label>
-                          <div className="mt-1">
-                            <TextField
-                              id="link"
-                              name="link"
-                              variant="outlined"
-                              fullWidth
-                              size="small"
-                              onChange={(e) => setLink(e.target.value)}
-                            />
-                          </div>
+                        {!product && <><div className="sm:col-span-7">
+
+                          <TextField
+                            id="link"
+                            name="link"
+                            label="Link sản phẩm từ web Japana"
+                            variant="outlined"
+                            fullWidth
+                            size="small"
+                            onChange={(e) => setLink(e.target.value)}
+                          />
                         </div>
 
-                        <div className="sm:col-span-2">
-                          <Button
-                            variant="contained"
-                            onClick={getInfo}
-                            className="mt-6"
-                            color="warning"
-                          >
-                            Thêm nhanh
-                          </Button>
-                        </div>
+                          <div className="sm:col-span-2">
+                            <Button
+                              variant="contained"
+                              onClick={getInfo}
+                              color="warning"
+                            >
+                              Thêm nhanh
+                            </Button>
+                          </div></>}
 
                         <div className="sm:col-span-7">
                           <Controller
@@ -316,7 +334,7 @@ const AddProduct = () => {
                     Huỷ bỏ
                   </Button>
                   <Button type="submit" variant="contained">
-                    Thêm
+                    {product ? "Sửa" : "Thêm"}
                   </Button>
                 </div>
               </form>
