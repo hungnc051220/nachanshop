@@ -4,7 +4,7 @@ import categories from "../data/categories.json";
 
 const Navbar = () => {
   return (
-    <nav className="z-10 mx-auto hidden max-w-7xl lg:block">
+    <nav className="z-10 mx-auto hidden max-w-7xl px-4 sm:px-6 lg:block lg:px-8">
       <ul className="flex items-center justify-between">
         {categories.map((item) => (
           <li key={item.title} className="group relative">
@@ -32,31 +32,6 @@ const Navbar = () => {
         ))}
       </ul>
     </nav>
-    // <div className="hidden mx-auto lg:flex max-w-7xl items-center justify-between py-4 space-x-4">
-    //   {navbarItems.map((item) => {
-    //     const subMenu = item.sub_items ? (
-    //       <Menu className="rounded-lg mt-2">
-    //         {item.sub_items.map((sub) => (
-    //           <Menu.Item>
-    //             <Link to={sub.route}>{sub.title}</Link>
-    //           </Menu.Item>
-    //         ))}
-    //       </Menu>
-    //     ) : (
-    //       <></>
-    //     );
-    //     return (
-    //       <Dropdown overlay={subMenu} placement="bottomLeft">
-    //         <Link
-    //           to={item.route}
-    //           className="ant-dropdown-link uppercase font-semibold text-gray-900 hover:text-red-500"
-    //         >
-    //           {item.title}
-    //         </Link>
-    //       </Dropdown>
-    //     );
-    //   })}
-    // </div>
   );
 };
 

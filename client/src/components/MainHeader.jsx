@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -21,7 +21,7 @@ const MainHeader = () => {
 
   return (
     <div className="shadow">
-      <div className="mx-auto flex max-w-7xl items-center justify-between space-x-4 py-4">
+      <div className="mx-auto flex px-4 sm:px-6 lg:px-8 max-w-7xl items-center justify-between space-x-4 py-4">
         <Link to="/">
           <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
         </Link>

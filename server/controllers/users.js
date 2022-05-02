@@ -27,10 +27,10 @@ const deleteUser = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const oldUser = await User.findOne({ email });
+    const oldUser = await User.findOne({ username });
 
     if (!oldUser)
       return res.status(404).json({ message: "Không có tài khoản này" });
@@ -38,13 +38,19 @@ const signIn = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
 
     if (!isPasswordCorrect)
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Mật khẩu không chính xác" });
 
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
 
-    res.status(200).json({ user: oldUser, token });
+    res.status(200).json({
+      _id: oldUser._id,
+      fullName: oldUser.fullName,
+      username: oldUser.username,
+      role: oldUser.role,
+      token,
+    });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -83,5 +89,5 @@ module.exports = {
   signIn,
   signUp,
   getUsers,
-  deleteUser
+  deleteUser,
 };

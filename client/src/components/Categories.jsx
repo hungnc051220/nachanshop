@@ -31,7 +31,7 @@ const Categories = () => {
   );
 
   return (
-    <section className="mx-auto my-10 max-w-7xl">
+    <section className="mx-auto my-10 max-w-7xl px-4 sm:px-6 lg:px-8">
       {/* Sản phẩm bán chạy */}
       <div className="pt-10">
         <div className="mb-6 px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">

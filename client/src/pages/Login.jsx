@@ -1,55 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { login, reset } from "../features/auth/authSlice";
 import { useAuth } from "../utils/commonFunction";
-import { signIn } from "../redux/actions/auth";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from "@mui/material/TextField";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   let isAuth = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [form, setForm] = useState({
-    email: "",
+  const [userData, setUserData] = useState({
+    username: "",
     password: "",
   });
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setUserData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signIn(form, navigate));
+    dispatch(login(userData));
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className="relative flex min-h-screen flex-col items-center justify-center">
-        <video
-          src="/videos/backdrop.mp4"
-          muted
-          loop
-          autoPlay
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-900">
         <div className="relative w-1/2 self-center">
-          <div className="mx-auto flex min-h-[500px] w-[350px] flex-col justify-center rounded-lg px-10 shadow-lg backdrop-blur-lg backdrop-filter">
+          <div className="mx-auto flex min-h-[500px] w-[350px] flex-col justify-center rounded-lg px-10 shadow-lg bg-white">
             <div className="mr-3 flex items-center justify-center gap-4">
               <img src="/images/icon.png" alt="logo" className="h-10 w-10" />
-              <h2 className="mt-4 text-center text-4xl font-medium text-white">
+              <h2 className="mt-4 text-center text-4xl font-medium">
                 Đăng nhập
               </h2>
             </div>
@@ -59,7 +64,7 @@ const Login = () => {
                 <InputLabel>Tên đăng nhập</InputLabel>
                 <Input
                   type="text"
-                  name="email"
+                  name="username"
                   onChange={handleChange}
                   required
                   autoFocus
@@ -76,19 +81,19 @@ const Login = () => {
                 />
               </FormControl>
 
-              <Button
+              <LoadingButton
                 variant="outlined"
                 type="submit"
                 color="warning"
                 fullWidth
+                loading={isLoading}
               >
                 Đăng nhập
-              </Button>
+              </LoadingButton>
             </form>
           </div>
         </div>
       </div>
-    </ThemeProvider>
   );
 };
 
