@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { formatMoney } from "../utils/commonFunction";
-import { addToCart } from "../redux/actions/cart";
+import { addToCart } from "../features/cart/cartSlice";
 import Button from "@mui/material/Button";
 import { useProduct, useProducts } from "../hooks/useProductsData";
 import Rating from "@mui/material/Rating";
@@ -34,7 +34,7 @@ const ProductDetail = () => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addToCart(data._id, Number(quantity)));
+    dispatch(addToCart({ ...data, quantity: Number(quantity) }));
   };
 
   return (

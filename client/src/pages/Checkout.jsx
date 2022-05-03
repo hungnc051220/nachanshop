@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RadioGroup } from "@headlessui/react";
-import { CheckCircleIcon, TrashIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+import { getDistricts, getProvinces, getWards } from "../api/provinceApi";
+import { useDispatch, useSelector } from "react-redux";
+import { formatMoney } from "../utils/commonFunction";
+import { addOrder, resetOrder } from "../features/order/orderSlice";
+import { clearCart } from "../features/cart/cartSlice";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { getDistricts, getProvinces, getWards } from "../api/provinceApi";
-import { useSelector } from "react-redux";
-import { formatMoney } from "../utils/commonFunction";
-import Button from "@mui/material/Button";
-import { addOrder } from "../redux/actions/orders";
-import { useDispatch } from "react-redux";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const deliveryMethods = [
   {
@@ -31,19 +31,13 @@ function classNames(...classes) {
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { cartItems, total } = useSelector((state) => state.cart);
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.order
+  );
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0]
   );
-
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
-
-  const getCartSubTotal = () => {
-    return cartItems.reduce(
-      (price, item) => item.price * item.quantity + price,
-      0
-    );
-  };
 
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -62,21 +56,31 @@ const Checkout = () => {
     note: "",
   });
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      dispatch(clearCart());
+      navigate("/success");
+    }
+
+    dispatch(resetOrder());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
   const onSubmit = (e) => {
     e.preventDefault();
 
     const newOrder = {
       ...orderInfo,
       cartItems,
-      total:
-        getCartSubTotal() > 999999
-          ? getCartSubTotal()
-          : getCartSubTotal() + 30000,
-      shippingFee: getCartSubTotal() > 999999 ? 0 : 30000,
+      total: total > 999999 ? total : total + 30000,
+      shippingFee: total > 999999 ? 0 : 30000,
       status: 0,
     };
 
-    dispatch(addOrder(newOrder, navigate));
+    dispatch(addOrder(newOrder));
   };
 
   const handleChangeInput = (e) => {
@@ -328,7 +332,7 @@ const Checkout = () => {
                               to={`/products/${product._id}`}
                               className="font-medium text-gray-700 hover:text-gray-800"
                             >
-                              {product.title}
+                              {product.name}
                             </Link>
                           </h4>
                           <p className="mt-1 text-sm text-gray-500"></p>
@@ -349,36 +353,37 @@ const Checkout = () => {
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Tổng tiền hàng</dt>
                   <dd className="text-sm font-medium text-gray-900">
-                    {formatMoney(getCartSubTotal())}₫
+                    {formatMoney(total)}₫
                   </dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Phí vận chuyển</dt>
                   <dd className="text-sm font-medium text-gray-900">
-                    {getCartSubTotal() > 999999 ? "Miễn phí" : "30,000₫"}
+                    {total > 999999 ? "Miễn phí" : "30,000₫"}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                   <dt className="text-base font-medium">Tổng tiền</dt>
                   <dd className="text-base font-medium text-gray-900">
-                    {getCartSubTotal() > 999999
-                      ? formatMoney(getCartSubTotal())
-                      : formatMoney(getCartSubTotal() + 30000)}
+                    {total > 999999
+                      ? formatMoney(total)
+                      : formatMoney(total + 30000)}
                     ₫
                   </dd>
                 </div>
               </dl>
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="error"
                   type="submit"
                   fullWidth
                   size="large"
+                  loading={isLoading}
                 >
                   Đặt hàng
-                </Button>
+                </LoadingButton>
               </div>
             </div>
           </div>

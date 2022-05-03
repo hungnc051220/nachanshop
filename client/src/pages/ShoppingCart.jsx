@@ -2,7 +2,11 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
-import { removeFromCart, updateToCart } from "../redux/actions/cart";
+import {
+  removeFromCart,
+  increaseCart,
+  decreaseCart,
+} from "../features/cart/cartSlice";
 import { ArrowLeftIcon, ArrowSmRightIcon, XIcon } from "@heroicons/react/solid";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import Button from "@mui/material/Button";
@@ -10,15 +14,7 @@ import Button from "@mui/material/Button";
 const ShoppingCart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
-
-  const getCartSubTotal = () => {
-    return cartItems.reduce(
-      (price, item) => item.price * item.quantity + price,
-      0
-    );
-  };
+  const { cartItems, total } = useSelector((state) => state.cart);
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 md:px-6 lg:max-w-7xl lg:px-0 ">
@@ -44,21 +40,21 @@ const ShoppingCart = () => {
               >
                 {cartItems.map((product) => (
                   <li key={product._id} className="relative flex py-6 sm:py-6">
-                    <div className="absolute top-4 right-4">
-                      <button
-                        type="button"
-                        className="-m-2 inline-flex cursor-pointer border-none bg-transparent p-2 text-gray-300 hover:text-gray-400"
-                        onClick={() => dispatch(removeFromCart(product._id))}
-                      >
-                        <XIcon className="h-5 w-5" aria-hidden="true" />
-                      </button>
+                    <div
+                      className="absolute top-4 right-4 z-10 cursor-pointer"
+                      onClick={() => dispatch(removeFromCart(product._id))}
+                    >
+                      <XIcon
+                        className="h-5 w-5 text-gray-500"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="flex-shrink-0">
                       <img
                         src={`${import.meta.env.VITE_API_URL}/${
                           product.productImage[0]
                         }`}
-                        alt={product.sku}
+                        alt={product.name}
                         className="h-10 w-10 rounded-md object-cover object-center sm:h-20 sm:w-20"
                       />
                     </div>
@@ -72,7 +68,7 @@ const ShoppingCart = () => {
                                 to={`/products/${product._id}`}
                                 className="font-medium text-gray-500 hover:text-gray-600"
                               >
-                                {product.title}
+                                {product.name}
                               </Link>
                             </h3>
                           </div>
@@ -88,7 +84,7 @@ const ShoppingCart = () => {
                               className="h-8 w-8 border border-gray-200"
                               disabled={product.quantity === 1}
                               onClick={() =>
-                                dispatch(updateToCart(product._id, "minus"))
+                                dispatch(decreaseCart(product._id))
                               }
                             >
                               -
@@ -103,7 +99,7 @@ const ShoppingCart = () => {
                               type="button"
                               className="h-8 w-8 border border-gray-200"
                               onClick={() =>
-                                dispatch(updateToCart(product._id, "plus"))
+                                dispatch(increaseCart(product._id))
                               }
                             >
                               +
@@ -150,13 +146,13 @@ const ShoppingCart = () => {
                 <div className="flex items-center justify-between">
                   <dt className="text-gray-600">Tổng tiền hàng</dt>
                   <dd className="font-medium text-gray-900">
-                    {formatMoney(getCartSubTotal())}₫
+                    {formatMoney(total)}₫
                   </dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-gray-600">Phí vận chuyển</dt>
                   <dd className="font-medium text-gray-900">
-                    {getCartSubTotal() > 999999 ? "Miễn phí" : "30,000₫"}
+                    {total > 999999 ? "Miễn phí" : "30,000₫"}
                   </dd>
                 </div>
 
@@ -165,9 +161,9 @@ const ShoppingCart = () => {
                     Tổng cộng:
                   </dt>
                   <dd className="text-base font-medium text-gray-900">
-                    {getCartSubTotal() > 999999
-                      ? formatMoney(getCartSubTotal())
-                      : formatMoney(getCartSubTotal() + 30000)}
+                    {total > 999999
+                      ? formatMoney(total)
+                      : formatMoney(total + 30000)}
                     ₫
                   </dd>
                 </div>

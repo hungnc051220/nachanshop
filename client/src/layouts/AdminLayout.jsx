@@ -16,14 +16,7 @@ import {
   UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import {
-  CashIcon,
-  CheckCircleIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  OfficeBuildingIcon,
-  SearchIcon,
-} from "@heroicons/react/solid";
+import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 
 const navigation = [
   { name: "Trang chủ", href: "/dashboard", icon: HomeIcon, current: true },
@@ -58,28 +51,6 @@ const secondaryNavigation = [
   { name: "Hỗ trợ", href: "/support", icon: QuestionMarkCircleIcon },
   { name: "Bảo mật", href: "/security", icon: ShieldCheckIcon },
 ];
-const cards = [
-  { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
-  // More items...
-];
-const transactions = [
-  {
-    id: 1,
-    name: "Payment to Molly Sanders",
-    href: "#",
-    amount: "$20,000",
-    currency: "USD",
-    status: "success",
-    date: "July 11, 2020",
-    datetime: "2020-07-11",
-  },
-  // More transactions...
-];
-const statusStyles = {
-  success: "bg-green-100 text-green-800",
-  processing: "bg-yellow-100 text-yellow-800",
-  failed: "bg-gray-100 text-gray-800",
-};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -87,8 +58,7 @@ function classNames(...classes) {
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const authData = useSelector((state) => state?.auth?.authData);
-  const { user } = authData;
+  const { user } = useSelector((state) => state?.auth);
 
   return (
     <>
@@ -310,7 +280,7 @@ const AdminLayout = () => {
                       />
                       <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
                         <span className="sr-only">Open user menu for </span>
-                        {user.name}
+                        {user.fullName}
                       </span>
                       <ChevronDownIcon
                         className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"

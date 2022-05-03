@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
-const cartFromLocal = localStorage.getItem("cart")
-  ? JSON.parse(localStorage.getItem("cart"))
+const cartFromLocal = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
 const initialState = {
@@ -15,10 +16,7 @@ export const cartSlice = createSlice({
   reducers: {
     clearCart: (state) => {
       state.cartItems = [];
-    },
-    removeItem: (state, action) => {
-      const itemId = action.payload;
-      state.cartItems = state.cartItems.filter((item) => item._id !== itemId);
+      localStorage.removeItem("cartItems");
     },
     addToCart: (state, action) => {
       const item = action.payload;
@@ -26,11 +24,36 @@ export const cartSlice = createSlice({
       if (existItem) {
         existItem.quantity = existItem.quantity + item.quantity;
       } else {
-        state.cartItems = { ...state.cartItems, item };
+        state.cartItems.push(item);
       }
+
+      toast.success("Đã thêm vào giỏ hàng", {
+        id: "addToCart",
+      });
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
+    removeFromCart: (state, action) => {
+      const itemId = action.payload;
+      state.cartItems = state.cartItems.filter((item) => item._id !== itemId);
+      toast.success("Đã xoá khỏi giỏ hàng", {
+        id: "removeFromCart",
+      });
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
+    increaseCart: (state, action) => {
+      const itemId = action.payload;
+      const itemIndex = state.cartItems.findIndex((x) => x._id === itemId);
+      state.cartItems[itemIndex].quantity += 1;
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
+    decreaseCart: (state, action) => {
+      const itemId = action.payload;
+      const itemIndex = state.cartItems.findIndex((x) => x._id === itemId);
+      state.cartItems[itemIndex].quantity -= 1;
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     calculateTotals: (state) => {
-      state.total = cartItems.reduce(
+      state.total = state.cartItems.reduce(
         (price, item) => item.price * item.quantity + price,
         0
       );
@@ -38,5 +61,12 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { clearCart, addToCart } = cartSlice.actions;
+export const {
+  clearCart,
+  addToCart,
+  removeFromCart,
+  increaseCart,
+  decreaseCart,
+  calculateTotals,
+} = cartSlice.actions;
 export default cartSlice.reducer;

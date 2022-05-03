@@ -88,10 +88,10 @@ const Categories = () => {
                     to={`/products/${product._id}`}
                     className="line-clamp-2"
                   >
-                    <h3 className="text-sm text-gray-600">{product.title}</h3>
+                    <h3 className="text-sm text-gray-600">{product.name}</h3>
                   </Link>
 
-                  <div className="mt-2 flex items-center justify-between">
+                  <div className="mt-2 flex flex-col gap-2">
                     <p className="mb-0 text-xl font-semibold">
                       {formatMoney(product.price)}₫
                     </p>

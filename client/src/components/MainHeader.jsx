@@ -5,23 +5,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { BsCart3, BsSearch } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
 
 const MainHeader = () => {
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
-
-  const getCartSubTotal = () => {
-    return cartItems.reduce(
-      (price, item) => item.price * item.quantity + price,
-      0
-    );
-  };
+  const { cartItems, total } = useSelector((state) => state.cart);
 
   return (
     <div className="shadow">
-      <div className="mx-auto flex px-4 sm:px-6 lg:px-8 max-w-7xl items-center justify-between space-x-4 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between space-x-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/">
           <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
         </Link>
@@ -56,9 +48,7 @@ const MainHeader = () => {
           </IconButton>
           <div>
             <span className="text-sm text-gray-500">Tổng tiền</span>
-            <h5 className="text-base font-semibold">
-              {formatMoney(getCartSubTotal())}₫
-            </h5>
+            <h5 className="text-base font-semibold">{formatMoney(total)}₫</h5>
           </div>
         </Link>
       </div>

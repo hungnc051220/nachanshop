@@ -54,8 +54,7 @@ function classNames(...classes) {
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const authData = useSelector((state) => state?.auth?.authData);
-  const { user } = authData;
+  const { user } = useSelector((state) => state?.auth);
 
   return (
     <div>

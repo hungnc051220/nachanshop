@@ -7,6 +7,9 @@ import App from "./App";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./index.css";
+import { calculateTotals } from "./features/cart/cartSlice";
+
+store.dispatch(calculateTotals());
 
 ReactDOM.render(
   <Suspense
