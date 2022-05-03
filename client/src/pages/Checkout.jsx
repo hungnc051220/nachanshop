@@ -139,7 +139,7 @@ const Checkout = () => {
 
   return (
     <div className="">
-      <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 sm:px-6 md:pb-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Checkout</h2>
 
         <form

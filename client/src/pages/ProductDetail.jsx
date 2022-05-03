@@ -31,6 +31,32 @@ const ProductDetail = () => {
     cssEase: "linear",
     pauseOnHover: true,
     accessibility: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const addToCartHandler = () => {
@@ -38,22 +64,22 @@ const ProductDetail = () => {
   };
 
   return (
-    <section className="mx-auto max-w-7xl pb-20">
+    <section className="mx-auto max-w-7xl pb-10 md:pb-20">
       <div className="py-2">
         <Breadcrumbs />
       </div>
       {data && (
         <>
-          <div className="mb-6 grid grid-cols-2 gap-5 rounded-2xl bg-white p-10 shadow">
+          <div className="grid-cols mb-6 grid gap-5 rounded-2xl bg-white p-4 shadow md:p-10 lg:grid-cols-2">
             <div className="py-5">
               <img
-                className="mx-auto h-[500px] w-[500px] rounded-2xl object-cover object-center shadow transition duration-300 ease-in-out"
+                className="mx-auto h-auto w-full rounded-2xl object-cover object-center shadow transition duration-300 ease-in-out md:h-[500px] md:w-[500px]"
                 src={`${import.meta.env.VITE_API_URL}/${
                   data.productImage[indexImage]
                 }`}
                 alt={data.name}
               />
-              <div className="mt-4 ml-16 flex gap-4">
+              <div className="mt-4 flex gap-4 md:ml-16">
                 {data.productImage.map((image, index) => (
                   <img
                     key={index}
@@ -65,13 +91,15 @@ const ProductDetail = () => {
                 ))}
               </div>
             </div>
-            <div className="pr-16 pb-12">
-              <h3 className="mt-4 mb-2 text-4xl font-semibold">{data.name}</h3>
+            <div className="pb-12 md:pr-16">
+              <h3 className="mt-4 mb-2 text-2xl font-semibold md:text-4xl">
+                {data.name}
+              </h3>
               <Rating name="read-only" value={5} readOnly />
               <h4 className="mb-2 mt-6 text-3xl font-medium text-red-500">
                 {formatMoney(data.price)}₫
               </h4>
-              <div className="mt-20 flex items-center">
+              <div className="mt-10 flex items-center md:mt-20">
                 <h5 className="mr-3 text-xl">Số lượng</h5>
                 <button
                   type="button"
@@ -95,11 +123,12 @@ const ProductDetail = () => {
                   +
                 </button>
               </div>
-              <div className="mt-10 flex items-center space-x-4">
+              <div className="mt-10 flex flex-col items-center gap-y-4 md:flex-row md:gap-y-0 md:space-x-4">
                 <Button
                   variant="outlined"
                   color="error"
                   size="large"
+                  className="w-full md:w-auto"
                   startIcon={<AiOutlineShopping />}
                   onClick={addToCartHandler}
                 >
@@ -109,6 +138,7 @@ const ProductDetail = () => {
                   variant="contained"
                   color="error"
                   size="large"
+                  className="w-full md:w-auto"
                   onClick={() => {
                     addToCartHandler();
                     navigate("/shopping-cart");
@@ -119,7 +149,7 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-          <div className="rounded-lg bg-white p-8 shadow">
+          <div className="rounded-lg bg-white p-4 shadow md:p-8">
             <div>
               <h1 className="mb-10 text-center text-2xl font-semibold">
                 Mô tả sản phẩm
@@ -167,7 +197,7 @@ const ProductDetail = () => {
                         window.scrollTo(0, 0);
                       }}
                     >
-                      <h3 className="text-sm text-gray-600">{product.title}</h3>
+                      <h3 className="text-sm text-gray-600">{product.name}</h3>
                     </Link>
 
                     <div className="flex flex-col gap-2">

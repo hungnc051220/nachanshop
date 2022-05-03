@@ -37,7 +37,7 @@ const Categories = () => {
         <div className="mb-6 px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <h2
             id="category-heading"
-            className="text-3xl font-semibold tracking-tight text-gray-900"
+            className="text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl"
           >
             Sản phẩm bán chạy
           </h2>
@@ -49,7 +49,7 @@ const Categories = () => {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid-cols grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {dataCollagen?.data?.map((product) => {
             return (
               <div

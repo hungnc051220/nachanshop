@@ -23,8 +23,8 @@ const incentives = [
 const Incentives = () => {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-7xl py-10 sm:px-2 lg:px-4 ">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-10 gap-x-8 px-4 lg:max-w-none lg:grid-cols-3">
+      <div className="mx-auto max-w-7xl py-4 sm:px-2 md:py-10 lg:px-4 ">
+        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-6 gap-x-8 px-4 md:gap-y-10 lg:max-w-none lg:grid-cols-3">
           {incentives.map((incentive) => (
             <div
               key={incentive.name}

@@ -17,7 +17,7 @@ const ShoppingCart = () => {
   const { cartItems, total } = useSelector((state) => state.cart);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-10 pb-24 md:px-6 lg:max-w-7xl lg:px-0 ">
+    <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0 ">
       <div className="rounded-lg bg-white p-10 shadow">
         <h1 className="racking-tight text-2xl font-extrabold text-gray-900">
           Giỏ hàng của bạn
@@ -133,7 +133,7 @@ const ShoppingCart = () => {
           {cartItems.length > 0 && (
             <section
               aria-labelledby="summary-heading"
-              className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+              className="mt-10 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 md:mt-16 lg:col-span-5 lg:mt-0 lg:p-8"
             >
               <h2
                 id="summary-heading"

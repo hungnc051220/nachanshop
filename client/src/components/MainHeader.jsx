@@ -13,9 +13,12 @@ const MainHeader = () => {
 
   return (
     <div className="shadow">
-      <div className="mx-auto flex max-w-7xl items-center justify-between space-x-4 px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/">
+      <div className="mx-auto flex max-w-7xl items-center justify-between space-x-2 px-4 py-4 sm:px-6 md:space-x-4 lg:px-8">
+        <Link to="/" className="hidden md:block">
           <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
+        </Link>
+        <Link to="/" className="block md:hidden">
+          <img src="/images/favicon.ico" alt="logo" className="h-auto" />
         </Link>
         <OutlinedInput
           className="flex-1 rounded-lg"
@@ -31,7 +34,7 @@ const MainHeader = () => {
 
         <Link
           to="/shopping-cart"
-          className="flex items-center justify-center gap-3"
+          className="flex items-center justify-center gap-1 md:gap-3"
         >
           <IconButton
             size="large"

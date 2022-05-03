@@ -8,7 +8,7 @@ const pages = [
 
 const Breadcrumbs = () => {
   return (
-    <nav className="flex py-2" aria-label="Breadcrumb">
+    <nav className="flex py-2 px-4 sm:px-6" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <div>

@@ -91,7 +91,7 @@ const Footer = () => {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-4 pt-12 pb-4 sm:px-6 lg:px-8 lg:pt-16">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6 md:pt-12 lg:px-8 lg:pt-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <img className="h-10" src="/images/icon.png" alt="Nachanshop" />
@@ -113,7 +113,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-4 xl:col-span-2 xl:mt-0 xl:gap-8">
+          <div className="grid-cols mt-12 grid gap-12 sm:grid-cols-2 sm:gap-4 xl:col-span-2 xl:mt-0 xl:gap-8">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
