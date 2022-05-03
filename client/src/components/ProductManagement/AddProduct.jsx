@@ -4,18 +4,24 @@ import { XIcon } from "@heroicons/react/outline";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import { typeParent, typeChild as typesChild } from "../../data/categogiesSelect";
+import {
+  typeParent,
+  typeChild as typesChild,
+} from "../../data/categoriesSelect";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { generateLink } from "../../api/productsApi";
 import { useAddProduct } from "../../hooks/useProductsData";
-import NumberFormat from 'react-number-format';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import NumberFormat from "react-number-format";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { updateProduct } from '../../api/productsApi';
+import { updateProduct } from "../../api/productsApi";
 
-const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
+  props,
+  ref
+) {
   const { onChange, ...other } = props;
 
   return (
@@ -40,35 +46,49 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, r
 const schema = yup.object().shape({
   name: yup.string().required(),
   typeParent: yup.string().required(),
-})
+});
 
 const AddProduct = ({ product, setSelectedProduct }) => {
-  const { handleSubmit, control, register, watch, reset, setValue, formState: { errors } } = useForm({
-    resolver: yupResolver(schema)
+  const {
+    handleSubmit,
+    control,
+    register,
+    watch,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     if (product) {
-      const { name, status, typeParent, typeChild, countInStock, price, description } = product;
+      const {
+        name,
+        status,
+        typeParent,
+        typeChild,
+        countInStock,
+        price,
+        description,
+      } = product;
       setOpen(true);
 
-      setValue('name', name);
-      setValue('status', status);
-      setValue('typeParent', typeParent);
+      setValue("name", name);
+      setValue("status", status);
+      setValue("typeParent", typeParent);
 
-      if (typesChild[typeParent])
-        setChildData(typesChild[typeParent]);
+      if (typesChild[typeParent]) setChildData(typesChild[typeParent]);
       else setChildData([]);
 
-      setValue('typeChild', typeChild);
-      setValue('countInStock', countInStock);
-      setValue('price', price);
-      setValue('description', description);
+      setValue("typeChild", typeChild);
+      setValue("countInStock", countInStock);
+      setValue("price", price);
+      setValue("description", description);
+    } else {
+      reset();
     }
-    else {
-      reset()
-    }
-  }, [product])
+  }, [product]);
 
   const [open, setOpen] = useState(false);
   const [childData, setChildData] = useState([]);
@@ -77,12 +97,12 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   const [formData, setFormData] = useState({
     nameProduct: "",
     status: 1,
-    typeParent: '',
-    typeChild: '',
+    typeParent: "",
+    typeChild: "",
     countInStock: 1,
     price: 1,
     productImage: [],
-    description: '',
+    description: "",
   });
 
   const { mutateAsync: addProduct, isLoading: isLoadingAdd } = useAddProduct();
@@ -98,18 +118,24 @@ const AddProduct = ({ product, setSelectedProduct }) => {
       const data = await generateLink(link);
       const { title, description } = data;
 
-      setValue('name', title, { shouldValidate: true })
-      setValue('description', description);
-
+      setValue("name", title, { shouldValidate: true });
+      setValue("description", description);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
   const onSubmit = async (data) => {
-    const { name, status, typeParent, typeChild, countInStock, price, description, productImage } = data;
+    const {
+      name,
+      status,
+      typeParent,
+      typeChild,
+      countInStock,
+      price,
+      description,
+      productImage,
+    } = data;
 
     const fd = new FormData();
     fd.append("name", name);
@@ -126,8 +152,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
 
     if (product) {
       await updateProduct(product._id, fd);
-    }
-    else {
+    } else {
       await addProduct(fd);
       reset();
     }
@@ -139,7 +164,10 @@ const AddProduct = ({ product, setSelectedProduct }) => {
       <Button
         variant="contained"
         className="bg-indigo-500 px-6"
-        onClick={() => { setSelectedProduct(null); setOpen(true) }}
+        onClick={() => {
+          setSelectedProduct(null);
+          setOpen(true);
+        }}
       >
         Thêm sản phẩm
       </Button>
@@ -178,44 +206,58 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                     </div>
                     <div className="mt-1">
                       <p className="text-sm text-indigo-300">
-                        Bắt đầu bằng cách điền thông tin bên dưới để {product ? "sửa" : "thêm"} sản
-                        phẩm.
+                        Bắt đầu bằng cách điền thông tin bên dưới để{" "}
+                        {product ? "sửa" : "thêm"} sản phẩm.
                       </p>
                     </div>
                   </div>
                   <div className="relative flex flex-1 flex-col">
                     <div className="divide-y divide-gray-200 px-4 sm:px-6">
                       <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 pt-6 pb-5 sm:grid-cols-9">
-                        {!product && <><div className="sm:col-span-7">
+                        {!product && (
+                          <>
+                            <div className="sm:col-span-7">
+                              <TextField
+                                id="link"
+                                name="link"
+                                label="Link sản phẩm từ web Japana"
+                                variant="outlined"
+                                fullWidth
+                                size="small"
+                                onChange={(e) => setLink(e.target.value)}
+                              />
+                            </div>
 
-                          <TextField
-                            id="link"
-                            name="link"
-                            label="Link sản phẩm từ web Japana"
-                            variant="outlined"
-                            fullWidth
-                            size="small"
-                            onChange={(e) => setLink(e.target.value)}
-                          />
-                        </div>
-
-                          <div className="sm:col-span-2">
-                            <Button
-                              variant="contained"
-                              onClick={getInfo}
-                              color="warning"
-                            >
-                              Thêm nhanh
-                            </Button>
-                          </div></>}
+                            <div className="sm:col-span-2">
+                              <Button
+                                variant="contained"
+                                onClick={getInfo}
+                                color="warning"
+                              >
+                                Thêm nhanh
+                              </Button>
+                            </div>
+                          </>
+                        )}
 
                         <div className="sm:col-span-7">
                           <Controller
                             name="name"
                             control={control}
                             defaultValue=""
-                            render={({ field }) => <TextField {...field} variant="outlined" label="Tên sản phẩm" size="small" fullWidth error={!!errors.name}
-                              helperText={errors.name ? errors.name?.message : ''} />}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                variant="outlined"
+                                label="Tên sản phẩm"
+                                size="small"
+                                fullWidth
+                                error={!!errors.name}
+                                helperText={
+                                  errors.name ? errors.name?.message : ""
+                                }
+                              />
+                            )}
                           />
                         </div>
 
@@ -224,11 +266,23 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="status"
                             control={control}
                             defaultValue={1}
-                            render={({ field }) => <TextField {...field} select variant="outlined" label="Trạng thái" size="small" fullWidth error={!!errors.status}
-                              helperText={errors.status ? errors.status?.message : ''}>
-                              <MenuItem value={1}>Còn hàng</MenuItem>
-                              <MenuItem value={0}>Hết hàng</MenuItem>
-                            </TextField>}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                select
+                                variant="outlined"
+                                label="Trạng thái"
+                                size="small"
+                                fullWidth
+                                error={!!errors.status}
+                                helperText={
+                                  errors.status ? errors.status?.message : ""
+                                }
+                              >
+                                <MenuItem value={1}>Còn hàng</MenuItem>
+                                <MenuItem value={0}>Hết hàng</MenuItem>
+                              </TextField>
+                            )}
                           />
                         </div>
 
@@ -237,14 +291,32 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeParent"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange, value } }) => <TextField select onChange={(e) => { onChange(e); handleChange(e) }} value={value} variant="outlined" label="Loại hàng cha" size="small" fullWidth error={!!errors.typeParent}
-                              helperText={errors.typeParent ? errors.typeParent?.message : ''}>
-                              {typeParent?.map((item) => (
-                                <MenuItem key={item.value} value={item.value}>
-                                  {item.name}
-                                </MenuItem>
-                              ))}
-                            </TextField>}
+                            render={({ field: { onChange, value } }) => (
+                              <TextField
+                                select
+                                onChange={(e) => {
+                                  onChange(e);
+                                  handleChange(e);
+                                }}
+                                value={value}
+                                variant="outlined"
+                                label="Loại hàng cha"
+                                size="small"
+                                fullWidth
+                                error={!!errors.typeParent}
+                                helperText={
+                                  errors.typeParent
+                                    ? errors.typeParent?.message
+                                    : ""
+                                }
+                              >
+                                {typeParent?.map((item) => (
+                                  <MenuItem key={item.value} value={item.value}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            )}
                           />
                         </div>
 
@@ -253,14 +325,22 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeChild"
                             control={control}
                             defaultValue=""
-                            render={({ field }) => <TextField {...field} select variant="outlined" label="Loại hàng con" size="small" fullWidth
-                            >
-                              {childData?.map((item) => (
-                                <MenuItem key={item.value} value={item.value}>
-                                  {item.name}
-                                </MenuItem>
-                              ))}
-                            </TextField>}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                select
+                                variant="outlined"
+                                label="Loại hàng con"
+                                size="small"
+                                fullWidth
+                              >
+                                {childData?.map((item) => (
+                                  <MenuItem key={item.value} value={item.value}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            )}
                           />
                         </div>
 
@@ -269,8 +349,22 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="countInStock"
                             control={control}
                             defaultValue={1}
-                            render={({ field }) => <TextField type="number" {...field} variant="outlined" label="Số lượng" size="small" fullWidth error={!!errors.countInStock}
-                              helperText={errors.countInStock ? errors.countInStock?.message : ''} />}
+                            render={({ field }) => (
+                              <TextField
+                                type="number"
+                                {...field}
+                                variant="outlined"
+                                label="Số lượng"
+                                size="small"
+                                fullWidth
+                                error={!!errors.countInStock}
+                                helperText={
+                                  errors.countInStock
+                                    ? errors.countInStock?.message
+                                    : ""
+                                }
+                              />
+                            )}
                           />
                         </div>
 
@@ -279,10 +373,24 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="price"
                             control={control}
                             defaultValue={1}
-                            render={({ field }) => <TextField {...field} variant="outlined" label="Giá tiền" size="small" InputProps={{
-                              inputComponent: NumberFormatCustom,
-                            }} fullWidth error={!!errors.countInStock}
-                              helperText={errors.countInStock ? errors.countInStock?.message : ''} />}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                variant="outlined"
+                                label="Giá tiền"
+                                size="small"
+                                InputProps={{
+                                  inputComponent: NumberFormatCustom,
+                                }}
+                                fullWidth
+                                error={!!errors.countInStock}
+                                helperText={
+                                  errors.countInStock
+                                    ? errors.countInStock?.message
+                                    : ""
+                                }
+                              />
+                            )}
                           />
                         </div>
 
@@ -311,17 +419,18 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                               name="description"
                               control={control}
                               defaultValue=""
-                              render={({ field }) => <CKEditor {...field}
-                                data={field.value}
-                                editor={ClassicEditor}
-                                onChange={(event, editor) => {
-                                  const data = editor.getData();
-                                  setValue('description', data);
-                                }}
-                              />}
+                              render={({ field }) => (
+                                <CKEditor
+                                  {...field}
+                                  data={field.value}
+                                  editor={ClassicEditor}
+                                  onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setValue("description", data);
+                                  }}
+                                />
+                              )}
                             />
-
-
                           </div>
                         </div>
                       </div>

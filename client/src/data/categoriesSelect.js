@@ -192,6 +192,32 @@ export const typeChild = {
       name: "Kem dưỡng da mặt",
     },
   ],
+  csct: [
+    {
+      value: "cham-soc-toc",
+      name: "Chăm sóc tóc",
+    },
+    {
+      value: "sua-tam",
+      name: "Sữa tắm",
+    },
+    {
+      value: "duong-the",
+      name: "Dưỡng thể",
+    },
+    {
+      value: "ve-sinh-ca-nhan",
+      name: "Vệ sinh cá nhân",
+    },
+    {
+      value: "tay-te-bao-chet",
+      name: "Tẩy tế bào chết",
+    },
+    {
+      value: "bo-cham-soc-co-the",
+      name: "Bộ chăm sóc cơ thể",
+    },
+  ],
   tpnb: [
     {
       value: "banh-keo",

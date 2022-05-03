@@ -1,11 +1,10 @@
 import React from "react";
-import { useProducts } from "../hooks/useProductsData";
 import { Link } from "react-router-dom";
-import { BsCart } from "react-icons/bs";
-import { formatMoney } from "../utils/commonFunction";
-import Button from "@mui/material/Button";
-import { addToCart } from "../redux/actions/cart";
 import { useDispatch } from "react-redux";
+import { useProducts } from "../hooks/useProductsData";
+import { formatMoney } from "../utils/commonFunction";
+import { addToCart } from "../features/cart/cartSlice";
+import Button from "@mui/material/Button";
 
 const Categories = () => {
   const dispatch = useDispatch();
@@ -99,7 +98,7 @@ const Categories = () => {
                       variant="contained"
                       color="error"
                       size="small"
-                      onClick={() => dispatch(addToCart(product._id, 1))}
+                      onClick={() => dispatch(addToCart(product))}
                     >
                       Đặt mua
                     </Button>

@@ -17,6 +17,7 @@ import {
   PlusSmIcon,
   ViewGridIcon,
 } from "@heroicons/react/solid";
+import { typeParent } from "../data/categoriesSelect";
 
 const sortOptions = [
   { name: "Phổ biến nhất", href: "#", current: true },
@@ -74,6 +75,10 @@ const Products = () => {
   const onChangePagination = (page, pageSize) => {
     navigate(`/products?type=${type}&page=${page}`);
     window.scrollTo(0, 0);
+  };
+
+  const getNameType = () => {
+    return typeParent.find((x) => x.value === type).name;
   };
 
   return (
@@ -211,7 +216,7 @@ const Products = () => {
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="relative z-10 flex items-baseline justify-between border-b border-gray-200 pt-6 pb-6">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
-                  Collagen
+                  {getNameType()}
                 </h1>
 
                 <div className="flex items-center">

@@ -6,7 +6,7 @@ const ProtectedRoutes = () => {
   const location = useLocation();
   useEffect(() => {}, [location]);
 
-  let isAuth = true;
+  let isAuth = useAuth();
 
   return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };

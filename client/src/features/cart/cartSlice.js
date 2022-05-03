@@ -24,7 +24,7 @@ export const cartSlice = createSlice({
       if (existItem) {
         existItem.quantity = existItem.quantity + item.quantity;
       } else {
-        state.cartItems.push(item);
+        state.cartItems.push({ ...item, quantity: 1 });
       }
 
       toast.success("Đã thêm vào giỏ hàng", {

@@ -194,27 +194,27 @@
     "sub_items": [
       {
         "title": "Chăm sóc tóc",
-        "route": "/products?type=csdm&typeChild=cham-soc-toc"
+        "route": "/products?type=csct&typeChild=cham-soc-toc"
       },
       {
         "title": "Sữa tắm",
-        "route": "/products?type=csdm&typeChild=sua-tam"
+        "route": "/products?type=csct&typeChild=sua-tam"
       },
       {
         "title": "Dưỡng thể",
-        "route": "/products?type=csdm&typeChild=duong-the"
+        "route": "/products?type=csct&typeChild=duong-the"
       },
       {
         "title": "Vệ sinh cá nhân",
-        "route": "/products?type=csdm&typeChild=ve-sinh-ca-nhan"
+        "route": "/products?type=csct&typeChild=ve-sinh-ca-nhan"
       },
       {
         "title": "Tẩy tế bào chết",
-        "route": "/products?type=csdm&typeChild=tay-te-bao-chet"
+        "route": "/products?type=csct&typeChild=tay-te-bao-chet"
       },
       {
         "title": "Bộ chăm sóc cơ thể",
-        "route": "/products?type=csdm&typeChild=bo-cham-soc-co-the"
+        "route": "/products?type=csct&typeChild=bo-cham-soc-co-the"
       }
     ]
   },

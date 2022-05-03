@@ -1,21 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import queryString from "query-string";
 import { HomeIcon } from "@heroicons/react/solid";
+import {
+  typeParent,
+  typeChild as typeChildData,
+} from "../data/categoriesSelect";
 
-const pages = [
-  { name: "Collagen", href: "#", current: false },
-  { name: "Nước uống Collagen", href: "#", current: true },
-];
+const Breadcrumbs = ({ product }) => {
+  const location = useLocation();
+  let { type, typeChild } = queryString.parse(location.search);
 
-const Breadcrumbs = () => {
+  if (product) {
+    type = product.typeParent;
+    typeChild = product.typeChild;
+  }
+
+  const [pages, setPages] = useState([]);
+
+  const getNameType = (value) => {
+    return typeParent.find((x) => x.value === value).name;
+  };
+
+  const getNameChildType = (value) => {
+    return typeChildData[type].find((x) => x.value === value).name;
+  };
+
+  useEffect(() => {
+    if (type) setPages([{ name: getNameType(type), href: `?type=${type}` }]);
+
+    if (typeChild)
+      setPages([
+        { name: getNameType(type), href: `?type=${type}` },
+        { name: getNameChildType(typeChild), href: `?typeChild=${typeChild}` },
+      ]);
+  }, [type, typeChild]);
+
   return (
     <nav className="flex py-2 px-4 sm:px-6" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <div>
-            <a href="#" className="text-gray-400 hover:text-gray-500">
+            <Link to="/" className="text-gray-400 hover:text-gray-500">
               <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <span className="sr-only">Home</span>
-            </a>
+            </Link>
           </div>
         </li>
         {pages.map((page) => (

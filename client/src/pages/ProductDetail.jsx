@@ -66,7 +66,7 @@ const ProductDetail = () => {
   return (
     <section className="mx-auto max-w-7xl pb-10 md:pb-20">
       <div className="py-2">
-        <Breadcrumbs />
+        <Breadcrumbs product={data} />
       </div>
       {data && (
         <>
