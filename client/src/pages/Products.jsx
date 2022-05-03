@@ -408,12 +408,12 @@ const Products = () => {
                                   window.scrollTo(0, 0);
                                 }}
                               >
-                                <h3 className="text-sm text-gray-600">
+                                <h3 className="text-sm text-gray-600 line-clamp-2">
                                   {product.name}
                                 </h3>
                               </Link>
 
-                              <div className="flex items-center justify-between">
+                              <div className="flex flex-col gap-2">
                                 <p className="mb-0 text-xl font-semibold">
                                   {formatMoney(product.price)}₫
                                 </p>

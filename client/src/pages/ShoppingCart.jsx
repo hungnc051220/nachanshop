@@ -18,11 +18,11 @@ const ShoppingCart = () => {
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0 ">
-      <div className="rounded-lg bg-white p-10 shadow">
+      <div className="rounded-lg bg-white p-4 shadow md:p-10">
         <h1 className="racking-tight text-2xl font-extrabold text-gray-900">
           Giỏ hàng của bạn
         </h1>
-        <form className="mt-6 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+        <form className="mt-4 sm:mt-6 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section
             aria-labelledby="cart-heading"
             className={
@@ -39,7 +39,7 @@ const ShoppingCart = () => {
                 }}
               >
                 {cartItems.map((product) => (
-                  <li key={product._id} className="relative flex py-6 sm:py-6">
+                  <li key={product._id} className="relative flex py-4 sm:py-6">
                     <div
                       className="absolute top-4 right-4 z-10 cursor-pointer"
                       onClick={() => dispatch(removeFromCart(product._id))}
