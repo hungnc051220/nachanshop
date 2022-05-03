@@ -170,7 +170,7 @@ const ProductDetail = () => {
                       <h3 className="text-sm text-gray-600">{product.title}</h3>
                     </Link>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-2">
                       <p className="mb-0 text-xl font-semibold">
                         {formatMoney(product.price)}₫
                       </p>

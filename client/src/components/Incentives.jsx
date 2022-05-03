@@ -3,19 +3,19 @@ import React from "react";
 const incentives = [
   {
     name: "Miễn phí giao hàng",
-    description: "Miễn phí ship cho tất cả đơn hàng giá trị trên 1,000,000đ",
+    description:
+      "Miễn phí ship cho tất cả đơn hàng giá trị trên 1,000,000đ. Giao hàng hỏa tốc trong vòng 4h ở nội thành Hà Nội.",
     imageSrc: "/images/icon-delivery-light.svg",
   },
   {
     name: "Đặt hàng nhanh chóng",
-    description:
-      "Look how fast that cart is going. What does this mean for the actual experience? I don't know.",
+    description: "Chỉ với vài thao tác là bạn đã đặt được hàng tại NachanShop",
     imageSrc: "/images/icon-fast-checkout-light.svg",
   },
   {
     name: "Trả hàng",
     description:
-      "Our AI chat widget is powered by a naive series of if/else statements. Guaranteed to irritate.",
+      "Nachanshop sẽ nhận lại hàng đã bán và thay thế hàng hóa khác có giá trị tương đương hoặc có giá trị chênh lệch cho khách hàng đó.",
     imageSrc: "/images/icon-returns-light.svg",
   },
 ];

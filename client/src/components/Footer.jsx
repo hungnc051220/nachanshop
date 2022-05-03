@@ -1,24 +1,19 @@
 import React from "react";
 
 const navigation = {
-  solutions: [
-    { name: "Marketing", href: "#" },
-    { name: "Analytics", href: "#" },
-    { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
-  ],
   support: [
-    { name: "Pricing", href: "#" },
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
+    { name: "Hướng dẫn đặt hàng", href: "#" },
+    { name: "Hướng dẫn mua hàng online", href: "#" },
+    { name: "Hướng dẫn thanh toán", href: "#" },
+    { name: "Chính sách tích điểm", href: "#" },
+    { name: "Chính sách giao hàng", href: "#" },
+    { name: "Chính sách đổi trả hàng", href: "#" },
   ],
-  company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
+  about: [
+    { name: "Khuyến mãi", href: "#" },
+    { name: "Giới thiệu", href: "#" },
+    { name: "Bản tin", href: "#" },
+    { name: "Câu hỏi thường gặp", href: "#" },
   ],
   legal: [
     { name: "Claim", href: "#" },
@@ -100,72 +95,34 @@ const Footer = () => {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <img className="h-10" src="/images/icon.png" alt="Nachanshop" />
-            <p className="text-base text-white">
-              Making the world a better place through constructing elegant
-              hierarchies.
-            </p>
-            <div className="flex space-x-6">
-              {navigation.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-white hover:text-white"
-                >
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
-                </a>
-              ))}
+            <div className="space-y-4">
+              <p className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                Kết nối với chúng tôi
+              </p>
+              <div className="flex space-x-6">
+                {navigation.social.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-white hover:text-white"
+                  >
+                    <span className="sr-only">{item.name}</span>
+                    <item.icon className="h-6 w-6" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+          <div className="mt-12 grid grid-cols-2 gap-4 xl:col-span-2 xl:mt-0 xl:gap-8">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                  Solutions
-                </h3>
-                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
-                  {navigation.solutions.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-white hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                  Support
+                  Hỗ trợ khách hàng
                 </h3>
                 <ul role="list" className="mt-4 list-none space-y-4 pl-0">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-white hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                  Company
-                </h3>
-                <ul role="list" className="mt-4 list-none space-y-4 pl-0">
-                  {navigation.company.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-white hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-white">
                         {item.name}
                       </a>
                     </li>
@@ -174,15 +131,12 @@ const Footer = () => {
               </div>
               <div className="mt-12 md:mt-0">
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                  Legal
+                  Về NachanShop
                 </h3>
                 <ul role="list" className="mt-4 list-none space-y-4 pl-0">
-                  {navigation.legal.map((item) => (
+                  {navigation.about.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-white hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-white">
                         {item.name}
                       </a>
                     </li>
@@ -190,11 +144,33 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
+            <div className="flex flex-col gap-8">
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                  Hình thức thanh toán
+                </h3>
+                <img
+                  src="/images/hinhthucthanhtoan.png"
+                  alt="Hình thức thanh toán"
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                  Đối tác vận chuyển
+                </h3>
+                <img
+                  src="/images/doitacvanchuyen.png"
+                  alt="Đối tác vận chuyển"
+                  className="w-full"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="mt-12 border-t border-gray-200 pt-8">
+        <div className="mt-12 border-t border-gray-200 pt-4">
           <p className="text-base text-white xl:text-center">
-            &copy; 2022 Nachanshop, Inc. All rights reserved.
+            &copy; 2022 - Bản quyền của NachanShop
           </p>
         </div>
       </div>
