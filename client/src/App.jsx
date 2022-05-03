@@ -7,6 +7,7 @@ import { calculateTotals } from "./features/cart/cartSlice";
 import Routers from "./routers/Routers";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const queryClient = new QueryClient();
 

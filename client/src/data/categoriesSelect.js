@@ -88,6 +88,10 @@ export const typeChild = {
       name: "Hỗ trợ xương khớp",
     },
     {
+      value: "ho-tro-dieu-tri-tai-bien",
+      name: "Hỗ trợ điều trị tai biến",
+    },
+    {
       value: "ho-tro-nao-va-tri-nho",
       name: "Hỗ trợ não và trí nhớ",
     },
@@ -216,6 +220,40 @@ export const typeChild = {
     {
       value: "bo-cham-soc-co-the",
       name: "Bộ chăm sóc cơ thể",
+    },
+  ],
+  mvb: [
+    {
+      value: "sua-nhat",
+      name: "Sữa Nhật",
+    },
+    {
+      value: "binh-sua-phu-kien",
+      name: "Bình sữa - Phụ kiện",
+    },
+    {
+      value: "ngu-coc-nhat-ban",
+      name: "Ngũ cốc Nhật Bản",
+    },
+    {
+      value: "thuc-pham-an-dam",
+      name: "Thực phẩm ăn dạm",
+    },
+    {
+      value: "suc-khoe-cho-be",
+      name: "Sức khoẻ cho bé",
+    },
+    {
+      value: "thuc-pham-tang-chieu-cao",
+      name: "Thực phẩm tăng chiều cao",
+    },
+    {
+      value: "cham-soc-ve-sinh",
+      name: "Chăm sóc vệ sinh",
+    },
+    {
+      value: "danh-cho-me",
+      name: "Dành cho mẹ",
     },
   ],
   tpnb: [

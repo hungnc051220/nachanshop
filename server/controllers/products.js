@@ -14,7 +14,7 @@ const getProducts = async (req, res) => {
     }
 
     if (typeChild) {
-      dataSearch.typeChildValue = { $regex: new RegExp(`^${typeChild}$`, "i") };
+      dataSearch.typeChild = { $regex: new RegExp(`^${typeChild}$`, "i") };
     }
 
     const products = await Product.find(dataSearch)
@@ -84,7 +84,7 @@ const updateProduct = async (req, res) => {
   const { id: _id } = req.params;
   const product = req.body;
 
-  let newProduct = {...product};
+  let newProduct = { ...product };
 
   if (req?.files && req.files.length > 0) {
     const images = req.files.map((item) => {
@@ -98,11 +98,9 @@ const updateProduct = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(404).send({ messsage: "Không có sản phẩm này" });
 
-    const updatedProduct = await Product.findByIdAndUpdate(
-      _id,
-      newProduct,
-      { new: true }
-    );
+    const updatedProduct = await Product.findByIdAndUpdate(_id, newProduct, {
+      new: true,
+    });
 
     res.status(200).json(updatedProduct);
   } catch (error) {

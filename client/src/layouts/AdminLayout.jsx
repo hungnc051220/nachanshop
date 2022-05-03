@@ -1,52 +1,50 @@
 import { Fragment, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   BellIcon,
   ClockIcon,
   CogIcon,
-  CreditCardIcon,
+  DesktopComputerIcon,
   DocumentReportIcon,
-  HomeIcon,
+  GiftIcon,
   MenuAlt1Icon,
   QuestionMarkCircleIcon,
-  ScaleIcon,
   ShieldCheckIcon,
-  UserGroupIcon,
+  ShoppingCartIcon,
+  UserIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 
 const navigation = [
-  { name: "Trang chủ", href: "/dashboard", icon: HomeIcon, current: true },
+  {
+    name: "Bảng điều khiển",
+    href: "/dashboard",
+    icon: DesktopComputerIcon,
+  },
   {
     name: "Đơn hàng",
     href: "/order-management",
-    icon: ScaleIcon,
-    current: false,
+    icon: ShoppingCartIcon,
   },
   {
     name: "Sản phẩm",
     href: "/product-management",
-    icon: CreditCardIcon,
-    current: false,
+    icon: GiftIcon,
   },
   {
     name: "Người dùng",
     href: "/user-management",
-    icon: UserGroupIcon,
-    current: false,
+    icon: UserIcon,
   },
-  { name: "Lịch sử", href: "/history", icon: ClockIcon, current: false },
+  { name: "Lịch sử", href: "/history", icon: ClockIcon },
   {
     name: "Báo cáo",
     href: "/report",
     icon: DocumentReportIcon,
-    current: false,
   },
-];
-const secondaryNavigation = [
   { name: "Cài đặt", href: "/setting", icon: CogIcon },
   { name: "Hỗ trợ", href: "/support", icon: QuestionMarkCircleIcon },
   { name: "Bảo mật", href: "/security", icon: ShieldCheckIcon },
@@ -59,6 +57,8 @@ function classNames(...classes) {
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useSelector((state) => state?.auth);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <>
@@ -113,7 +113,10 @@ const AdminLayout = () => {
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="flex flex-shrink-0 items-center space-x-4 px-4">
+                <div
+                  className="flex flex-shrink-0 cursor-pointer items-center space-x-4 px-4"
+                  onClick={() => navigate("/")}
+                >
                   <img
                     className="h-8 w-auto"
                     src="/images/icon.png"
@@ -146,23 +149,6 @@ const AdminLayout = () => {
                       </Link>
                     ))}
                   </div>
-                  <div className="mt-6 pt-6">
-                    <div className="space-y-1 px-2">
-                      {secondaryNavigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="group flex items-center rounded-md px-2 py-2 text-base font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white"
-                        >
-                          <item.icon
-                            className="mr-4 h-6 w-6 text-indigo-200"
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
                 </nav>
               </div>
             </Transition.Child>
@@ -176,7 +162,10 @@ const AdminLayout = () => {
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5 pb-4">
-            <div className="flex flex-shrink-0 items-center space-x-4 px-4">
+            <div
+              className="flex flex-shrink-0 cursor-pointer items-center space-x-4 px-4"
+              onClick={() => navigate("/")}
+            >
               <img className="h-8 w-auto" src="/images/icon.png" alt="logo" />
               <span className="text-2xl text-white">Nachanshop</span>
             </div>
@@ -185,42 +174,28 @@ const AdminLayout = () => {
               aria-label="Sidebar"
             >
               <div className="space-y-1 px-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-indigo-800 text-white"
-                        : "text-indigo-100 hover:bg-indigo-600 hover:text-white",
-                      "group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    <item.icon
-                      className="mr-4 h-6 w-6 flex-shrink-0 text-indigo-200"
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-6 pt-6">
-                <div className="space-y-1 px-2">
-                  {secondaryNavigation.map((item) => (
+                {navigation.map((item) => {
+                  const current = item.href === location.pathname;
+                  return (
                     <Link
                       key={item.name}
                       to={item.href}
-                      className="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-indigo-100 hover:bg-indigo-600 hover:text-white"
+                      className={classNames(
+                        current
+                          ? "bg-indigo-800 text-white"
+                          : "text-indigo-100 hover:bg-indigo-600 hover:text-white",
+                        "group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6"
+                      )}
+                      aria-current={item.current ? "page" : undefined}
                     >
                       <item.icon
-                        className="mr-4 h-6 w-6 text-indigo-200"
+                        className="mr-4 h-6 w-6 flex-shrink-0 text-indigo-200"
                         aria-hidden="true"
                       />
                       {item.name}
                     </Link>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </nav>
           </div>

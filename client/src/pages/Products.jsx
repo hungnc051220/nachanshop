@@ -1,13 +1,13 @@
-import React, { Fragment, useState } from "react";
-import { FaBars } from "react-icons/fa";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice";
 import { formatMoney } from "../utils/commonFunction";
 import queryString from "query-string";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useProducts } from "../hooks/useProductsData";
-import { BsCart } from "react-icons/bs";
 import Button from "@mui/material/Button";
-import { Breadcrumbs, Filter } from "../components";
+import { Breadcrumbs } from "../components";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import {
@@ -18,6 +18,7 @@ import {
   ViewGridIcon,
 } from "@heroicons/react/solid";
 import { typeParent } from "../data/categoriesSelect";
+import categories from "../data/categories.json";
 
 const sortOptions = [
   { name: "Phổ biến nhất", href: "#", current: true },
@@ -25,29 +26,6 @@ const sortOptions = [
   { name: "Mới nhất", href: "#", current: false },
   { name: "Giá từ thấp đến cao", href: "#", current: false },
   { name: "Giá từ cao đến thấp", href: "#", current: false },
-];
-const subCategories = [
-  { name: "Nước uống Collagen", href: "#" },
-  { name: "Collagen dạng bột - Thạch ăn", href: "#" },
-  { name: "Collagen dạng viên uống", href: "#" },
-];
-const filters = [
-  {
-    id: "color",
-    name: "Màu sắc",
-    options: [
-      { value: "white", label: "Trắng", checked: false },
-      { value: "white", label: "Đỏ", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Loại",
-    options: [
-      { value: "Mới về", label: "New Arrivals", checked: false },
-      { value: "Giảm giá", label: "Sale", checked: false },
-    ],
-  },
 ];
 
 function classNames(...classes) {
@@ -57,12 +35,15 @@ function classNames(...classes) {
 const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const onSuccess = () => {};
   const onError = () => {
     toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
   };
   const { type, page = 1, typeChild } = queryString.parse(location.search);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [subCategories, setSubCategories] = useState([]);
 
   const { isLoading, isFetching, data } = useProducts(
     page,
@@ -71,6 +52,15 @@ const Products = () => {
     onSuccess,
     onError
   );
+
+  useEffect(() => {
+    const category = categories.find((x) => x.code === type);
+
+    if (category.sub_items) setSubCategories(category.sub_items);
+    else {
+      setSubCategories([]);
+    }
+  }, [type]);
 
   const onChangePagination = (page, pageSize) => {
     navigate(`/products?type=${type}&page=${page}`);
@@ -130,84 +120,6 @@ const Products = () => {
                         <XIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
                     </div>
-
-                    {/* Filters */}
-                    <form className="mt-4 border-t border-gray-200">
-                      <h3 className="sr-only">Categories</h3>
-                      <ul
-                        role="list"
-                        className="px-2 py-3 font-medium text-gray-900"
-                      >
-                        {subCategories.map((category) => (
-                          <li key={category.name}>
-                            <a
-                              href={category.href}
-                              className="block px-2 py-3 hover:text-red-500"
-                            >
-                              {category.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {filters.map((section) => (
-                        <Disclosure
-                          as="div"
-                          key={section.id}
-                          className="border-t border-gray-200 px-4 py-6"
-                        >
-                          {({ open }) => (
-                            <>
-                              <h3 className="-mx-2 -my-3 flow-root">
-                                <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                  <span className="font-medium text-gray-900">
-                                    {section.name}
-                                  </span>
-                                  <span className="ml-6 flex items-center">
-                                    {open ? (
-                                      <MinusSmIcon
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                    ) : (
-                                      <PlusSmIcon
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                    )}
-                                  </span>
-                                </Disclosure.Button>
-                              </h3>
-                              <Disclosure.Panel className="pt-6">
-                                <div className="space-y-6">
-                                  {section.options.map((option, optionIdx) => (
-                                    <div
-                                      key={option.value}
-                                      className="flex items-center"
-                                    >
-                                      <input
-                                        id={`filter-mobile-${section.id}-${optionIdx}`}
-                                        name={`${section.id}[]`}
-                                        defaultValue={option.value}
-                                        type="checkbox"
-                                        defaultChecked={option.checked}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                      />
-                                      <label
-                                        htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                        className="ml-3 min-w-0 flex-1 text-gray-500"
-                                      >
-                                        {option.label}
-                                      </label>
-                                    </div>
-                                  ))}
-                                </div>
-                              </Disclosure.Panel>
-                            </>
-                          )}
-                        </Disclosure>
-                      ))}
-                    </form>
                   </div>
                 </Transition.Child>
               </Dialog>
@@ -295,146 +207,100 @@ const Products = () => {
                   {/* Filters */}
                   <form className="hidden lg:block">
                     <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
-                    >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a
-                            href={category.href}
-                            className="hover:text-red-500"
-                          >
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-b border-gray-200 py-6"
+                    {subCategories.length > 0 && (
+                      <ul
+                        role="list"
+                        className="space-y-4 pb-6 text-sm font-medium text-gray-900"
                       >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusSmIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusSmIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-4">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      id={`filter-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <label
-                                      htmlFor={`filter-${section.id}-${optionIdx}`}
-                                      className="ml-3 text-sm text-gray-600"
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    ))}
+                        {subCategories.map((category) => (
+                          <li key={category.title}>
+                            <Link
+                              to={category.route}
+                              className="hover:text-red-500"
+                            >
+                              {category.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </form>
 
                   {/* Product grid */}
                   <div className="lg:col-span-4">
-                    <div className="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                      {data?.data?.map((product) => {
-                        return (
-                          <div
-                            className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
-                            key={product._id}
-                          >
-                            <div className="p-5">
-                              <Link
-                                to={`/products/${product._id}`}
-                                onClick={() => {
-                                  window.scrollTo(0, 0);
-                                }}
-                              >
-                                <img
-                                  src={`${import.meta.env.VITE_API_URL}/${
-                                    product.productImage[0]
-                                  }`}
-                                  alt={product.name}
-                                />
-                              </Link>
-                            </div>
-
-                            <div className="p-5">
-                              <Link
-                                to={`/products/${product._id}`}
-                                className="block text-base font-medium uppercase text-red-500"
-                                onClick={() => {
-                                  window.scrollTo(0, 0);
-                                }}
-                              >
-                                {product?.typeChildName}
-                              </Link>
-
-                              <Link
-                                to={`/products/${product._id}`}
-                                className="inline-block h-24 py-2"
-                                onClick={() => {
-                                  window.scrollTo(0, 0);
-                                }}
-                              >
-                                <h3 className="text-sm text-gray-600 line-clamp-2">
-                                  {product.name}
-                                </h3>
-                              </Link>
-
-                              <div className="flex flex-col gap-2">
-                                <p className="mb-0 text-xl font-semibold">
-                                  {formatMoney(product.price)}₫
-                                </p>
-                                <Button
-                                  variant="contained"
-                                  color="error"
-                                  size="small"
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <img
+                          src="/images/favicon.ico"
+                          className="animate-spin"
+                        />
+                      </div>
+                    ) : (
+                      <div className="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        {data?.data?.map((product) => {
+                          return (
+                            <div
+                              className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
+                              key={product._id}
+                            >
+                              <div className="p-5">
+                                <Link
+                                  to={`/products/${product._id}`}
+                                  onClick={() => {
+                                    window.scrollTo(0, 0);
+                                  }}
                                 >
-                                  Đặt mua
-                                </Button>
+                                  <img
+                                    src={`${import.meta.env.VITE_API_URL}/${
+                                      product.productImage[0]
+                                    }`}
+                                    alt={product.name}
+                                  />
+                                </Link>
+                              </div>
+
+                              <div className="p-5">
+                                <Link
+                                  to={`/products/${product._id}`}
+                                  className="block text-base font-medium uppercase text-red-500"
+                                  onClick={() => {
+                                    window.scrollTo(0, 0);
+                                  }}
+                                >
+                                  {product?.typeChildName}
+                                </Link>
+
+                                <Link
+                                  to={`/products/${product._id}`}
+                                  className="inline-block h-24 py-2"
+                                  onClick={() => {
+                                    window.scrollTo(0, 0);
+                                  }}
+                                >
+                                  <h3 className="text-sm text-gray-600 line-clamp-2">
+                                    {product.name}
+                                  </h3>
+                                </Link>
+
+                                <div className="flex flex-col gap-2">
+                                  <p className="mb-0 text-xl font-semibold">
+                                    {formatMoney(product.price)}₫
+                                  </p>
+                                  <Button
+                                    variant="contained"
+                                    color="error"
+                                    size="small"
+                                    onClick={() => dispatch(addToCart(product))}
+                                  >
+                                    Đặt mua
+                                  </Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               </section>

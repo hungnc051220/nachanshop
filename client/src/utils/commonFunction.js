@@ -7,7 +7,7 @@ export const formatMoney = (value) => {
 };
 
 export const useAuth = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
 
   if (!token) {

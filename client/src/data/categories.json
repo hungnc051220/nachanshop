@@ -1,5 +1,6 @@
 [
   {
+    "code": "collagen",
     "title": "Collagen",
     "route": "/products?type=collagen",
     "icon": "https://japana.vn/uploads/category/1545300977-collagen.png",
@@ -19,6 +20,7 @@
     ]
   },
   {
+    "code": "tpld",
     "title": "Thực phẩm làm đẹp",
     "route": "/products?type=tpld",
     "icon": "https://japana.vn/uploads/category/1536632955-icon2.png",
@@ -42,11 +44,13 @@
     ]
   },
   {
+    "code": "gc",
     "title": "Giảm cân",
     "route": "/products?type=gc",
     "icon": "https://japana.vn/uploads/category/1536632988-icon4.png"
   },
   {
+    "code": "cssk",
     "title": "Chăm sóc sức khoẻ",
     "route": "/products?type=cssk",
     "icon": "https://japana.vn/uploads/category/1536633007-icon5.png",
@@ -106,6 +110,7 @@
     ]
   },
   {
+    "code": "td",
     "title": "Trang điểm",
     "route": "/products?type=td",
     "icon": "https://japana.vn/uploads/category/1539922102-Make-up.png",
@@ -124,11 +129,12 @@
       },
       {
         "title": "Trang điểm mắt - Mi - Mày",
-        "route": "/products?type=td&typeChild=trang-diem-mat-my-may"
+        "route": "/products?type=td&typeChild=trang-diem-mat-mi-may"
       }
     ]
   },
   {
+    "code": "csdm",
     "title": "Chăm sóc da mặt",
     "route": "/products?type=csdm",
     "icon": "https://japana.vn/uploads/category/1536633054-icon7.png",
@@ -188,6 +194,7 @@
     ]
   },
   {
+    "code": "csct",
     "title": "Chăm sóc cơ thể",
     "route": "/products?type=csct",
     "icon": "https://japana.vn/uploads/category/1536633071-icon8.png",
@@ -219,6 +226,7 @@
     ]
   },
   {
+    "code": "mvb",
     "title": "Mẹ và bé",
     "route": "/products?type=mvb",
     "icon": "https://japana.vn/uploads/category/1536633117-icon9.png",
@@ -228,7 +236,7 @@
         "route": "/products?type=mvb&typeChild=sua-nhat"
       },
       {
-        "title": "Bình sữa-Phụ kiện",
+        "title": "Bình sữa - Phụ kiện",
         "route": "/products?type=mvb&typeChild=binh-sua-phu-kien"
       },
       {
@@ -258,6 +266,7 @@
     ]
   },
   {
+    "code": "tpnb",
     "title": "Thực phẩm Nhật Bản",
     "route": "/products?type=tpnb",
     "icon": "https://japana.vn/uploads/category/1536633142-icon11.png",
