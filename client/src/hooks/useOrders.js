@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 
 export const useOrders = () => {
   return useQuery("orders", getOrders, {
+    keepPreviousData: true,
+    staleTime: 30000,
     onSuccess: () => {},
     onError: () => {
       toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
