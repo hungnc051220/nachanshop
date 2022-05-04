@@ -46,6 +46,7 @@ const Checkout = () => {
   const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
+  const [fee, setFee] = useState(0);
 
   const [orderInfo, setOrderInfo] = useState({
     name: "",
@@ -67,12 +68,15 @@ const Checkout = () => {
       navigate("/success");
     }
 
+    if (cartItems.length === 0) {
+      navigate("/");
+    }
+
     dispatch(resetOrder());
   }, [isError, isSuccess, message, navigate, dispatch]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
     const newOrder = {
       ...orderInfo,
       cartItems,
@@ -81,16 +85,7 @@ const Checkout = () => {
       status: 0,
     };
 
-    const response = await getFee({
-      province: orderInfo.province,
-      district: orderInfo.district,
-      weight: 1000,
-      address: orderInfo.address,
-    });
-
-    dispatch(
-      addOrder({ ...newOrder, realShippingFee: Number(response?.fee?.fee) })
-    );
+    dispatch(addOrder(newOrder));
   };
 
   const handleChangeInput = (e) => {
@@ -117,7 +112,7 @@ const Checkout = () => {
     fetchWards(districtCode);
   };
 
-  const handleChangeWards = (e, { props }) => {
+  const handleChangeWards = async (e, { props }) => {
     const wardCode = e.target.value;
     setSelectedWard(wardCode);
     setOrderInfo({

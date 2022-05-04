@@ -15,6 +15,7 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useOrders } from "../hooks/useOrders";
 import dayjs from "dayjs";
+import { ViewProduct } from "../components";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,10 +24,11 @@ function classNames(...classes) {
 const OrderManagement = () => {
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState([]);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
@@ -74,6 +76,13 @@ const OrderManagement = () => {
           <p className="mt-2 text-sm text-gray-700">
             Danh sách tất cả các đơn hàng
           </p>
+          {isOpen && (
+            <ViewProduct
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              order={selectedOrder}
+            />
+          )}
         </div>
         <div className="mt-4 flex gap-2 sm:mt-0 sm:ml-16">
           {selectedPeople.length > 0 && (
@@ -152,12 +161,6 @@ const OrderManagement = () => {
                         scope="col"
                         className="sticky top-0 z-10 min-w-[100px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
                       >
-                        Phí ship ước tính
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 min-w-[100px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
                         Tổng tiền
                       </th>
                       <th
@@ -170,11 +173,16 @@ const OrderManagement = () => {
                     {data?.map((person, index) => (
                       <tr
                         key={person._id}
-                        className={
-                          selectedPeople.includes(person._id)
-                            ? "bg-gray-50"
-                            : undefined
-                        }
+                        className="cursor-pointer hover:bg-indigo-50"
+                        onClick={() => {
+                          setIsOpen(true);
+                          setSelectedOrder(person);
+                        }}
+                        // className={
+                        //   selectedPeople.includes(person._id)
+                        //     ? "bg-gray-50"
+                        //     : undefined
+                        // }
                       >
                         <td className="relative w-12 px-6 sm:w-16 sm:px-8">
                           {selectedPeople.includes(person._id) && (
@@ -224,19 +232,8 @@ const OrderManagement = () => {
                         <td className="whitespace-nowrap px-3 py-2 text-right text-sm text-gray-500">
                           {formatMoney(person.shippingFee)}₫
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-right text-sm text-gray-500">
-                          {formatMoney(person?.realShippingFee)}₫
-                        </td>
                         <td className="whitespace-nowrap px-3 py-2 text-right text-sm font-semibold text-red-500">
                           {formatMoney(person.total)}₫
-                        </td>
-                        <td className="space-x-4 whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a
-                            href="#"
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Xem đơn hàng
-                          </a>
                         </td>
                       </tr>
                     ))}

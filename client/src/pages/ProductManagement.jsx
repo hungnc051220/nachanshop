@@ -155,7 +155,7 @@ const ProductManagement = () => {
                       </th>
                       <th
                         scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
+                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
                       >
                         Giá tiền
                       </th>
@@ -230,7 +230,7 @@ const ProductManagement = () => {
                             person.typeChild
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                        <td className="whitespace-nowrap px-3 py-2 text-right text-sm font-semibold text-red-500">
                           {formatMoney(person.price)}₫
                         </td>
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">

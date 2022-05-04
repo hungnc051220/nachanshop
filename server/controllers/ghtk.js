@@ -4,9 +4,9 @@ const fetch = (...args) =>
 const API_URL = "https://khachhang.ghtklab.com";
 
 const getFee = async (req, res) => {
-  const { province, district, address, weight } = req.body;
+  const { province, district, weight } = req.body;
   try {
-    const paramUrl = `${API_URL}/services/shipment/fee?pick_province=Thành phố Hà Nội&pick_district=Quận Ba Đình&province=${province}&district=${district}&address=${address}&weight=${weight}&deliver_option=none`;
+    const paramUrl = `${API_URL}/services/shipment/fee?pick_province=Thành phố Hà Nội&pick_district=Quận Ba Đình&province=${province}&district=${district}&weight=${weight}&deliver_option=none`;
     const encode = encodeURI(paramUrl);
 
     const response = await fetch(encode, {
