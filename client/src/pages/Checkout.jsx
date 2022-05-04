@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { getFee } from "../api/ghtkApi";
 
 const deliveryMethods = [
   {
@@ -69,7 +70,7 @@ const Checkout = () => {
     dispatch(resetOrder());
   }, [isError, isSuccess, message, navigate, dispatch]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const newOrder = {
@@ -80,7 +81,16 @@ const Checkout = () => {
       status: 0,
     };
 
-    dispatch(addOrder(newOrder));
+    const response = await getFee({
+      province: orderInfo.province,
+      district: orderInfo.district,
+      weight: 1000,
+      address: orderInfo.address,
+    });
+
+    dispatch(
+      addOrder({ ...newOrder, realShippingFee: Number(response?.fee?.fee) })
+    );
   };
 
   const handleChangeInput = (e) => {

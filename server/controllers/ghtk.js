@@ -1,24 +1,17 @@
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const API_URL = "https://services.ghtklab.com";
+const API_URL = "https://khachhang.ghtklab.com";
 
 const getFee = async (req, res) => {
-  const {
-    pick_province,
-    pick_district,
-    province,
-    district,
-    address,
-    weight,
-  } = req.body;
+  const { province, district, address, weight } = req.body;
   try {
-    const response = await fetch(
-      `${API_URL}//services/shipment/fee?pick_province=${pick_province}&pick_district=${pick_district}&province=${province}&district=${district}&address=${address}&weight=${weight}&deliver_option=none`,
-      {
-        headers: { token: "B6Cb74D40E35ffcBb572951CaD4b27aAF336AEd7" },
-      }
-    );
+    const paramUrl = `${API_URL}/services/shipment/fee?pick_province=Thành phố Hà Nội&pick_district=Quận Ba Đình&province=${province}&district=${district}&address=${address}&weight=${weight}&deliver_option=none`;
+    const encode = encodeURI(paramUrl);
+
+    const response = await fetch(encode, {
+      headers: { Token: "B6Cb74D40E35ffcBb572951CaD4b27aAF336AEd7" },
+    });
     const data = await response.json();
     res.status(200).json(data);
   } catch (error) {

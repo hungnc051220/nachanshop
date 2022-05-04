@@ -28,6 +28,7 @@ const orderSchema = mongoose.Schema(
     },
     total: Number,
     shippingFee: Number,
+    realShippingFee: Number,
     cartItems: Array,
     status: Number,
   },

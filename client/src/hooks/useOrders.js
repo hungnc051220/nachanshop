@@ -1,11 +1,14 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { fetchOrders, updateOrder } from "../api";
-import { toast } from "react-toastify";
+import { updateOrder } from "../api";
+import { getOrders } from "../api/orderApi";
+import toast from "react-hot-toast";
 
-export const useOrders = (onSuccess, onError) => {
-  return useQuery("orders", fetchOrders, {
-    onSuccess,
-    onError,
+export const useOrders = () => {
+  return useQuery("orders", getOrders, {
+    onSuccess: () => {},
+    onError: () => {
+      toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
+    },
   });
 };
 
