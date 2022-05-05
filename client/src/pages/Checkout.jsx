@@ -18,11 +18,10 @@ import { getFee } from "../api/ghtkApi";
 const deliveryMethods = [
   {
     id: 1,
-    title: "Thông thường",
+    title: "Giao hàng tiết kiệm",
     turnaround: "4 - 10 ngày",
     price: "30,000đ",
   },
-  { id: 2, title: "Hoả tốc", turnaround: "1-2 ngày", price: "40,000đ" },
 ];
 
 function classNames(...classes) {
@@ -248,7 +247,7 @@ const Checkout = () => {
                   Phương thức vận chuyển
                 </RadioGroup.Label>
 
-                <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                <div className="mt-4 grid grid-cols-1 gap-y-6 sm:gap-x-4">
                   {deliveryMethods.map((deliveryMethod) => (
                     <RadioGroup.Option
                       key={deliveryMethod.id}
@@ -265,24 +264,11 @@ const Checkout = () => {
                         <>
                           <div className="flex flex-1">
                             <div className="flex flex-col">
-                              <RadioGroup.Label
-                                as="span"
-                                className="block text-sm font-medium text-gray-900"
-                              >
-                                {deliveryMethod.title}
-                              </RadioGroup.Label>
-                              <RadioGroup.Description
-                                as="span"
-                                className="mt-1 flex items-center text-sm text-gray-500"
-                              >
-                                {deliveryMethod.turnaround}
-                              </RadioGroup.Description>
-                              <RadioGroup.Description
-                                as="span"
-                                className="mt-6 text-sm font-medium text-gray-900"
-                              >
-                                {deliveryMethod.price}
-                              </RadioGroup.Description>
+                              <img
+                                src="https://product.hstatic.net/1000405368/product/giaohangtk_c57f4d8ab326411c9a42d9dcde1604f7.png"
+                                className="w-60"
+                                alt="giao hàng tiết kiệm"
+                              />
                             </div>
                           </div>
                           {checked ? (

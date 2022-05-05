@@ -78,7 +78,25 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                   >
                     Chi tiết đơn hàng
                   </Dialog.Title>
-                  <div className="bg-white">
+                  <div className="bg-white pt-10">
+                    <div className="grid grid-cols-1 space-y-1 text-sm font-medium text-gray-900 sm:grid-cols-2">
+                      <p>
+                        Tên khách hàng:{" "}
+                        <span className="text-indigo-500">{order.name}</span>
+                      </p>
+                      <p>
+                        Số điện thoại:{" "}
+                        <span className="text-indigo-500">{order.phone}</span>
+                      </p>
+                      <p className="sm:col-span-2">
+                        Địa chỉ:{" "}
+                        <span className="text-indigo-500">{`${order.address}, ${order.ward} ${order.district} ${order.province}`}</span>
+                      </p>
+                      <p className="sm:col-span-2">
+                        Ghi chú:{" "}
+                        <span>{order.note ? order.note : "Không có"}</span>
+                      </p>
+                    </div>
                     <div className="mx-auto max-w-5xl py-2 sm:py-4">
                       <div className="mt-2">
                         <div className="space-y-16 sm:space-y-24">
@@ -113,7 +131,7 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                                 </div>
                               </dl>
                               <div className="mt-6 space-y-4 sm:flex sm:space-x-4 sm:space-y-0 md:mt-0">
-                                <Button variant="contained" color="warning">
+                                <Button variant="contained" color="success">
                                   Tạo đơn GHTK
                                 </Button>
                               </div>
@@ -194,7 +212,7 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                   <div className="mt-4 text-right">
                     <Button
                       variant="outlined"
-                      color="warning"
+                      color="success"
                       onClick={closeModal}
                     >
                       Đóng
