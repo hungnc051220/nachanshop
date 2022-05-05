@@ -29,7 +29,14 @@ const orderSchema = mongoose.Schema(
     total: Number,
     shippingFee: Number,
     realShippingFee: Number,
-    cartItems: Array,
+    cartItems: [
+      {
+        _id: String,
+        name: String,
+        price: Number,
+        quantity: Number,
+      },
+    ],
     status: Number,
   },
   {

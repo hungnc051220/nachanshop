@@ -4,36 +4,7 @@ import { CheckIcon } from "@heroicons/react/outline";
 import { formatMoney } from "../../utils/commonFunction";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
-
-const orders = [
-  {
-    number: "WU88191111",
-    date: "January 22, 2021",
-    datetime: "2021-01-22",
-    href: "#",
-    invoiceHref: "#",
-    total: "$302.00",
-    products: [
-      {
-        id: 1,
-        name: "Nomad Tumbler",
-        description:
-          "This durable double-walled insulated tumbler keeps your beverages at the perfect temperature all day long. Hot, cold, or even lukewarm if you're weird like that, this bottle is ready for your next adventure.",
-        href: "#",
-        price: "$35.00",
-        status: "out-for-delivery",
-        date: "January 5, 2021",
-        datetime: "2021-01-05",
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-06-product-01.jpg",
-        imageAlt:
-          "Olive drab green insulated bottle with flared screw lid and flat top.",
-      },
-      // More products...
-    ],
-  },
-  // More orders...
-];
+import { createOrder } from "../../api/ghtkApi";
 
 const ViewProduct = ({ isOpen, setIsOpen, order }) => {
   function closeModal() {
@@ -43,6 +14,54 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
   function openModal() {
     setIsOpen(true);
   }
+
+  const onCreateOrder = async () => {
+    const orderData = {
+      products: [
+        {
+          name: "bút",
+          weight: 0.1,
+          quantity: 1,
+          product_code: 1241,
+        },
+        {
+          name: "tẩy",
+          weight: 0.2,
+          quantity: 1,
+          product_code: 1254,
+        },
+      ],
+      order: {
+        id: order._id,
+        pick_name: "HCM-nội thành",
+        pick_address: "590 CMT8 P.11",
+        pick_province: "TP. Hồ Chí Minh",
+        pick_district: "Quận 3",
+        pick_ward: "Phường 1",
+        pick_tel: "0334654321",
+        tel: "0334686868",
+        name: "GHTK - HCM - Noi Thanh",
+        address: "123 nguyễn chí thanh",
+        province: "TP. Hồ Chí Minh",
+        district: "Quận 1",
+        ward: "Phường Bến Nghé",
+        hamlet: "Khác",
+        is_freeship: "1",
+        pick_date: "2022-04-04",
+        pick_money: 47000,
+        note: "Khối lượng tính cước tối đa: 1.00 kg",
+        value: 3000000,
+        transport: "road",
+        pick_option: "cod",
+
+        pick_session: 2,
+        tags: [1],
+      },
+    };
+
+    const response = await createOrder(orderData);
+    console.log(response);
+  };
 
   return (
     <>
@@ -79,7 +98,7 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                     Chi tiết đơn hàng
                   </Dialog.Title>
                   <div className="bg-white pt-10">
-                    <div className="grid grid-cols-1 space-y-1 text-sm font-medium text-gray-900 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-2 text-sm font-medium text-gray-900 sm:grid-cols-2">
                       <p>
                         Tên khách hàng:{" "}
                         <span className="text-indigo-500">{order.name}</span>
@@ -131,7 +150,11 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                                 </div>
                               </dl>
                               <div className="mt-6 space-y-4 sm:flex sm:space-x-4 sm:space-y-0 md:mt-0">
-                                <Button variant="contained" color="success">
+                                <Button
+                                  variant="contained"
+                                  color="success"
+                                  onClick={onCreateOrder}
+                                >
                                   Tạo đơn GHTK
                                 </Button>
                               </div>
@@ -172,12 +195,6 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                                   <tr key={product.id}>
                                     <td className="py-3 pr-8">
                                       <div className="flex items-center">
-                                        <img
-                                          src={`${
-                                            import.meta.env.VITE_API_URL
-                                          }/${product.productImage[0]}`}
-                                          className="mr-6 h-16 w-16 rounded object-cover object-center"
-                                        />
                                         <div>
                                           <div className="font-medium text-gray-900">
                                             {product.name}
@@ -198,6 +215,7 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
                                       {formatMoney(
                                         product.price * product.quantity
                                       )}
+                                      ₫
                                     </td>
                                   </tr>
                                 ))}
