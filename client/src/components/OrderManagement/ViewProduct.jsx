@@ -16,46 +16,32 @@ const ViewProduct = ({ isOpen, setIsOpen, order }) => {
   }
 
   const onCreateOrder = async () => {
+    console.log(order);
     const orderData = {
-      products: [
-        {
-          name: "bút",
-          weight: 0.1,
-          quantity: 1,
-          product_code: 1241,
-        },
-        {
-          name: "tẩy",
-          weight: 0.2,
-          quantity: 1,
-          product_code: 1254,
-        },
-      ],
+      products: order.cartItems.map((item) => {
+        return { name: item.name, weight: 0.1, quantity: item.quantity };
+      }),
       order: {
-        id: order._id,
-        pick_name: "HCM-nội thành",
-        pick_address: "590 CMT8 P.11",
-        pick_province: "TP. Hồ Chí Minh",
-        pick_district: "Quận 3",
-        pick_ward: "Phường 1",
-        pick_tel: "0334654321",
-        tel: "0334686868",
-        name: "GHTK - HCM - Noi Thanh",
-        address: "123 nguyễn chí thanh",
-        province: "TP. Hồ Chí Minh",
-        district: "Quận 1",
-        ward: "Phường Bến Nghé",
+        id: order._id + 2,
+        pick_name: "Trần Thị Thanh Xuân",
+        pick_address: "18 Kim Mã Thượng",
+        pick_province: "Thành phố Hà Nội",
+        pick_district: "Quận Ba Đình",
+        pick_ward: "Phường Cống Vị",
+        pick_tel: "0915942525",
+        tel: order.phone,
+        name: order.name,
+        address: order.address,
+        province: order.province,
+        district: order.district,
+        ward: order.ward,
         hamlet: "Khác",
         is_freeship: "1",
-        pick_date: "2022-04-04",
-        pick_money: 47000,
-        note: "Khối lượng tính cước tối đa: 1.00 kg",
-        value: 3000000,
+        pick_money: order.total + order.shippingFee,
+        note: order.note,
+        value: 990000,
         transport: "road",
         pick_option: "cod",
-
-        pick_session: 2,
-        tags: [1],
       },
     };
 
