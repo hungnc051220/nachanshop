@@ -143,7 +143,7 @@ const ViewProduct = ({ isOpen, setIsOpen, order: orderData }) => {
                       </p>
                       <p className="sm:col-span-2">
                         Địa chỉ:{" "}
-                        <span className="text-indigo-500">{`${order.address}, ${order.ward} ${order.district} ${order.province}`}</span>
+                        <span className="text-indigo-500">{`${order.address}, ${order.ward}, ${order.district}, ${order.province}`}</span>
                       </p>
                       <p className="sm:col-span-2">
                         Ghi chú:{" "}
@@ -410,20 +410,6 @@ const ViewProduct = ({ isOpen, setIsOpen, order: orderData }) => {
                                         ? formatMoney(infoGHTK.pick_money)
                                         : 0}
                                       ₫
-                                    </div>
-                                  </div>
-                                </li>
-                                <li className="py-3">
-                                  <div className="flex items-center space-x-4">
-                                    <div className="min-w-0 flex-1">
-                                      <p className="truncate text-sm font-medium text-gray-900">
-                                        Miễn phí giao hàng:
-                                      </p>
-                                    </div>
-                                    <div className="text-sm">
-                                      {infoGHTK.is_freeship === 1
-                                        ? "Miễn phí"
-                                        : ""}
                                     </div>
                                   </div>
                                 </li>
