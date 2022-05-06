@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Dialog, Menu, Transition } from "@headlessui/react";
@@ -17,6 +17,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
+import { io } from "socket.io-client";
 
 const navigation = [
   {
@@ -56,9 +57,20 @@ function classNames(...classes) {
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [socket, setSocket] = useState(null);
   const { user } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setSocket(io("http://localhost:8800"));
+  }, []);
+
+  useEffect(() => {
+    socket?.on("getNotification", (message) => {
+      console.log(message);
+    });
+  }, [socket]);
 
   return (
     <>

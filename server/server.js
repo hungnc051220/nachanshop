@@ -3,30 +3,55 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+const httpServer = createServer(app);
 
+// Socket
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.SOCKET_URL,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("User connected! " + socket.id);
+
+  socket.on("setNotification", ({ message }) => {
+    io.emit("getNotification", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected!");
+  });
+});
+
+// Connect MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() =>
-    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+    httpServer.listen(PORT, () =>
+      console.log(`Server is running on port ${PORT}`)
+    )
   )
   .catch((error) => console.log(error));
 
 app.use(cors());
-app.use(express.json({ limit: "30mb", extended: true }));
-app.use(express.urlencoded({ limit: "30mb", extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/orders", require("./routes/orders"));
 app.use("/api/mail", require("./routes/mail"));
-app.use('/api/users', require("./routes/users"));
-app.use('/api/dashboard', require("./routes/dashboard"));
-app.use('/api/ghtk', require("./routes/ghtk"));
-app.use('/api/gen', require('./routes/gen'));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/dashboard", require("./routes/dashboard"));
+app.use("/api/ghtk", require("./routes/ghtk"));
+app.use("/api/gen", require("./routes/gen"));

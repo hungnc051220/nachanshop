@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { getFee } from "../api/ghtkApi";
+import { io } from "socket.io-client";
 
 const deliveryMethods = [
   {
@@ -27,6 +27,8 @@ const deliveryMethods = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+let socket;
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -63,6 +65,7 @@ const Checkout = () => {
     }
 
     if (isSuccess) {
+      createNoti(orderInfo.name);
       dispatch(clearCart());
       navigate("/success");
     }
@@ -73,6 +76,16 @@ const Checkout = () => {
 
     dispatch(resetOrder());
   }, [isError, isSuccess, message, navigate, dispatch]);
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_SOCKET_URL);
+  }, []);
+
+  const createNoti = (name) => {
+    socket.emit("setNotification", {
+      message: `Khách hàng ${name} vừa mới đặt đơn`,
+    });
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
