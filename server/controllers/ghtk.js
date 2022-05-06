@@ -38,7 +38,25 @@ const createOrder = async (req, res) => {
   }
 };
 
+const checkOrder = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${API_URL}/services/shipment/v2/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Token: "B6Cb74D40E35ffcBb572951CaD4b27aAF336AEd7",
+      },
+    });
+
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(404).json({ messsage: error.message });
+  }
+};
+
 module.exports = {
   getFee,
   createOrder,
+  checkOrder
 };

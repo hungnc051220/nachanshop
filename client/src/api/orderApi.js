@@ -10,3 +10,15 @@ export const getOrders = async () => {
     console.log(error);
   }
 };
+
+export const updateOrder = async (updatedOrder) => {
+  try {
+    const { data } = await axiosInstance.patch(
+      `/orders/${updatedOrder._id}`,
+      updatedOrder
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
