@@ -38,6 +38,7 @@ const addOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   const { id: _id } = req.params;
   const order = req.body;
+  
   try {
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(404).send({ messsage: "Không có đơn hàng này" });

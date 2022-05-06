@@ -16,6 +16,8 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { useOrders } from "../hooks/useOrders";
 import dayjs from "dayjs";
 import { ViewProduct } from "../components";
+import { listStatus } from "../data/status";
+import Chip from "@mui/material/Chip";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -121,12 +123,7 @@ const OrderManagement = () => {
                       >
                         STT
                       </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Trạng thái
-                      </th>
+
                       <th
                         scope="col"
                         className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
@@ -165,8 +162,10 @@ const OrderManagement = () => {
                       </th>
                       <th
                         scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6"
-                      ></th>
+                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
+                      >
+                        Trạng thái
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -214,9 +213,7 @@ const OrderManagement = () => {
                         >
                           {index + 1}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                          {person.status === 1 ? "Còn hàng" : "Mới"}
-                        </td>
+
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                           {person.name}
                         </td>
@@ -235,13 +232,29 @@ const OrderManagement = () => {
                         <td className="whitespace-nowrap px-3 py-2 text-right text-sm font-semibold text-red-500">
                           {formatMoney(person.total)}₫
                         </td>
+                        <td className="whitespace-nowrap px-3 py-2 text-center text-sm text-gray-500">
+                          <span
+                            className={`${
+                              listStatus[person.status].color
+                            } inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium`}
+                          >
+                            <svg
+                              className={`-ml-0.5 mr-1.5 h-2 w-2 ${listStatus[person.status].colorDot}`}
+                              fill="currentColor"
+                              viewBox="0 0 8 8"
+                            >
+                              <circle cx={4} cy={4} r={3} />
+                            </svg>
+                            {listStatus[person.status].text}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </PerfectScrollbar>
             </div>
-            <TablePagination
+            {/* <TablePagination
               rowsPerPageOptions={[15, 50, 100]}
               component="div"
               count={data ? data?.total : 15}
@@ -249,7 +262,7 @@ const OrderManagement = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            /> */}
           </div>
         </div>
       </div>

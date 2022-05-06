@@ -38,6 +38,8 @@ const orderSchema = mongoose.Schema(
       },
     ],
     status: Number,
+    orderIdGHTK: String,
+    orderGHTK: Object,
   },
   {
     timestamps: true,
