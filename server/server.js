@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const Notification = require("./models/notification");
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -19,10 +20,19 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User connected! " + socket.id);
+  console.log("User connected!");
 
-  socket.on("setNotification", ({ message }) => {
-    io.emit("getNotification", message);
+  Notification.find()
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      socket.emit("getAllNotification", result);
+    });
+
+  socket.on("setNotification", ({ name, total }) => {
+    const notification = new Notification({ name, total, mark: false });
+    notification.save().then((response) => {
+      io.emit("getNotification", response);
+    });
   });
 
   socket.on("disconnect", () => {
@@ -55,3 +65,4 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/dashboard", require("./routes/dashboard"));
 app.use("/api/ghtk", require("./routes/ghtk"));
 app.use("/api/gen", require("./routes/gen"));
+app.use("/api/notifications", require("./routes/notifications"));

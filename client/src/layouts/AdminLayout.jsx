@@ -18,6 +18,18 @@ import {
 } from "@heroicons/react/outline";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 import { io } from "socket.io-client";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice";
+import toast from "react-hot-toast";
+import { ToastNotification } from "../components";
+import { CheckCircleIcon } from "@heroicons/react/outline";
+import Badge from "@mui/material/Badge";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { formatMoney } from "../utils/commonFunction";
+import { updateNotification } from "../api/notificationsApi";
+dayjs.extend(relativeTime);
 
 const navigation = [
   {
@@ -55,22 +67,65 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+let socket;
+
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
   const [socket, setSocket] = useState(null);
   const { user } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setSocket(io("http://localhost:8800"));
+    setSocket(io(import.meta.env.VITE_SOCKET_URL));
   }, []);
 
   useEffect(() => {
-    socket?.on("getNotification", (message) => {
-      console.log(message);
+    socket?.on("getAllNotification", (result) => {
+      setNotifications(result);
     });
   }, [socket]);
+
+  useEffect(() => {
+    socket?.on("getNotification", (notification) => {
+      const { name, total, createdAt } = notification;
+      setNotifications((prev) => [notification, ...prev]);
+      toast.custom(
+        (t) => (
+          <ToastNotification
+            t={t}
+            name={name}
+            total={total}
+            createdAt={createdAt}
+          />
+        ),
+        {
+          position: "bottom-left",
+        }
+      );
+    });
+  }, [socket]);
+
+  const onLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
+  const onMarkAndGo = async (notification) => {
+    const { _id, mark } = notification;
+
+    if (mark === false) {
+      const response = await updateNotification(_id);
+      setNotifications(
+        notifications.map((item) =>
+          item._id === _id ? { ...item, mark: response.mark } : item
+        )
+      );
+    }
+    navigate("/order-management");
+  };
 
   return (
     <>
@@ -214,7 +269,7 @@ const AdminLayout = () => {
         </div>
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="relative z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+          <div className="relative z-20 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
             <button
               type="button"
               className="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
@@ -247,14 +302,87 @@ const AdminLayout = () => {
                   </div>
                 </form>
               </div>
-              <div className="ml-4 flex items-center md:ml-6">
-                <button
-                  type="button"
-                  className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+              <div className="ml-4 flex items-center gap-2 md:ml-6 lg:gap-0">
+                <Menu as="div" className="relative ml-3">
+                  <div>
+                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none lg:rounded-md lg:p-2">
+                      <Badge
+                        color="error"
+                        badgeContent={
+                          notifications?.filter((x) => !x.mark).length
+                        }
+                      >
+                        <BellIcon
+                          className="h-6 w-6 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </Badge>
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 mt-2 h-[500px] w-96 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <PerfectScrollbar>
+                        <div className="divide-y divide-gray-200">
+                          {notifications?.map((item) => (
+                            <Menu.Item key={item._id}>
+                              {({ active }) => (
+                                <div
+                                  className={`flex cursor-pointer space-x-3 p-4 ${
+                                    item.mark ? "opacity-60" : "opacity-100"
+                                  } hover:bg-gray-100`}
+                                  onClick={() => onMarkAndGo(item)}
+                                >
+                                  <div className="flex items-start">
+                                    <div className="flex-shrink-0">
+                                      <CheckCircleIcon
+                                        className="h-6 w-6 text-green-400"
+                                        aria-hidden="true"
+                                      />
+                                    </div>
+                                    <div className="ml-3 flex-1">
+                                      <div className="flex items-center justify-between">
+                                        <p className="text-sm font-medium text-gray-900">
+                                          Bạn có 1 đơn hàng mới!
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {dayjs(item.createdAt).fromNow()}
+                                        </p>
+                                      </div>
+                                      <p className="mt-1 text-sm text-gray-500">
+                                        Khách hàng{" "}
+                                        <span className="font-semibold text-indigo-500">
+                                          {item.name}
+                                        </span>{" "}
+                                        đã đặt hàng với tổng hoá đơn là{" "}
+                                        <span className="font-semibold text-red-500">
+                                          {formatMoney(item.total)}₫
+                                        </span>
+                                      </p>
+                                    </div>
+                                    <div
+                                      className={`ml-3 mt-1 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-indigo-600 ${
+                                        item.mark ? "opacity-0" : "opacity-100"
+                                      }`}
+                                      aria-hidden="true"
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </div>
+                      </PerfectScrollbar>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -294,7 +422,7 @@ const AdminLayout = () => {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Your Profile
+                            Tài khoản
                           </a>
                         )}
                       </Menu.Item>
@@ -307,20 +435,20 @@ const AdminLayout = () => {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Settings
+                            Cài đặt
                           </a>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                             )}
+                            onClick={onLogout}
                           >
-                            Logout
+                            Đăng xuất
                           </a>
                         )}
                       </Menu.Item>

@@ -47,7 +47,6 @@ const Checkout = () => {
   const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
-  const [fee, setFee] = useState(0);
 
   const [orderInfo, setOrderInfo] = useState({
     name: "",
@@ -65,7 +64,7 @@ const Checkout = () => {
     }
 
     if (isSuccess) {
-      createNoti(orderInfo.name);
+      createNoti({ name: orderInfo.name, total });
       dispatch(clearCart());
       navigate("/success");
     }
@@ -81,10 +80,8 @@ const Checkout = () => {
     socket = io(import.meta.env.VITE_SOCKET_URL);
   }, []);
 
-  const createNoti = (name) => {
-    socket.emit("setNotification", {
-      message: `Khách hàng ${name} vừa mới đặt đơn`,
-    });
+  const createNoti = (data) => {
+    socket.emit("setNotification", data);
   };
 
   const onSubmit = async (e) => {
@@ -157,8 +154,6 @@ const Checkout = () => {
   return (
     <div className="">
       <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 sm:px-6 md:pb-24 lg:max-w-7xl lg:px-8">
-        <h2 className="sr-only">Checkout</h2>
-
         <form
           className="rounded-xl bg-white p-5 shadow md:p-10 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
           onSubmit={onSubmit}
