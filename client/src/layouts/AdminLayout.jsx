@@ -67,8 +67,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-let socket;
-
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -86,6 +84,7 @@ const AdminLayout = () => {
     socket?.on("getAllNotification", (result) => {
       setNotifications(result);
     });
+    console.log(socket);
   }, [socket]);
 
   useEffect(() => {
