@@ -10,7 +10,7 @@ const Navbar = () => {
           <li key={item.title} className="group relative">
             <Link
               to={item.route}
-              className="relative block py-4 font-semibold transition duration-300 ease-in-out hover:text-red-500"
+              className="relative block py-4 text-sm font-semibold uppercase transition duration-300 ease-in-out hover:text-red-500"
             >
               {item.title}
             </Link>

@@ -11,12 +11,14 @@ import {
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { generateLink } from "../../api/productsApi";
-import { useAddProduct } from "../../hooks/useProductsData";
+import { useAddProductMutation } from "../../services/apiSlice";
 import NumberFormat from "react-number-format";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { updateProduct } from "../../api/productsApi";
+import toast from "react-hot-toast";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
   props,
@@ -49,11 +51,11 @@ const schema = yup.object().shape({
 });
 
 const AddProduct = ({ product, setSelectedProduct }) => {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
     register,
-    watch,
     reset,
     setValue,
     formState: { errors },
@@ -61,51 +63,40 @@ const AddProduct = ({ product, setSelectedProduct }) => {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (product) {
-      const {
-        name,
-        status,
-        typeParent,
-        typeChild,
-        countInStock,
-        price,
-        description,
-      } = product;
-      setOpen(true);
+  const [addProduct, { isLoading, isError, error }] = useAddProductMutation();
 
-      setValue("name", name);
-      setValue("status", status);
-      setValue("typeParent", typeParent);
+  // useEffect(() => {
+  //   if (product) {
+  //     const {
+  //       name,
+  //       status,
+  //       typeParent,
+  //       typeChild,
+  //       countInStock,
+  //       price,
+  //       description,
+  //     } = product;
+  //     setOpen(true);
 
-      if (typesChild[typeParent]) setChildData(typesChild[typeParent]);
-      else setChildData([]);
+  //     setValue("name", name);
+  //     setValue("status", status);
+  //     setValue("typeParent", typeParent);
 
-      setValue("typeChild", typeChild);
-      setValue("countInStock", countInStock);
-      setValue("price", price);
-      setValue("description", description);
-    } else {
-      reset();
-    }
-  }, [product]);
+  //     if (typesChild[typeParent]) setChildData(typesChild[typeParent]);
+  //     else setChildData([]);
+
+  //     setValue("typeChild", typeChild);
+  //     setValue("countInStock", countInStock);
+  //     setValue("price", price);
+  //     setValue("description", description);
+  //   } else {
+  //     reset();
+  //   }
+  // }, [product]);
 
   const [open, setOpen] = useState(false);
   const [childData, setChildData] = useState([]);
   const [link, setLink] = useState("");
-
-  const [formData, setFormData] = useState({
-    nameProduct: "",
-    status: 1,
-    typeParent: "",
-    typeChild: "",
-    countInStock: 1,
-    price: 1,
-    productImage: [],
-    description: "",
-  });
-
-  const { mutateAsync: addProduct, isLoading: isLoadingAdd } = useAddProduct();
 
   const handleChange = (event) => {
     if (typesChild[event.target.value])
@@ -150,20 +141,18 @@ const AddProduct = ({ product, setSelectedProduct }) => {
       fd.append("productImage", productImage[i]);
     }
 
-    if (product) {
-      await updateProduct(product._id, fd);
-    } else {
-      await addProduct(fd);
-      reset();
+    try {
+      await addProduct(fd).unwrap();
+      setOpen(false);
+    } catch {
+      toast.error(error);
     }
-    setOpen(false);
   };
 
   return (
     <>
       <Button
         variant="contained"
-        className="bg-indigo-500 px-6"
         onClick={() => {
           setSelectedProduct(null);
           setOpen(true);
@@ -440,11 +429,15 @@ const AddProduct = ({ product, setSelectedProduct }) => {
 
                 <div className="flex flex-shrink-0 justify-end gap-4 px-4 py-4">
                   <Button variant="outlined" onClick={() => setOpen(false)}>
-                    Huỷ bỏ
+                    {t("cancel")}
                   </Button>
-                  <Button type="submit" variant="contained">
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    loading={isLoading}
+                  >
                     {product ? "Sửa" : "Thêm"}
-                  </Button>
+                  </LoadingButton>
                 </div>
               </form>
             </div>

@@ -1,270 +1,148 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import { useLayoutEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { DataGrid } from "@mui/x-data-grid";
+import { useTranslation } from "react-i18next";
+import { AddProduct, DeleteProduct } from "../components";
 import {
-  useDeleteMultiProduct,
-  useDeleteProduct,
-  useProducts,
-} from "../hooks/useProductsData";
-import TablePagination from "@mui/material/TablePagination";
-import { formatMoney } from "../utils/commonFunction";
-import {
-  typeParent,
   typeChild as typeChildData,
+  typeParent,
 } from "../data/categoriesSelect";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import { useOrders } from "../hooks/useOrders";
+import { useGetOrdersQuery } from "../services/apiSlice";
+import toast from "react-hot-toast";
+import { BsTrash } from "react-icons/bs";
+import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
-import { ViewProduct } from "../components";
 import { listStatus } from "../data/status";
-import Chip from "@mui/material/Chip";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const OrderManagement = () => {
-  const checkbox = useRef();
-  const [checked, setChecked] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [indeterminate, setIndeterminate] = useState(false);
-  const [selectedPeople, setSelectedPeople] = useState([]);
+  const { t } = useTranslation();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isFetching, isError, error } = useGetOrdersQuery();
 
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  let rows = [];
+  let counter = 0;
+  rows = data?.map((item) => {
+    counter += 1;
+    //let no = data?.pageSize * (data?.currentPage - 1) + counter;
+    return { ...item, no: counter };
+  });
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(20);
-
-  const { mutateAsync: deleteProduct } = useDeleteProduct();
-  const { mutateAsync: deleteMultiProduct } = useDeleteMultiProduct();
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const getStatusName = (params) => {
+    return params.row.status === 1 ? t("stocking") : t("outOfStock");
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const onPageChange = (page) => {
+    setPage(page + 1);
   };
 
-  const onMultiDelete = () => {
-    deleteMultiProduct(selectedPeople);
-    setSelectedPeople([]);
+  const onRowSelected = (ids) => {
+    setSelectedProducts(ids);
   };
 
-  const { isLoading, isFetching, data } = useOrders();
+  const onShowModalDelete = (id) => {
+    setSelectedProducts(id);
+    setOpenModalDelete(true);
+  };
 
-  useLayoutEffect(() => {
-    const isIndeterminate =
-      selectedPeople.length > 0 && selectedPeople.length < data?.length;
-    setChecked(selectedPeople.length === data?.length);
-    setIndeterminate(isIndeterminate);
-    checkbox.current.indeterminate = isIndeterminate;
-  }, [selectedPeople]);
-
-  function toggleAll() {
-    setSelectedPeople(
-      checked || indeterminate ? [] : data?.map((item) => item._id)
-    );
-    setChecked(!checked && !indeterminate);
-    setIndeterminate(false);
-  }
+  const columns = [
+    { field: "no", headerName: t("no"), width: 70 },
+    { field: "name", headerName: t("customerName"), flex: 1 },
+    {
+      field: "phone",
+      headerName: t("phone"),
+      minWidth: 150,
+    },
+    {
+      field: "address",
+      headerName: t("address"),
+      minWidth: 500,
+      valueGetter: (params) =>
+        `${params.row.address}, ${params.row.ward}, ${params.row.district}, ${params.row.province}`,
+    },
+    {
+      field: "createdAt",
+      headerName: t("createdAt"),
+      minWidth: 200,
+      valueGetter: (params) => {
+        return dayjs(params.row.createdAt).format("HH:mm DD/MM/YYYY");
+      },
+    },
+    {
+      field: "shippingFee",
+      headerName: t("shippingFee"),
+      type: "number",
+      minWidth: 100,
+    },
+    {
+      field: "total",
+      headerName: t("total"),
+      type: "number",
+      minWidth: 100,
+    },
+    {
+      field: "status",
+      headerName: t("status"),
+      valueGetter: getStatusName,
+      minWidth: 130,
+      renderCell: (params) => {
+        return (
+          <span
+            className={`${
+              listStatus[params.row.status].color
+            } inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium`}
+          >
+            <svg
+              className={`-ml-0.5 mr-1.5 h-2 w-2 ${
+                listStatus[params.row.status].colorDot
+              }`}
+              fill="currentColor"
+              viewBox="0 0 8 8"
+            >
+              <circle cx={4} cy={4} r={3} />
+            </svg>
+            {listStatus[params.row.status].text}
+          </span>
+        );
+      },
+    },
+  ];
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="pt-2 text-xl font-semibold text-gray-900">Đơn hàng</h1>
+          <h1 className="pt-2 text-xl font-semibold text-gray-900">
+            {t("order")}
+          </h1>
           <p className="mt-2 text-sm text-gray-700">
             Danh sách tất cả các đơn hàng
           </p>
-          {isOpen && (
-            <ViewProduct
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              order={selectedOrder}
-            />
-          )}
         </div>
         <div className="mt-4 flex gap-2 sm:mt-0 sm:ml-16">
-          {selectedPeople.length > 0 && (
-            <div className="flex items-center bg-gray-50 sm:left-16">
-              <Button variant="contained" color="error" onClick={onMultiDelete}>
-                Xoá tất
-              </Button>
-            </div>
-          )}
+          <AddProduct
+            product={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
+          />
         </div>
       </div>
-      <div className="mt-6 flex flex-col">
-        <div className="-my-2 overflow-hidden sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="h-[calc(100vh_-_300px)] min-h-[500px] w-[calc(100vw_-_50px)] shadow ring-1 ring-black ring-opacity-5 sm:h-[calc(100vh_-_240px)] md:rounded-lg lg:w-[calc(100vw_-_320px)]">
-              <PerfectScrollbar>
-                <table className="min-w-full table-fixed divide-y divide-gray-300">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 w-12 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-6 backdrop-blur backdrop-filter sm:w-16 sm:px-8"
-                      >
-                        <input
-                          type="checkbox"
-                          className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
-                          ref={checkbox}
-                          checked={data?.length === 0 ? false : checked}
-                          onChange={toggleAll}
-                          disabled={data?.length === 0}
-                        />
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        STT
-                      </th>
-
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Tên khách hàng
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 min-w-[150px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Số điện thoại
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Địa chỉ
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 min-w-[100px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Ngày tạo
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 min-w-[100px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Phí ship
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 min-w-[100px] border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Tổng tiền
-                      </th>
-                      <th
-                        scope="col"
-                        className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Trạng thái
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {data?.map((person, index) => (
-                      <tr
-                        key={person._id}
-                        className="cursor-pointer hover:bg-indigo-50"
-                        onClick={() => {
-                          setIsOpen(true);
-                          setSelectedOrder(person);
-                        }}
-                        // className={
-                        //   selectedPeople.includes(person._id)
-                        //     ? "bg-gray-50"
-                        //     : undefined
-                        // }
-                      >
-                        <td className="relative w-12 px-6 sm:w-16 sm:px-8">
-                          {selectedPeople.includes(person._id) && (
-                            <div className="absolute inset-y-0 left-0 w-0.5 bg-indigo-600" />
-                          )}
-                          <input
-                            type="checkbox"
-                            className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
-                            value={person._id}
-                            checked={selectedPeople.includes(person._id)}
-                            onChange={(e) =>
-                              setSelectedPeople(
-                                e.target.checked
-                                  ? [...selectedPeople, person._id]
-                                  : selectedPeople.filter(
-                                      (p) => p !== person._id
-                                    )
-                              )
-                            }
-                          />
-                        </td>
-                        <td
-                          className={classNames(
-                            "whitespace-nowrap py-2 pr-3 text-sm font-medium",
-                            selectedPeople.includes(person._id)
-                              ? "text-indigo-600"
-                              : "text-gray-900"
-                          )}
-                        >
-                          {index + 1}
-                        </td>
-
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                          {person.name}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                          {person.phone}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                          {`${person.address}, ${person.ward}, ${person.district}, ${person.province}`}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                          {dayjs(person.createdAt).format("HH:mm DD/MM/YYYY")}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-right text-sm text-gray-500">
-                          {formatMoney(person.shippingFee)}₫
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-right text-sm font-semibold text-red-500">
-                          {formatMoney(person.total)}₫
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-center text-sm text-gray-500">
-                          <span
-                            className={`${
-                              listStatus[person.status].color
-                            } inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium`}
-                          >
-                            <svg
-                              className={`-ml-0.5 mr-1.5 h-2 w-2 ${listStatus[person.status].colorDot}`}
-                              fill="currentColor"
-                              viewBox="0 0 8 8"
-                            >
-                              <circle cx={4} cy={4} r={3} />
-                            </svg>
-                            {listStatus[person.status].text}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </PerfectScrollbar>
-            </div>
-            {/* <TablePagination
-              rowsPerPageOptions={[15, 50, 100]}
-              component="div"
-              count={data ? data?.total : 15}
-              rowsPerPage={data ? data?.pageSize : 15}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
-          </div>
-        </div>
+      <div className="mt-6 h-[calc(100vh_-_190px)] w-full">
+        <DataGrid
+          rows={rows || []}
+          getRowId={(row) => row._id}
+          columns={columns}
+          loading={isLoading || isFetching}
+          rowCount={data?.total || 0}
+          pageSize={data?.pageSize || 50}
+          paginationMode="server"
+          onPageChange={onPageChange}
+          rowsPerPageOptions={[25, 50, 100]}
+          checkboxSelection
+          disableSelectionOnClick
+          onSelectionModelChange={onRowSelected}
+        />
       </div>
     </div>
   );

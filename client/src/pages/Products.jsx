@@ -5,10 +5,9 @@ import { addToCart } from "../features/cart/cartSlice";
 import { formatMoney } from "../utils/commonFunction";
 import queryString from "query-string";
 import toast from "react-hot-toast";
-import { useProducts } from "../hooks/useProductsData";
 import Button from "@mui/material/Button";
 import { Breadcrumbs } from "../components";
-import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import {
   ChevronDownIcon,
@@ -19,6 +18,10 @@ import {
 } from "@heroicons/react/solid";
 import { typeParent } from "../data/categoriesSelect";
 import categories from "../data/categories.json";
+import { useGetProductsQuery } from "../services/apiSlice";
+import { useTranslation } from "react-i18next";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const sortOptions = [
   { name: "Phổ biến nhất", href: "#", current: true },
@@ -36,22 +39,16 @@ const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const onSuccess = () => {};
-  const onError = () => {
-    toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
-  };
+  const { t } = useTranslation();
   const { type, page = 1, typeChild } = queryString.parse(location.search);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [subCategories, setSubCategories] = useState([]);
 
-  const { isLoading, isFetching, data } = useProducts(
+  const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
     page,
     type,
     typeChild,
-    onSuccess,
-    onError
-  );
+  });
 
   useEffect(() => {
     const category = categories.find((x) => x.code === type);
@@ -127,7 +124,7 @@ const Products = () => {
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="relative z-10 flex items-baseline justify-between border-b border-gray-200 pt-6 pb-6">
-                <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
                   {getNameType()}
                 </h1>
 
@@ -229,15 +226,12 @@ const Products = () => {
                   {/* Product grid */}
                   <div className="lg:col-span-4">
                     {isLoading ? (
-                      <div className="flex items-center justify-center">
-                        <img
-                          src="/images/favicon.ico"
-                          className="animate-spin"
-                        />
-                      </div>
+                      <Box className="flex items-center justify-center">
+                        <CircularProgress />
+                      </Box>
                     ) : (
                       <div className="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        {data?.data?.map((product) => {
+                        {data?.content?.map((product) => {
                           return (
                             <div
                               className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
@@ -292,7 +286,7 @@ const Products = () => {
                                     size="small"
                                     onClick={() => dispatch(addToCart(product))}
                                   >
-                                    Đặt mua
+                                    {t("buyNow")}
                                   </Button>
                                 </div>
                               </div>

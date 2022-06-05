@@ -5,21 +5,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import { formatMoney } from "../utils/commonFunction";
 import { addToCart } from "../features/cart/cartSlice";
 import Button from "@mui/material/Button";
-import { useProduct, useProducts } from "../hooks/useProductsData";
 import Rating from "@mui/material/Rating";
 import { AiOutlineShopping } from "react-icons/ai";
 import Slider from "react-slick";
 import { Breadcrumbs } from "../components";
+import { useGetProductQuery, useGetProductsQuery } from "../services/apiSlice";
+import { useTranslation } from "react-i18next";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [indexImage, setIndexImage] = useState(0);
 
-  const { isLoading, data } = useProduct(id);
-  const { data: dataProduct } = useProducts();
+  const { data, isLoading } = useGetProductQuery(id);
+  const { data: dataProducts, isLoadingProducts } = useGetProductsQuery();
+
   const settings = {
     dots: false,
     infinite: true,
@@ -92,7 +95,7 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="pb-12 md:pr-16">
-              <h3 className="mt-4 mb-2 text-2xl font-semibold md:text-4xl">
+              <h3 className="mt-4 mb-2 text-3xl font-medium">
                 {data.name}
               </h3>
               <Rating name="read-only" value={5} readOnly />
@@ -144,14 +147,14 @@ const ProductDetail = () => {
                     navigate("/shopping-cart");
                   }}
                 >
-                  Mua ngay
+                  {t("buyNow")}
                 </Button>
               </div>
             </div>
           </div>
           <div className="rounded-lg bg-white p-4 shadow md:p-8">
             <div>
-              <h1 className="mb-10 text-center text-2xl font-semibold">
+              <h1 className="mb-10 text-center text-2xl font-medium">
                 Mô tả sản phẩm
               </h1>
               <div
@@ -164,10 +167,10 @@ const ProductDetail = () => {
       )}
 
       <div className="mt-10 rounded-lg bg-white p-8 shadow">
-        <h2 className="mb-2 text-xl font-semibold">Các sản phẩm liên quan</h2>
+        <h2 className="mb-2 text-xl font-medium">Các sản phẩm liên quan</h2>
         <Slider {...settings}>
-          {dataProduct &&
-            dataProduct.data.map((product) => (
+          {dataProducts &&
+            dataProducts?.content?.map((product) => (
               <div className="p-2" key={product._id}>
                 <div
                   className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
@@ -207,7 +210,7 @@ const ProductDetail = () => {
                         {formatMoney(product.price)}₫
                       </p>
                       <Button variant="contained" color="error" size="small">
-                        Đặt mua
+                        {t("buyNow")}
                       </Button>
                     </div>
                   </div>

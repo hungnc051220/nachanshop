@@ -1,114 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useProducts } from "../hooks/useProductsData";
-import { formatMoney } from "../utils/commonFunction";
-import { addToCart } from "../features/cart/cartSlice";
-import Button from "@mui/material/Button";
+import { useGetProductsQuery } from "../services/apiSlice";
+import Category from "./Category";
 
 const Categories = () => {
-  const dispatch = useDispatch();
-  const onSuccess = () => {};
-  const onError = () => {
-    toast.error("Hệ thống gặp lỗi bất thường. Đang thử lại...");
-  };
+  const { data: dataCssk, isLoadingCssk } = useGetProductsQuery({
+    page: 1,
+    type: "cssk",
+    limit: 5,
+  });
 
-  const { isLoading: isLoadingCollagen, data: dataCollagen } = useProducts(
-    1,
-    "collagen",
-    null,
-    onSuccess,
-    onError
-  );
+  const { data: dataTd, isLoadingTd } = useGetProductsQuery({
+    page: 1,
+    type: "td",
+    limit: 5,
+  });
 
-  const { isLoading: isLoadingTpld, data: dataTpld } = useProducts(
-    1,
-    "tpld",
-    null,
-    onSuccess,
-    onError
-  );
+  const { data: dataCsdm, isLoadingCsdm } = useGetProductsQuery({
+    page: 1,
+    type: "csdm",
+    limit: 5,
+  });
 
   return (
-    <section className="mx-auto my-10 max-w-7xl  px-4 sm:px-6 lg:px-8">
-      {/* Sản phẩm bán chạy */}
-      <div className="rounded-lg bg-white p-6 pt-6 shadow">
-        <div className="mb-6 px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
-          <h2
-            id="category-heading"
-            className="text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl"
-          >
-            Sản phẩm bán chạy
-          </h2>
-          <a
-            href="#"
-            className="hidden text-sm font-semibold text-indigo-600 hover:scale-110 hover:text-indigo-500 sm:block"
-          >
-            Xem tất cả sản phẩm<span aria-hidden="true"> →</span>
-          </a>
-        </div>
-
-        <div className="grid-cols grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {dataCollagen?.data?.map((product) => {
-            return (
-              <div
-                className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
-                key={product._id}
-              >
-                <div className="relative p-5">
-                  <Link
-                    to={`/products/${product._id}`}
-                    onClick={() => {
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    <img
-                      src={`${import.meta.env.VITE_API_URL}/${
-                        product.productImage[0]
-                      }`}
-                      alt={product.name}
-                      className="product-img default"
-                    />
-                  </Link>
-                </div>
-
-                <div className="p-5">
-                  <Link
-                    to={`/products/${product._id}`}
-                    className="block text-base font-medium uppercase text-red-500"
-                    onClick={() => {
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    {product?.typeChildName}
-                  </Link>
-
-                  <Link
-                    to={`/products/${product._id}`}
-                    className="line-clamp-2"
-                  >
-                    <h3 className="text-sm text-gray-600">{product.name}</h3>
-                  </Link>
-
-                  <div className="mt-2 flex flex-col gap-2">
-                    <p className="mb-0 text-xl font-semibold">
-                      {formatMoney(product.price)}₫
-                    </p>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      size="small"
-                      onClick={() => dispatch(addToCart(product))}
-                    >
-                      Đặt mua
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+    <section className="mx-auto my-10 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
+      <Category
+        name="Chăm sóc sức khoẻ"
+        icon="shield"
+        products={dataCssk?.content}
+        link="/products?type=cssk"
+        loading={isLoadingCssk}
+      />
+      <Category
+        name="Chăm sóc sắc đẹp"
+        icon="lipstick"
+        link="/products?type=tpld"
+        products={dataCsdm?.content}
+        loading={isLoadingCsdm}
+      />
+      <Category
+        name="Mẹ và Bé"
+        icon="feeding-bottle"
+        link="/products?type=mvb"
+        products={dataCsdm?.content}
+        loading={isLoadingCsdm}
+      />
+      <Category
+        name="Thực phẩm Nhật Bản"
+        icon="bibimbap"
+        link="/products?type=tpnb"
+        products={dataCsdm?.content}
+        loading={isLoadingCsdm}
+      />
     </section>
   );
 };

@@ -28,11 +28,10 @@ import {
 } from "@heroicons/react/solid";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useDashboard } from "../hooks/useDashboard";
-import { useOrders } from "../hooks/useOrders";
 import { CardStat, ChartLine, OrderList } from "../components";
 import { formatMoney } from "../utils/commonFunction";
-
+import { useGetDashboardQuery, useGetOrdersQuery } from "../services/apiSlice";
+import { useTranslation } from 'react-i18next';
 const people = [
   {
     name: "Calvin Hawkins",
@@ -55,41 +54,44 @@ const people = [
 ];
 
 const Dashboard = () => {
-  const { data } = useDashboard();
-  const { data: orders } = useOrders();
+  const { data, isLoading, isFetching, isError, error} = useGetDashboardQuery();
+  const { data: orders } = useGetOrdersQuery();
+  const { t } = useTranslation();
 
+  console.log(orders);
+  
   return (
     <div className="bg-gray-50">
       <div className="px-4 sm:px-6 lg:px-8">
         <h2 className="pt-2 text-xl font-semibold leading-6 text-gray-900">
-          Bảng điều khiển
+          {t("dashboard")}
         </h2>
         <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {/* Card */}
           <CardStat
             name="Doanh thu"
-            amount={`${formatMoney(data?.total)}₫`}
+            amount={`${formatMoney(data?.total || 0)}₫`}
             icon={BsCurrencyDollar}
             color="from-indigo-500 to-indigo-600"
             href="#!"
           />
           <CardStat
             name="Đơn hàng"
-            amount={formatMoney(data?.orderCount)}
+            amount={formatMoney(data?.orderCount || 0)}
             icon={AiOutlineShoppingCart}
             color="from-orange-500 to-orange-600"
             href="/order-management"
           />
           <CardStat
             name="Sản phẩm"
-            amount={formatMoney(data?.productCount)}
+            amount={formatMoney(data?.productCount || 0)}
             icon={GiftIcon}
             color="from-teal-500 to-teal-600"
             href="/product-management"
           />
           <CardStat
             name="Người dùng"
-            amount={formatMoney(data?.userCount)}
+            amount={formatMoney(data?.userCount || 0)}
             icon={UserIcon}
             color="from-yellow-400 to-yellow-500"
             href="/user-management"
@@ -121,7 +123,7 @@ const Dashboard = () => {
               Sản phẩm được mua nhiều nhất
             </h2>
             <ul role="list" className="divide-y divide-gray-200">
-              {people.map((person) => (
+              {[].map((person) => (
                 <li key={person.email} className="flex py-4">
                   <img
                     className="h-10 w-10 rounded-full"

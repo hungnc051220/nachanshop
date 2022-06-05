@@ -3,9 +3,9 @@ const Product = require("../models/product");
 const { downloadFile } = require("../download2");
 
 const getProducts = async (req, res) => {
-  const { page, type, typeChild } = req.query;
+  const { page, type, typeChild, limit } = req.query;
   try {
-    const LIMIT = 100;
+    const LIMIT = limit || 25;
     const startIndex = (Number(page) - 1) * LIMIT;
 
     const dataSearch = {};
@@ -27,7 +27,7 @@ const getProducts = async (req, res) => {
       currentPage: Number(page) || 1,
       pageSize: LIMIT,
       total,
-      data: products,
+      content: products,
     });
   } catch (error) {
     res.status(404).json({ messsage: error.message });

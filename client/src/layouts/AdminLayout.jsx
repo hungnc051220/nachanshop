@@ -84,7 +84,6 @@ const AdminLayout = () => {
     socket?.on("getAllNotification", (result) => {
       setNotifications(result);
     });
-    console.log(socket);
   }, [socket]);
 
   useEffect(() => {

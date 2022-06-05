@@ -36,7 +36,7 @@ app.use("/api/mail", require("./routes/mail"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/dashboard", require("./routes/dashboard"));
 app.use("/api/ghtk", require("./routes/ghtk"));
-app.use("/api/gen", require("./routes/gen"));
+//app.use("/api/gen", require("./routes/gen"));
 app.use("/api/notifications", require("./routes/notifications"));
 
 // Socket
