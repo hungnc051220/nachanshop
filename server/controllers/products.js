@@ -48,12 +48,10 @@ const getProductById = async (req, res) => {
 };
 
 const getProductBySearch = async (req, res) => {
-  const { type } = req.query;
+  const { name } = req.query;
   try {
-    const typeProduct = new RegExp(type, "i");
-
-    const products = await Product.find({ type: typeProduct });
-
+    const nameProduct = new RegExp(name, "i");
+    const products = await Product.find({ name: nameProduct });
     res.status(200).json(products);
   } catch (error) {
     res.status(404).json({ message: error.message });

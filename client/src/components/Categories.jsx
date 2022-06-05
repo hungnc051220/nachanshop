@@ -9,15 +9,21 @@ const Categories = () => {
     limit: 5,
   });
 
-  const { data: dataTd, isLoadingTd } = useGetProductsQuery({
-    page: 1,
-    type: "td",
-    limit: 5,
-  });
-
   const { data: dataCsdm, isLoadingCsdm } = useGetProductsQuery({
     page: 1,
     type: "csdm",
+    limit: 5,
+  });
+
+  const { data: dataMvb, isLoadingMvb } = useGetProductsQuery({
+    page: 1,
+    type: "mvb",
+    limit: 5,
+  });
+
+  const { data: dataTpnb, isLoadingTpnb } = useGetProductsQuery({
+    page: 1,
+    type: "tpnb",
     limit: 5,
   });
 
@@ -41,15 +47,15 @@ const Categories = () => {
         name="Mẹ và Bé"
         icon="feeding-bottle"
         link="/products?type=mvb"
-        products={dataCsdm?.content}
-        loading={isLoadingCsdm}
+        products={dataMvb?.content}
+        loading={isLoadingMvb}
       />
       <Category
         name="Thực phẩm Nhật Bản"
         icon="bibimbap"
         link="/products?type=tpnb"
-        products={dataCsdm?.content}
-        loading={isLoadingCsdm}
+        products={dataTpnb?.content}
+        loading={isLoadingTpnb}
       />
     </section>
   );

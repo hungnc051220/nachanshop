@@ -22,5 +22,7 @@
   "total": "Total",
   "collagen": "Collagen",
   "viewAll": "View all",
-  "buyNow": "Buy now"
+  "buyNow": "Buy now",
+  "searchByProductName": "Search by Product name",
+  "noResult": "No results found"
 }

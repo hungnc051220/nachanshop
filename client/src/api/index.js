@@ -11,8 +11,8 @@ const axiosGHInstance2 = axios.create({
 });
 
 export const fetchProducts = () => axiosInstance.get("/products");
-export const fetchProductsBySearch = (type) =>
-  axiosInstance.get(`/products/search?type=${type}`);
+export const fetchProductsBySearch = (name, signal) =>
+  axiosInstance.get(`/products/search?name=${name}`, { signal });
 export const getProduct = (id) => axiosInstance.get(`/products/${id}`);
 export const addProduct = (data) => axiosInstance.post(`/products`, data);
 export const updateProduct = (id, updatedProduct) =>

@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { BsCart3, BsSearch } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
+import { useTranslation } from "react-i18next";
+import Search from "./Search";
 
 const MainHeader = () => {
+  const { t } = useTranslation();
   const { cartItems, total } = useSelector((state) => state.cart);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="shadow">
+      <Search isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="mx-auto flex max-w-7xl items-center justify-between space-x-2 px-4 py-4 sm:px-6 md:space-x-4 lg:px-8">
         <Link to="/" className="hidden md:block">
           <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
@@ -20,16 +25,19 @@ const MainHeader = () => {
         <Link to="/" className="block md:hidden">
           <img src="/images/favicon.ico" alt="logo" className="h-auto" />
         </Link>
-        <OutlinedInput
-          className="flex-1 rounded-lg"
-          placeholder="Nhập tên sản phẩm"
-          color="warning"
+        <TextField
+          onClick={() => setIsOpen(true)}
+          placeholder={t("searchByProductName")}
+          sx={{ m: 1 }}
           size="small"
-          endAdornment={
-            <InputAdornment position="end">
-              <BsSearch />
-            </InputAdornment>
-          }
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <BsSearch />
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Link

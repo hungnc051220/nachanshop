@@ -6,10 +6,10 @@ export const apiSlice = createApi({
   tagTypes: ["Products, Orders, Dashboard"],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ page, type, typeChild, limit }) =>
-        `/products?page=${page}${type ? `&type=${type}` : ""}${
-          typeChild ? `&typeChild=${typeChild}` : ""
-        }${limit ? `&limit=${limit}` : ""}`,
+      query: (props) =>
+        `/products?page=${props.page}${props.type ? `&type=${props.type}` : ""}${
+          props.typeChild ? `&typeChild=${props.typeChild}` : ""
+        }${props.limit ? `&limit=${props.limit}` : ""}`,
       providesTags: ["Products"],
     }),
     getProduct: builder.query({

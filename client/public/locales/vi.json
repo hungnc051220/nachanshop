@@ -22,5 +22,7 @@
   "total": "Tổng tiền",
   "collagen": "Collagen",
   "viewAll": "Xem tất cả",
-  "buyNow": "Mua ngay"
+  "buyNow": "Mua ngay",
+  "searchByProductName": "Tìm theo tên sản phẩm",
+  "noResult": "Không có kết quả nào"
 }
