@@ -13,7 +13,7 @@ import Search from "./Search";
 const MainHeader = () => {
   const { t } = useTranslation();
   const { cartItems, total } = useSelector((state) => state.cart);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="shadow">
@@ -58,8 +58,8 @@ const MainHeader = () => {
             </Badge>
           </IconButton>
           <div>
-            <span className="text-sm text-gray-500">Tổng tiền</span>
-            <h5 className="text-base font-semibold">{formatMoney(total)}₫</h5>
+            <span className="text-sm text-gray-500 whitespace-nowrap">{t("total")}</span>
+            <h5 className="text-base font-semibold whitespace-nowrap">{formatMoney(total)}₫</h5>
           </div>
         </Link>
       </div>

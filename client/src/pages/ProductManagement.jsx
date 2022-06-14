@@ -76,8 +76,24 @@ const ProductManagement = () => {
   };
 
   const columns = [
-    { field: "no", headerName: t("no"), width: 70 },
-    { field: "name", headerName: t("productName"), flex: 1 },
+    { field: "no", headerName: t("no"), width: 50 },
+    {
+      field: "name",
+      headerName: t("productName"),
+      flex: 1,
+      renderCell: (params) => (
+        <div className="flex items-center gap-2">
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${
+              params.row.productImage[0]
+            }`}
+            alt={data.name}
+            className="h-10 w-10"
+          />
+          <p>{params.row.name}</p>
+        </div>
+      ),
+    },
     {
       field: "typeParent",
       headerName: t("typeParent"),
