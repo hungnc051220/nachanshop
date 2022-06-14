@@ -19,6 +19,8 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useTranslation } from "react-i18next";
+import CustomInput from "../FormField/CustomInput";
+import CustomSelect from "../FormField/CustomSelect";
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
   props,
@@ -46,12 +48,18 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
 });
 
 const schema = yup.object().shape({
-  name: yup.string().required(),
-  typeParent: yup.string().required(),
+  productName: yup.string().required(),
+  //typeParent: yup.string().required(),
 });
 
 const AddProduct = ({ product, setSelectedProduct }) => {
   const { t } = useTranslation();
+
+  const status = [
+    { id: 0, name: "outOfStock" },
+    { id: 1, name: "stocking" },
+  ];
+
   const {
     handleSubmit,
     control,
@@ -98,9 +106,10 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   const [childData, setChildData] = useState([]);
   const [link, setLink] = useState("");
 
-  const handleChange = (event) => {
-    if (typesChild[event.target.value])
-      setChildData(typesChild[event.target.value]);
+  console.log(childData);
+
+  const getChildType = (value) => {
+    if (typesChild[value]) setChildData(typesChild[value]);
     else setChildData([]);
   };
 
@@ -117,36 +126,37 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   };
 
   const onSubmit = async (data) => {
-    const {
-      name,
-      status,
-      typeParent,
-      typeChild,
-      countInStock,
-      price,
-      description,
-      productImage,
-    } = data;
+    console.log(data);
+    // const {
+    //   name,
+    //   status,
+    //   typeParent,
+    //   typeChild,
+    //   countInStock,
+    //   price,
+    //   description,
+    //   productImage,
+    // } = data;
 
-    const fd = new FormData();
-    fd.append("name", name);
-    fd.append("status", status);
-    fd.append("typeParent", typeParent);
-    fd.append("typeChild", typeChild);
-    fd.append("countInStock", countInStock);
-    fd.append("price", price);
-    fd.append("description", description);
+    // const fd = new FormData();
+    // fd.append("name", name);
+    // fd.append("status", status);
+    // fd.append("typeParent", typeParent);
+    // fd.append("typeChild", typeChild);
+    // fd.append("countInStock", countInStock);
+    // fd.append("price", price);
+    // fd.append("description", description);
 
-    for (let i = 0; i < productImage.length; i++) {
-      fd.append("productImage", productImage[i]);
-    }
+    // for (let i = 0; i < productImage.length; i++) {
+    //   fd.append("productImage", productImage[i]);
+    // }
 
-    try {
-      await addProduct(fd).unwrap();
-      setOpen(false);
-    } catch {
-      toast.error(error);
-    }
+    // try {
+    //   await addProduct(fd).unwrap();
+    //   setOpen(false);
+    // } catch {
+    //   toast.error(error);
+    // }
   };
 
   return (
@@ -206,20 +216,17 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                         {!product && (
                           <>
                             <div className="sm:col-span-7">
-                              <TextField
+                              <CustomInput
                                 id="link"
-                                name="link"
-                                label="Link sản phẩm từ web Japana"
-                                variant="outlined"
-                                fullWidth
-                                size="small"
+                                label={t("Link sản phẩm từ web Japana")}
+                                placeholder={t("Link sản phẩm từ web Japana")}
                                 onChange={(e) => setLink(e.target.value)}
                               />
                             </div>
 
                             <div className="sm:col-span-2">
                               <Button
-                                variant="contained"
+                                variant="outlined"
                                 onClick={getInfo}
                                 color="warning"
                               >
@@ -230,23 +237,12 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                         )}
 
                         <div className="sm:col-span-7">
-                          <Controller
-                            name="name"
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <TextField
-                                {...field}
-                                variant="outlined"
-                                label="Tên sản phẩm"
-                                size="small"
-                                fullWidth
-                                error={!!errors.name}
-                                helperText={
-                                  errors.name ? errors.name?.message : ""
-                                }
-                              />
-                            )}
+                          <CustomInput
+                            id="productName"
+                            label={t("productName")}
+                            {...register("productName")}
+                            errors={errors.productName}
+                            placeholder={t("productName")}
                           />
                         </div>
 
@@ -254,23 +250,15 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                           <Controller
                             name="status"
                             control={control}
-                            defaultValue={1}
-                            render={({ field }) => (
-                              <TextField
-                                {...field}
-                                select
-                                variant="outlined"
-                                label="Trạng thái"
-                                size="small"
-                                fullWidth
-                                error={!!errors.status}
-                                helperText={
-                                  errors.status ? errors.status?.message : ""
-                                }
-                              >
-                                <MenuItem value={1}>Còn hàng</MenuItem>
-                                <MenuItem value={0}>Hết hàng</MenuItem>
-                              </TextField>
+                            defaultValue=""
+                            render={({ field: { onChange } }) => (
+                              <CustomSelect
+                                label={t("status")}
+                                name="status"
+                                onChange={onChange}
+                                options={status}
+                                control={control}
+                              />
                             )}
                           />
                         </div>
@@ -280,31 +268,15 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeParent"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange, value } }) => (
-                              <TextField
-                                select
-                                onChange={(e) => {
-                                  onChange(e);
-                                  handleChange(e);
-                                }}
-                                value={value}
-                                variant="outlined"
-                                label="Loại hàng cha"
-                                size="small"
-                                fullWidth
-                                error={!!errors.typeParent}
-                                helperText={
-                                  errors.typeParent
-                                    ? errors.typeParent?.message
-                                    : ""
-                                }
-                              >
-                                {typeParent?.map((item) => (
-                                  <MenuItem key={item.value} value={item.value}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))}
-                              </TextField>
+                            render={({ field: { onChange } }) => (
+                              <CustomSelect
+                                label={t("typeParent")}
+                                name="typeParent"
+                                onChange={onChange}
+                                options={typeParent}
+                                control={control}
+                                callback={getChildType}
+                              />
                             )}
                           />
                         </div>
@@ -314,21 +286,14 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeChild"
                             control={control}
                             defaultValue=""
-                            render={({ field }) => (
-                              <TextField
-                                {...field}
-                                select
-                                variant="outlined"
-                                label="Loại hàng con"
-                                size="small"
-                                fullWidth
-                              >
-                                {childData?.map((item) => (
-                                  <MenuItem key={item.value} value={item.value}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))}
-                              </TextField>
+                            render={({ field: { onChange } }) => (
+                              <CustomSelect
+                                label={t("typeChild")}
+                                name="typeChild"
+                                onChange={onChange}
+                                options={childData}
+                                control={control}
+                              />
                             )}
                           />
                         </div>

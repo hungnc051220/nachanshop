@@ -3,27 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-shadow {
-  box-shadow: -2px 2px 70px -25px rgb(0 0 0 / 30%);
-}
-
 .ck-editor__editable_inline {
   min-height: 200px;
   max-height: 390px;
   overflow: auto;
 }
-
-body::-webkit-scrollbar { width: 15px; }
-
-body::-webkit-scrollbar-track {
-  background: hsl(0, 100%, 100%);;
-  border-left: 1px solid hsl(0, 0%, 93%);
-}
-
-body::-webkit-scrollbar-thumb {
-  background: hsl(0, 0%, 80%);
-  border: 3px solid hsl(0, 100%, 100%);;
-  border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }

@@ -1,38 +1,38 @@
 export const typeParent = [
   {
-    value: "collagen",
+    id: "collagen",
     name: "Collagen",
   },
   {
-    value: "tpld",
+    id: "tpld",
     name: "Thực phẩm làm đẹp",
   },
   {
-    value: "gc",
+    id: "gc",
     name: "Giảm cân",
   },
   {
-    value: "cssk",
+    id: "cssk",
     name: "Chăm sóc sức khoẻ",
   },
   {
-    value: "td",
+    id: "td",
     name: "Trang điểm",
   },
   {
-    value: "csdm",
+    id: "csdm",
     name: "Chăm sóc da mặt",
   },
   {
-    value: "csct",
+    id: "csct",
     name: "Chăm sóc cơ thể",
   },
   {
-    value: "mvb",
+    id: "mvb",
     name: "Mẹ và Bé",
   },
   {
-    value: "tpnb",
+    id: "tpnb",
     name: "Thực phẩm Nhật Bản",
   },
 ];
@@ -40,249 +40,249 @@ export const typeParent = [
 export const typeChild = {
   collagen: [
     {
-      value: "nuoc-uong-collagen",
+      id: "nuoc-uong-collagen",
       name: "Nước uống Collagen",
     },
     {
-      value: "collagen-dang-bot-thach-an",
+      id: "collagen-dang-bot-thach-an",
       name: "Collagen dạng bột - Thạch ăn",
     },
     {
-      value: "collagen-dang-vien-uong",
+      id: "collagen-dang-vien-uong",
       name: "Collagen dạng viên uống",
     },
   ],
   tpld: [
     {
-      value: "trang-da-tri-nam",
+      id: "trang-da-tri-nam",
       name: "Trắng da - Trị nám",
     },
     {
-      value: "nhau-thai-placenta",
+      id: "nhau-thai-placenta",
       name: "Nhau thai - Placenta",
     },
     {
-      value: "giam-den-nghe-den-toi-den",
+      id: "giam-den-nghe-den-toi-den",
       name: "Giấm đen - Nghệ đen - Tỏi đen",
     },
     {
-      value: "sua-ong-chua-chong-lao-hoa",
+      id: "sua-ong-chua-chong-lao-hoa",
       name: "Sữa ong chúa - Chống lão hoá",
     },
   ],
   cssk: [
     {
-      value: "tao-xoan",
+      id: "tao-xoan",
       name: "Tảo xoắn",
     },
     {
-      value: "nam-linh-chi",
+      id: "nam-linh-chi",
       name: "Nấm linh chi",
     },
     {
-      value: "ho-tro-dieu-tri-ung-thu",
+      id: "ho-tro-dieu-tri-ung-thu",
       name: "Hỗ trợ điều trị ung thư",
     },
     {
-      value: "ho-tro-xuong-khop",
+      id: "ho-tro-xuong-khop",
       name: "Hỗ trợ xương khớp",
     },
     {
-      value: "ho-tro-dieu-tri-tai-bien",
+      id: "ho-tro-dieu-tri-tai-bien",
       name: "Hỗ trợ điều trị tai biến",
     },
     {
-      value: "ho-tro-nao-va-tri-nho",
+      id: "ho-tro-nao-va-tri-nho",
       name: "Hỗ trợ não và trí nhớ",
     },
     {
-      value: "thai-doc-gan",
+      id: "thai-doc-gan",
       name: "Thải độc gan",
     },
     {
-      value: "suc-khoe-va-sinh-ly-nam",
+      id: "suc-khoe-va-sinh-ly-nam",
       name: "Sức khoẻ & Sinh lý nam",
     },
     {
-      value: "suc-khoe-va-sinh-ly-nu",
+      id: "suc-khoe-va-sinh-ly-nu",
       name: "Sức khoẻ & Sinh lý nữ",
     },
     {
-      value: "cham-soc-mat",
+      id: "cham-soc-mat",
       name: "Chăm sóc mắt",
     },
     {
-      value: "cham-soc-he-tieu-hoa",
+      id: "cham-soc-he-tieu-hoa",
       name: "Chăm sóc hệ tiêu hoá",
     },
     {
-      value: "vitamin-tong-hop",
+      id: "vitamin-tong-hop",
       name: "Vitamin tổng hợp",
     },
     {
-      value: "dieu-tri-khac",
+      id: "dieu-tri-khac",
       name: "Điều trị khác",
     },
   ],
   td: [
     {
-      value: "phan-nen-kem-nen",
+      id: "phan-nen-kem-nen",
       name: "Phấn nền - Kem nền",
     },
     {
-      value: "son-moi",
+      id: "son-moi",
       name: "Son môi",
     },
     {
-      value: "tay-trang",
+      id: "tay-trang",
       name: "Tẩy trang",
     },
     {
-      value: "trang-diem-mat-mi-may",
+      id: "trang-diem-mat-mi-may",
       name: "Trang điểm mắt - Mi - Mày",
     },
   ],
   csdm: [
     {
-      value: "duong-trang",
+      id: "duong-trang",
       name: "Dưỡng trắng",
     },
     {
-      value: "chong-lao-hoa",
+      id: "chong-lao-hoa",
       name: "Chống lão hoá",
     },
     {
-      value: "duong-am",
+      id: "duong-am",
       name: "Dưỡng ẩm",
     },
     {
-      value: "chong-nang",
+      id: "chong-nang",
       name: "Chống nắng",
     },
     {
-      value: "dac-tri-nam",
+      id: "dac-tri-nam",
       name: "Đăc trị nám",
     },
     {
-      value: "dac-tri-mun",
+      id: "dac-tri-mun",
       name: "Đặc trị mụn",
     },
     {
-      value: "serum-tinh chat",
+      id: "serum-tinh chat",
       name: "Serum - Tinh chất",
     },
     {
-      value: "kem-duong-mat",
+      id: "kem-duong-mat",
       name: "Kem dưỡng mắt",
     },
     {
-      value: "sua-rua-mat",
+      id: "sua-rua-mat",
       name: "Sữa rửa mặt",
     },
     {
-      value: "mat-na",
+      id: "mat-na",
       name: "Mặt nạ",
     },
     {
-      value: "nuoc-hoa-hong-va-can-bang",
+      id: "nuoc-hoa-hong-va-can-bang",
       name: "Nước hoa hồng & Cân bằng",
     },
     {
-      value: "bo-cham-soc-da-mat",
+      id: "bo-cham-soc-da-mat",
       name: "Bộ chăm sóc da mặt",
     },
     {
-      value: "kem-duong-da-mat",
+      id: "kem-duong-da-mat",
       name: "Kem dưỡng da mặt",
     },
   ],
   csct: [
     {
-      value: "cham-soc-toc",
+      id: "cham-soc-toc",
       name: "Chăm sóc tóc",
     },
     {
-      value: "sua-tam",
+      id: "sua-tam",
       name: "Sữa tắm",
     },
     {
-      value: "duong-the",
+      id: "duong-the",
       name: "Dưỡng thể",
     },
     {
-      value: "ve-sinh-ca-nhan",
+      id: "ve-sinh-ca-nhan",
       name: "Vệ sinh cá nhân",
     },
     {
-      value: "tay-te-bao-chet",
+      id: "tay-te-bao-chet",
       name: "Tẩy tế bào chết",
     },
     {
-      value: "bo-cham-soc-co-the",
+      id: "bo-cham-soc-co-the",
       name: "Bộ chăm sóc cơ thể",
     },
   ],
   mvb: [
     {
-      value: "sua-nhat",
+      id: "sua-nhat",
       name: "Sữa Nhật",
     },
     {
-      value: "binh-sua-phu-kien",
+      id: "binh-sua-phu-kien",
       name: "Bình sữa - Phụ kiện",
     },
     {
-      value: "ngu-coc-nhat-ban",
+      id: "ngu-coc-nhat-ban",
       name: "Ngũ cốc Nhật Bản",
     },
     {
-      value: "thuc-pham-an-dam",
+      id: "thuc-pham-an-dam",
       name: "Thực phẩm ăn dạm",
     },
     {
-      value: "suc-khoe-cho-be",
+      id: "suc-khoe-cho-be",
       name: "Sức khoẻ cho bé",
     },
     {
-      value: "thuc-pham-tang-chieu-cao",
+      id: "thuc-pham-tang-chieu-cao",
       name: "Thực phẩm tăng chiều cao",
     },
     {
-      value: "cham-soc-ve-sinh",
+      id: "cham-soc-ve-sinh",
       name: "Chăm sóc vệ sinh",
     },
     {
-      value: "danh-cho-me",
+      id: "danh-cho-me",
       name: "Dành cho mẹ",
     },
   ],
   tpnb: [
     {
-      value: "banh-keo",
+      id: "banh-keo",
       name: "Bánh kẹo",
     },
     {
-      value: "tra-nhat-ban",
+      id: "tra-nhat-ban",
       name: "Trà Nhật Bản",
     },
     {
-      value: "hop-qua-tet",
+      id: "hop-qua-tet",
       name: "Hộp quà tết",
     },
     {
-      value: "ruou-nhat-ban",
+      id: "ruou-nhat-ban",
       name: "Rượu Nhật Bản",
     },
     {
-      value: "do-uong-va-giai-khat",
+      id: "do-uong-va-giai-khat",
       name: "Đồ uống và giải khát",
     },
     {
-      value: "thuc-pham-kho",
+      id: "thuc-pham-kho",
       name: "Thực phẩm khô",
     },
     {
-      value: "gia-vi",
+      id: "gia-vi",
       name: "Gia vị",
     },
   ],
