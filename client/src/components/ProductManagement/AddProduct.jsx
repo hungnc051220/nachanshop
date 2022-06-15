@@ -19,8 +19,6 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useTranslation } from "react-i18next";
-import CustomInput from "../FormField/CustomInput";
-import CustomSelect from "../FormField/CustomSelect";
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
   props,
@@ -42,24 +40,35 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
       }}
       thousandSeparator
       isNumericString
-      prefix="₫"
+      prefix="₫ "
     />
   );
 });
 
-const schema = yup.object().shape({
-  productName: yup.string().required(),
-  //typeParent: yup.string().required(),
-});
-
 const AddProduct = ({ product, setSelectedProduct }) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [childData, setChildData] = useState([]);
+  const [addProduct, { isLoading }] = useAddProductMutation();
 
-  const status = [
-    { id: 0, name: "outOfStock" },
-    { id: 1, name: "stocking" },
-  ];
-
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .required(t("message.validation.required", { field: t("productName") })),
+    typeParent: yup
+      .string()
+      .required(t("message.validation.required", { field: t("typeParent") })),
+    countInStock: yup
+      .number()
+      .required("message.validation.required", { field: t("countInStock") })
+      .typeError(t("message.validation.invalid", { field: t("countInStock") }))
+      .min(0, t("message.validation.invalid", { field: t("countInStock") })),
+    price: yup
+      .number()
+      .required("message.validation.required", { field: t("price") })
+      .typeError(t("message.validation.invalid", { field: t("price") }))
+      .min(0, t("message.validation.invalid", { field: t("price") })),
+  });
   const {
     handleSubmit,
     control,
@@ -70,8 +79,6 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const [addProduct, { isLoading, isError, error }] = useAddProductMutation();
 
   // useEffect(() => {
   //   if (product) {
@@ -102,61 +109,44 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   //   }
   // }, [product]);
 
-  const [open, setOpen] = useState(false);
-  const [childData, setChildData] = useState([]);
-  const [link, setLink] = useState("");
-
-  console.log(childData);
-
-  const getChildType = (value) => {
-    if (typesChild[value]) setChildData(typesChild[value]);
+  const handleChange = (event) => {
+    if (typesChild[event.target.value])
+      setChildData(typesChild[event.target.value]);
     else setChildData([]);
   };
 
-  const getInfo = async () => {
-    try {
-      const data = await generateLink(link);
-      const { title, description } = data;
+  const onSubmit = async (data) => {
+    const {
+      name,
+      status,
+      typeParent,
+      typeChild,
+      countInStock,
+      price,
+      description,
+      productImage,
+    } = data;
 
-      setValue("name", title, { shouldValidate: true });
-      setValue("description", description);
+    const fd = new FormData();
+    fd.append("name", name);
+    fd.append("status", status);
+    fd.append("typeParent", typeParent);
+    fd.append("typeChild", typeChild);
+    fd.append("countInStock", countInStock);
+    fd.append("price", price);
+    fd.append("description", description);
+
+    for (let i = 0; i < productImage.length; i++) {
+      fd.append("productImage", productImage[i]);
+    }
+
+    try {
+      await addProduct(fd).unwrap();
+      toast.success(t("message.success.add", { field: t("product") }));
+      setOpen(false);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const onSubmit = async (data) => {
-    console.log(data);
-    // const {
-    //   name,
-    //   status,
-    //   typeParent,
-    //   typeChild,
-    //   countInStock,
-    //   price,
-    //   description,
-    //   productImage,
-    // } = data;
-
-    // const fd = new FormData();
-    // fd.append("name", name);
-    // fd.append("status", status);
-    // fd.append("typeParent", typeParent);
-    // fd.append("typeChild", typeChild);
-    // fd.append("countInStock", countInStock);
-    // fd.append("price", price);
-    // fd.append("description", description);
-
-    // for (let i = 0; i < productImage.length; i++) {
-    //   fd.append("productImage", productImage[i]);
-    // }
-
-    // try {
-    //   await addProduct(fd).unwrap();
-    //   setOpen(false);
-    // } catch {
-    //   toast.error(error);
-    // }
   };
 
   return (
@@ -186,7 +176,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                 className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden">
                   <div className="bg-indigo-700 py-6 px-4 sm:px-6">
                     <div className="flex items-start justify-between">
                       <h2 className="text-lg font-medium text-white">
@@ -196,7 +186,10 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                         <button
                           type="button"
                           className="bg-primary-700 rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                          onClick={() => setOpen(false)}
+                          onClick={() => {
+                            reset();
+                            setOpen(false);
+                          }}
                         >
                           <span className="sr-only">Close panel</span>
                           <XIcon className="h-6 w-6" aria-hidden="true" />
@@ -212,37 +205,25 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                   </div>
                   <div className="relative flex flex-1 flex-col">
                     <div className="divide-y divide-gray-200 px-4 sm:px-6">
-                      <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 pt-6 pb-5 sm:grid-cols-9">
-                        {!product && (
-                          <>
-                            <div className="sm:col-span-7">
-                              <CustomInput
-                                id="link"
-                                label={t("Link sản phẩm từ web Japana")}
-                                placeholder={t("Link sản phẩm từ web Japana")}
-                                onChange={(e) => setLink(e.target.value)}
-                              />
-                            </div>
-
-                            <div className="sm:col-span-2">
-                              <Button
-                                variant="outlined"
-                                onClick={getInfo}
-                                color="warning"
-                              >
-                                Thêm nhanh
-                              </Button>
-                            </div>
-                          </>
-                        )}
-
+                      <div className="mt-2 grid grid-cols-1 gap-y-6 gap-x-4 pt-6 pb-5 sm:grid-cols-9">
                         <div className="sm:col-span-7">
-                          <CustomInput
-                            id="productName"
-                            label={t("productName")}
-                            {...register("productName")}
-                            errors={errors.productName}
-                            placeholder={t("productName")}
+                          <Controller
+                            name="name"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                variant="outlined"
+                                size="small"
+                                label="Tên sản phẩm"
+                                fullWidth
+                                error={!!errors.name}
+                                helperText={
+                                  errors.name ? errors.name?.message : ""
+                                }
+                              />
+                            )}
                           />
                         </div>
 
@@ -250,15 +231,23 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                           <Controller
                             name="status"
                             control={control}
-                            defaultValue=""
-                            render={({ field: { onChange } }) => (
-                              <CustomSelect
-                                label={t("status")}
-                                name="status"
-                                onChange={onChange}
-                                options={status}
-                                control={control}
-                              />
+                            defaultValue={1}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                select
+                                variant="outlined"
+                                size="small"
+                                label="Trạng thái"
+                                fullWidth
+                                error={!!errors.status}
+                                helperText={
+                                  errors.status ? errors.status?.message : ""
+                                }
+                              >
+                                <MenuItem value={1}>Còn hàng</MenuItem>
+                                <MenuItem value={0}>Hết hàng</MenuItem>
+                              </TextField>
                             )}
                           />
                         </div>
@@ -268,15 +257,31 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeParent"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange } }) => (
-                              <CustomSelect
-                                label={t("typeParent")}
-                                name="typeParent"
-                                onChange={onChange}
-                                options={typeParent}
-                                control={control}
-                                callback={getChildType}
-                              />
+                            render={({ field: { onChange, value } }) => (
+                              <TextField
+                                select
+                                onChange={(e) => {
+                                  onChange(e);
+                                  handleChange(e);
+                                }}
+                                value={value}
+                                variant="outlined"
+                                size="small"
+                                label="Loại hàng cha"
+                                fullWidth
+                                error={!!errors.typeParent}
+                                helperText={
+                                  errors.typeParent
+                                    ? errors.typeParent?.message
+                                    : ""
+                                }
+                              >
+                                {typeParent?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
                             )}
                           />
                         </div>
@@ -286,14 +291,21 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="typeChild"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange } }) => (
-                              <CustomSelect
-                                label={t("typeChild")}
-                                name="typeChild"
-                                onChange={onChange}
-                                options={childData}
-                                control={control}
-                              />
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                select
+                                variant="outlined"
+                                size="small"
+                                label="Loại hàng con"
+                                fullWidth
+                              >
+                                {childData?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
                             )}
                           />
                         </div>
@@ -302,21 +314,24 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                           <Controller
                             name="countInStock"
                             control={control}
-                            defaultValue={1}
-                            render={({ field }) => (
-                              <TextField
-                                type="number"
-                                {...field}
+                            defaultValue=""
+                            render={({ field: { onChange } }) => (
+                              <NumberFormat
+                                customInput={TextField}
+                                thousandSeparator={true}
+                                onValueChange={(v) => {
+                                  onChange(v.value);
+                                }}
                                 variant="outlined"
-                                label="Số lượng"
                                 size="small"
-                                fullWidth
+                                label="Số lượng"
                                 error={!!errors.countInStock}
                                 helperText={
                                   errors.countInStock
                                     ? errors.countInStock?.message
                                     : ""
                                 }
+                                fullWidth
                               />
                             )}
                           />
@@ -326,22 +341,20 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                           <Controller
                             name="price"
                             control={control}
-                            defaultValue={1}
+                            defaultValue=""
                             render={({ field }) => (
                               <TextField
                                 {...field}
                                 variant="outlined"
-                                label="Giá tiền"
                                 size="small"
+                                label="Giá tiền"
                                 InputProps={{
                                   inputComponent: NumberFormatCustom,
                                 }}
                                 fullWidth
-                                error={!!errors.countInStock}
+                                error={!!errors.price}
                                 helperText={
-                                  errors.countInStock
-                                    ? errors.countInStock?.message
-                                    : ""
+                                  errors.price ? errors.price?.message : ""
                                 }
                               />
                             )}
@@ -401,7 +414,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                     variant="contained"
                     loading={isLoading}
                   >
-                    {product ? "Sửa" : "Thêm"}
+                    {product ? t("edit") : t("confirm")}
                   </LoadingButton>
                 </div>
               </form>

@@ -24,5 +24,17 @@
   "viewAll": "View all",
   "buyNow": "Buy now",
   "searchByProductName": "Search by Product name",
-  "noResult": "No results found"
+  "noResult": "No results found",
+  "message": {
+    "validation": {
+      "required": "{{field}} is required",
+      "invalid": "{{field}} is invalid"
+    },
+    "success": {
+      "add": "Added {{field}} successfully!",
+      "delete": "Deleted {{field}} successfully!",
+      "assigned": "Assigned {{from}} to {{to}} successfully!",
+      "published": "Published Jobs successfully!"
+    }
+  }
 }

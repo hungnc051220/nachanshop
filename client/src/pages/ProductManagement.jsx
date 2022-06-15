@@ -35,14 +35,17 @@ const ProductManagement = () => {
   });
 
   const getNameTypeParent = (params) => {
-    return typeParent.find((x) => x.value === params.row.typeParent).name;
+    return typeParent.find((x) => x.id === params.row.typeParent).name;
   };
 
   const getNameTypeChild = (params) => {
+    let name = "";
     if (params.row.typeParent !== "gc" && params.row.typeParent !== "mvb")
-      return typeChildData[params.row.typeParent].find(
-        (x) => x.value === params.row.typeChild
-      ).name;
+      name = typeChildData[params.row.typeParent].find(
+        (x) => x.id === params.row.typeChild
+      )?.name;
+
+    return name;
   };
 
   const getStatusName = (params) => {

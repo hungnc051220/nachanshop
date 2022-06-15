@@ -20,7 +20,7 @@ const MainHeader = () => {
       <Search isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="mx-auto flex max-w-7xl items-center justify-between space-x-2 px-4 py-4 sm:px-6 md:space-x-4 lg:px-8">
         <Link to="/" className="hidden md:block">
-          <img src="/images/logo.png" alt="logo" className="h-auto w-48" />
+          <img src="/images/logo.png" alt="logo" className="h-auto w-60" />
         </Link>
         <Link to="/" className="block md:hidden">
           <img src="/images/favicon.ico" alt="logo" className="h-auto" />
@@ -58,8 +58,12 @@ const MainHeader = () => {
             </Badge>
           </IconButton>
           <div>
-            <span className="text-sm text-gray-500 whitespace-nowrap">{t("total")}</span>
-            <h5 className="text-base font-semibold whitespace-nowrap">{formatMoney(total)}₫</h5>
+            <span className="whitespace-nowrap text-gray-500">
+              {t("total")}
+            </span>
+            <h5 className="whitespace-nowrap text-base font-semibold">
+              {formatMoney(total)}₫
+            </h5>
           </div>
         </Link>
       </div>

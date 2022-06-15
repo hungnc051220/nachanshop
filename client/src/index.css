@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html,
+  body {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+  }
+}
+
 .ck-editor__editable_inline {
   min-height: 200px;
   max-height: 390px;

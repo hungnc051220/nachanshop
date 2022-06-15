@@ -169,6 +169,7 @@ const Checkout = () => {
                   required
                   label="Họ tên"
                   name="name"
+                  variant="outlined"
                   fullWidth
                   onChange={handleChangeInput}
                   autoFocus
@@ -178,11 +179,27 @@ const Checkout = () => {
                   required
                   label="Điện thoại"
                   name="phone"
+                  variant="outlined"
                   fullWidth
                   onChange={handleChangeInput}
                 />
 
-                <FormControl fullWidth>
+                <TextField
+                  select
+                  variant="outlined"
+                  label="Tỉnh/Thành phố"
+                  fullWidth
+                  value={selectedProvince}
+                  onChange={handleChangeProvinces}
+                >
+                  {provinces?.map((item) => (
+                    <MenuItem key={item.codename} value={item.code}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                {/* <FormControl fullWidth>
                   <InputLabel className="bg-white pr-1">
                     Tỉnh/Thành phố
                   </InputLabel>
@@ -200,38 +217,44 @@ const Checkout = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                </FormControl> */}
 
-                <FormControl fullWidth required>
-                  <InputLabel className="bg-white pr-1">Quận/Huyện</InputLabel>
-                  <Select
-                    value={selectedDistrict}
-                    onChange={handleChangeDistricts}
-                  >
-                    {districts.map((item) => (
-                      <MenuItem key={item.codename} value={item.code}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <TextField
+                  select
+                  variant="outlined"
+                  label="Quận/Huyện"
+                  fullWidth
+                  value={selectedDistrict}
+                  onChange={handleChangeDistricts}
+                >
+                  {districts?.map((item) => (
+                    <MenuItem key={item.codename} value={item.code}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-                <FormControl fullWidth required>
-                  <InputLabel className="bg-white pr-1">Phường/Xã</InputLabel>
-                  <Select value={selectedWard} onChange={handleChangeWards}>
-                    {wards.map((item) => (
-                      <MenuItem key={item.codename} value={item.code}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <TextField
+                  select
+                  variant="outlined"
+                  label="Phường/Xã"
+                  fullWidth
+                  value={selectedWard}
+                  onChange={handleChangeWards}
+                >
+                  {wards?.map((item) => (
+                    <MenuItem key={item.codename} value={item.code}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
                 <TextField
                   required
                   label="Địa chỉ"
                   name="address"
                   fullWidth
+                  variant="outlined"
                   onChange={handleChangeInput}
                 />
 
@@ -241,6 +264,7 @@ const Checkout = () => {
                   maxRows={4}
                   fullWidth
                   name="note"
+                  variant="outlined"
                   onChange={handleChangeInput}
                 />
               </div>

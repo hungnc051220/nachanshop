@@ -11,19 +11,19 @@ const TopHeader = () => {
   return (
     <div className="bg-gray-900">
       <div className="mx-auto flex h-10 px-4 sm:px-6 lg:px-8 max-w-7xl items-center justify-between">
-        <p className="mb-0 flex-1 text-center text-sm font-medium text-white lg:flex-none">
+        <p className="mb-0 flex-1 text-center font-medium text-white lg:flex-none">
           Miễn phí vận chuyển cho đơn hàng trên 1,000,000đ
         </p>
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
           {user ? (
             <div className="flex items-center justify-center gap-2 text-white">
-              <span className="border-r border-gray-300 pr-3 text-sm">
+              <span className="border-r border-gray-300 pr-3">
                 Xin chào, <b>{user.fullName}</b>
               </span>
               <a
                 onClick={() => dispatch(logout())}
-                className="text-sm font-medium text-white hover:text-gray-100 cursor-pointer"
+                className="font-medium text-white hover:text-gray-100 cursor-pointer"
               >
                 Đăng xuất
               </a>
@@ -32,7 +32,7 @@ const TopHeader = () => {
             <>
               <Link
                 to="/login"
-                className="text-sm font-medium text-white hover:text-gray-100"
+                className="font-medium text-white hover:text-gray-100"
               >
                 Đăng nhập
               </Link>

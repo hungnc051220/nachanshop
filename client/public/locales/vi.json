@@ -24,5 +24,15 @@
   "viewAll": "Xem tất cả",
   "buyNow": "Mua ngay",
   "searchByProductName": "Tìm theo tên sản phẩm",
-  "noResult": "Không có kết quả nào"
+  "noResult": "Không có kết quả nào",
+  "message": {
+    "validation": {
+      "required": "{{field}} không được để trống",
+      "invalid": "{{field}} không hợp lệ"
+    },
+    "success": {
+      "add": "Đã thêm {{field}} thành công!",
+      "delete": "Đã xoá {{field}} thành công!"
+    }
+  }
 }

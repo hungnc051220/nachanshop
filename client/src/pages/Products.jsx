@@ -65,7 +65,7 @@ const Products = () => {
   };
 
   const getNameType = () => {
-    return typeParent.find((x) => x.value === type).name;
+    return typeParent.find((x) => x.id === type).name;
   };
 
   return (
