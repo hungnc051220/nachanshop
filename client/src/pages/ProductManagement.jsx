@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
-import { AddProduct, DeleteProduct } from "../components";
+import { AddMultiProduct, AddProduct, DeleteProduct } from "../components";
 import {
   typeChild as typeChildData,
   typeParent,
@@ -15,11 +15,14 @@ import toast from "react-hot-toast";
 import { BsTrash } from "react-icons/bs";
 import Tooltip from "@mui/material/Tooltip";
 
+import { Button } from "@mui/material";
+
 const ProductManagement = () => {
   const { t } = useTranslation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openAddMulti, setOpenAddMulti] = useState(false);
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
     page,
@@ -68,6 +71,9 @@ const ProductManagement = () => {
   const onCloseModalDelete = () => {
     setOpenModalDelete(false);
   };
+
+  const handleOpenAddMulti = () => setOpenAddMulti(true);
+  const handleCloseAddMulti = () => setOpenAddMulti(false);
 
   const onDelete = async (id) => {
     try {
@@ -160,6 +166,15 @@ const ProductManagement = () => {
             product={selectedProduct}
             setSelectedProduct={setSelectedProduct}
           />
+          <Button variant="outlined" onClick={handleOpenAddMulti}>
+            Thêm nhiều
+          </Button>
+          {openAddMulti && (
+            <AddMultiProduct
+              open={openAddMulti}
+              onClose={handleCloseAddMulti}
+            />
+          )}
         </div>
       </div>
       <div className="mt-6 h-[calc(100vh_-_190px)] w-full">

@@ -14,3 +14,4 @@ export { default as CardStat } from "./Dashboard/CardStat";
 export { default as ChartLine } from "./Dashboard/ChartLine";
 export { default as OrderList } from "./Dashboard/OrderList";
 export { default as DeleteProduct } from './ProductManagement/DeleteProduct';
+export { default as AddMultiProduct } from './ProductManagement/AddMultiProduct';

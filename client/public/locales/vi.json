@@ -25,6 +25,8 @@
   "buyNow": "Mua ngay",
   "searchByProductName": "Tìm theo tên sản phẩm",
   "noResult": "Không có kết quả nào",
+  "description": "Miêu tả",
+  "save": "Lưu",
   "message": {
     "validation": {
       "required": "{{field}} không được để trống",

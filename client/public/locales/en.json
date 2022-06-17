@@ -25,6 +25,8 @@
   "buyNow": "Buy now",
   "searchByProductName": "Search by Product name",
   "noResult": "No results found",
+  "description": "Description",
+  "save": "Save",
   "message": {
     "validation": {
       "required": "{{field}} is required",

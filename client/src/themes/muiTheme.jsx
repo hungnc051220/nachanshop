@@ -10,7 +10,7 @@ export const muiTheme = createTheme({
       styleOverrides: {
         root: {
           textTransform: "none",
-          borderRadius: "8px",
+          borderRadius: "6px",
         },
       },
     },
