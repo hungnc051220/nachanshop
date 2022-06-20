@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { formatMoney } from "../utils/commonFunction";
 import { useTranslation } from "react-i18next";
 import Search from "./Search";
+import { SearchIcon } from "@heroicons/react/outline";
 
 const MainHeader = () => {
   const { t } = useTranslation();
@@ -25,24 +26,21 @@ const MainHeader = () => {
         <Link to="/" className="block md:hidden">
           <img src="/images/favicon.ico" alt="logo" className="h-auto" />
         </Link>
-        <TextField
+        <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="dark:hightligh-white/5 hidden w-72 items-center rounded-md py-1.5 pl-2 pr-3 text-sm leading-6 text-slate-400 shadow-sm ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none dark:bg-slate-800 dark:hover:bg-slate-700 lg:flex lg:gap-1.5"
           onClick={() => setIsOpen(true)}
-          placeholder={t("searchByProductName")}
-          sx={{ m: 1 }}
-          size="small"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <BsSearch />
-              </InputAdornment>
-            ),
-          }}
-        />
-
+        >
+          <SearchIcon className="h-6 w-6" />
+          {t("searchByProductName")}
+          <span className="ml-auto flex-none pl-3 text-xs font-semibold">
+            Ctrl Z
+          </span>
+        </button>
         <Link
           to="/shopping-cart"
-          className="flex items-center justify-center gap-1 md:gap-3"
+          className="flex items-center justify-center gap-1 md:gap-2"
         >
           <IconButton
             size="large"
@@ -66,6 +64,7 @@ const MainHeader = () => {
             </h5>
           </div>
         </Link>
+        </div>
       </div>
     </div>
   );

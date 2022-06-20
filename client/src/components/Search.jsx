@@ -101,7 +101,7 @@ const Search = ({ isOpen, setIsOpen }) => {
                   setQuery(event.target.value);
                 }}
                 className="h-12 w-full border-0 bg-transparent p-4 text-sm text-gray-800 placeholder-gray-400 outline-none focus:ring-0"
-                placeholder="Search..."
+                placeholder={t("search")}
               />
             </div>
             {!loading && products.length > 0 && (
