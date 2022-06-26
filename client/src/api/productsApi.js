@@ -68,24 +68,8 @@ export const generateLink = async (link) => {
   }
 };
 
-export const generateMultiLink = async (link) => {
-  try {
-    const { data } = await axiosInstance.post("gen/multi", { link });
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const addMultiProduct = async (data) => {
-  try {
-    const response = await axiosInstance.post("products/multi", data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+export const generateMultiLink = async (link) => await axiosInstance.post("gen/multi", { link });
+export const addMultiProduct = async (data) => await axiosInstance.post("products/multi", data)
 export const deleteMultiProduct = async (data) => {
   try {
     const response = await axiosInstance.post("products/deleteMulti", data);

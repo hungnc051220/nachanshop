@@ -1,6 +1,5 @@
 import decode from "jwt-decode";
 import confetti from "canvas-confetti";
-import axios from "axios";
 
 export const formatMoney = (value) => {
   let val = (value / 1).toFixed(0).replace(".", ",");
@@ -62,38 +61,11 @@ export const runConfetti = () => {
   });
 };
 
-const makeRequestCreator = () => {
-  let cancel;
-
-  return async (query) => {
-    if (cancel) {
-      // Cancel the previous request before making a new request
-      cancel.cancel();
-    }
-    // Create a new CancelToken
-    cancel = axios.CancelToken.source();
-    try {
-      if (resources[query]) {
-        // Return result if it exists
-        return resources[query];
-      }
-      const res = await axios(query, { cancelToken: cancel.token });
-
-      const result = res.data.results;
-      // Store response
-      resources[query] = result;
-
-      return result;
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        // Handle if request was cancelled
-        console.log("Request canceled", error.message);
-      } else {
-        // Handle usual errors
-        console.log("Something went wrong: ", error.message);
-      }
-    }
-  };
+export const removeAccents = (str) => {
+  let name = str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+  return name.replace(/\s/g, "-").replace(".", "").toLowerCase();
 };
-
-export const search = makeRequestCreator()

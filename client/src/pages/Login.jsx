@@ -34,7 +34,7 @@ const Login = () => {
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [isError, isSuccess, message, dispatch]);
 
   const handleChange = (e) => {
     setUserData((prevState) => ({

@@ -15,7 +15,7 @@ function downloadFile(url, callback) {
 
     fileStream.on("error", function (error) {
       console.log(error);
-    });
+    }); 
 
     fileStream.on("close", function () {
       callback(fileName);

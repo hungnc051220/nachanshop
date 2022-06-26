@@ -5,10 +5,13 @@ const productSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  typeParent: {
+  mainCategory: {
     type: String,
   },
-  typeChild: {
+  category: {
+    type: String,
+  },
+  subCategory: {
     type: String,
   },
   price: {

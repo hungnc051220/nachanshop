@@ -18,8 +18,14 @@ const Breadcrumbs = ({ product }) => {
 
   const [pages, setPages] = useState([]);
 
-  const getNameType = (value) => {
-    return typeParent.find((x) => x.id === value).name;
+  const getNameType = () => {
+    let name = "";
+    const parent = typeParent.find((x) => x.id === type);
+    if (parent) {
+      name = parent.name;
+    }
+
+    return name;
   };
 
   const getNameChildType = (value) => {

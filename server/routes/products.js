@@ -38,18 +38,18 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.route("/search").get(getProductBySearch);
 router
   .route("/")
   .get(getProducts)
   .post(upload.array("productImage", 10), addProduct);
+router.route("/search").get(getProductBySearch);
+router.post("/multi", addMultiProduct);
+router.post("/deleteMulti", deleteMutliProduct);
+
 router
   .route("/:id")
   .get(getProductById)
   .post(upload.array("productImage", 10), updateProduct)
   .delete(deleteProduct);
-
-router.post("/multi", addMultiProduct);
-router.post("/deleteMulti", deleteMutliProduct);
 
 module.exports = router;

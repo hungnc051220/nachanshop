@@ -5,12 +5,21 @@ import { TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
+import { addMultiProduct, generateLink, generateMultiLink } from "../../api/productsApi";
+
 const AddMultiProduct = ({ open, onClose }) => {
   const { t } = useTranslation();
-  const [search, setSearch] = useState("");
+  const [link, setLink] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
 
   const columns = [
-    { field: "no", headerName: t("no"), width: 50 },
+    {
+      field: "images",
+      headerName: t("image"),
+      minWidth: 100,
+      renderCell: (params) => <img src={params.row.productImages[0]} className="h-16 w-16"/>,
+    },
     {
       field: "name",
       headerName: t("productName"),
@@ -22,6 +31,26 @@ const AddMultiProduct = ({ open, onClose }) => {
       flex: 1,
     },
   ];
+
+  const getInfo = async () => {
+    setLoading(true);
+    try {
+      const response = await generateMultiLink(link);
+      setProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  const addMulti = async () => {
+    try {
+      const response = await addMultiProduct(products);
+      console.log(response.data);
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -40,20 +69,26 @@ const AddMultiProduct = ({ open, onClose }) => {
               variant="outlined"
               className="flex-1"
               size="small"
+              onChange={(e) => setLink(e.target.value)}
             />
-            <LoadingButton size="small" variant="outlined">
+            <LoadingButton
+              size="small"
+              variant="outlined"
+              onClick={getInfo}
+              loading={loading}
+            >
               Lấy thông tin
             </LoadingButton>
           </div>
           <div className="mt-4">
             <DataGrid
               sx={{ minHeight: 500 }}
-              rows={[]}
-              getRowId={(row) => row._id}
+              rows={products || []}
+              getRowId={(row) => row.name}
               columns={columns}
-              //loading={isLoading || isFetching}
-              //rowCount={data?.total || 0}
-              //pageSize={data?.pageSize || 50}
+              loading={loading}
+              rowCount={products?.length || 0}
+              pageSize={25}
               paginationMode="server"
               //onPageChange={onPageChange}
               rowsPerPageOptions={[25, 50, 100]}
@@ -62,7 +97,7 @@ const AddMultiProduct = ({ open, onClose }) => {
               //onSelectionModelChange={onRowSelected}
             />
             <div className="flex justify-end pt-4">
-              <LoadingButton variant="contained" color="primary">
+              <LoadingButton variant="contained" color="primary" onClick={addMulti}>
                 {t("save")}
               </LoadingButton>
             </div>

@@ -3,19 +3,15 @@ const Product = require("../models/product");
 const { downloadFile } = require("../download2");
 
 const getProducts = async (req, res) => {
-  const { page, type, typeChild, limit } = req.query;
+  const { page, mainCategory, category, subCategory, limit } = req.query;
   try {
     const LIMIT = limit || 25;
     const startIndex = (Number(page) - 1) * LIMIT;
 
     const dataSearch = {};
-    if (type) {
-      dataSearch.typeParent = { $regex: new RegExp(`^${type}$`, "i") };
-    }
-
-    if (typeChild) {
-      dataSearch.typeChild = { $regex: new RegExp(`^${typeChild}$`, "i") };
-    }
+    if (mainCategory) dataSearch.mainCategory = mainCategory;
+    if (category) dataSearch.category = category;
+    if (subCategory) dataSearch.subCategory = subCategory;
 
     const products = await Product.find(dataSearch)
       .limit(LIMIT)
@@ -134,7 +130,7 @@ const addMultiProduct = async (req, res) => {
   const products = req.body;
   const newList = await Promise.all(
     products.map(async (item) => {
-      const fileName = await downloadFile(item.productImage);
+      const fileName = await downloadFile(item.productImages[0]);
       item.productImage = fileName;
       return item;
     })
@@ -142,7 +138,7 @@ const addMultiProduct = async (req, res) => {
 
   try {
     const newListProduct = await Product.insertMany(newList);
-    res.json(newListProduct);
+    res.status(201).json(newListProduct);
   } catch (e) {
     print(e);
   }

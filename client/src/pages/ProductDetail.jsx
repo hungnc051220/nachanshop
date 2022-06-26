@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { formatMoney } from "../utils/commonFunction";
@@ -16,12 +16,13 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { id } = useParams();
+  const [params] = useSearchParams();
+  const id = params.get('id');
   const [quantity, setQuantity] = useState(1);
   const [indexImage, setIndexImage] = useState(0);
 
   const { data, isLoading } = useGetProductQuery(id);
-  const { data: dataProducts, isLoadingProducts } = useGetProductsQuery();
+  // const { data: dataProducts, isLoadingProducts } = useGetProductsQuery();
 
   const settings = {
     dots: false,
@@ -69,7 +70,7 @@ const ProductDetail = () => {
   return (
     <section className="mx-auto max-w-7xl pb-10 md:pb-20">
       <div className="py-2">
-        <Breadcrumbs product={data} />
+        {/* <Breadcrumbs product={data} /> */}
       </div>
       {data && (
         <>
@@ -166,7 +167,7 @@ const ProductDetail = () => {
         </>
       )}
 
-      <div className="mt-10 rounded-lg bg-white p-8 shadow">
+      {/* <div className="mt-10 rounded-lg bg-white p-8 shadow">
         <h2 className="mb-2 text-xl font-medium">Các sản phẩm liên quan</h2>
         <Slider {...settings}>
           {dataProducts &&
@@ -218,7 +219,7 @@ const ProductDetail = () => {
               </div>
             ))}
         </Slider>
-      </div>
+      </div> */}
     </section>
   );
 };

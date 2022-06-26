@@ -27,6 +27,7 @@
   "noResult": "No results found",
   "description": "Description",
   "save": "Save",
+  "image": "Image",
   "message": {
     "validation": {
       "required": "{{field}} is required",

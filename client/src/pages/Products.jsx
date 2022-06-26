@@ -1,27 +1,25 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../features/cart/cartSlice";
-import { formatMoney } from "../utils/commonFunction";
-import queryString from "query-string";
-import toast from "react-hot-toast";
-import Button from "@mui/material/Button";
-import { Breadcrumbs } from "../components";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import {
   ChevronDownIcon,
   FilterIcon,
-  MinusSmIcon,
-  PlusSmIcon,
   ViewGridIcon,
 } from "@heroicons/react/solid";
-import { typeParent } from "../data/categoriesSelect";
-import categories from "../data/categories.json";
-import { useGetProductsQuery } from "../services/apiSlice";
-import { useTranslation } from "react-i18next";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import queryString from "query-string";
+import { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Breadcrumbs } from "../components";
+import categories from "../data/categories.json";
+import { typeParent } from "../data/categoriesSelect";
+import { addToCart } from "../features/cart/cartSlice";
+import { useGetProductsQuery } from "../services/apiSlice";
+import { formatMoney } from "../utils/commonFunction";
+import { removeAccents } from "../utils/commonFunction";
 
 const sortOptions = [
   { name: "Phổ biến nhất", href: "#", current: true },
@@ -36,6 +34,8 @@ function classNames(...classes) {
 }
 
 const Products = () => {
+  let { mainCategory, category, subCategory } = useParams();
+  console.log(mainCategory);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,14 +46,15 @@ const Products = () => {
 
   const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
     page,
-    type,
-    typeChild,
+    mainCategory,
+    category,
+    subCategory
   });
 
   useEffect(() => {
     const category = categories.find((x) => x.code === type);
 
-    if (category.sub_items) setSubCategories(category.sub_items);
+    if (category?.sub_items) setSubCategories(category.sub_items);
     else {
       setSubCategories([]);
     }
@@ -65,13 +66,19 @@ const Products = () => {
   };
 
   const getNameType = () => {
-    return typeParent.find((x) => x.id === type).name;
+    let name = "";
+    const parent = typeParent.find((x) => x.id === type);
+    if (parent) {
+      name = parent.name;
+    }
+
+    return name;
   };
 
   return (
     <section>
       <div className="mx-auto max-w-7xl py-2 pb-16">
-        <Breadcrumbs />
+        {/* <Breadcrumbs /> */}
 
         <div className="mt-2 rounded-xl bg-white shadow">
           <div>
@@ -231,7 +238,7 @@ const Products = () => {
                       </Box>
                     ) : (
                       <div className="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        {data?.content?.map((product) => {
+                        {data?.content?.length > 0 && data?.content?.map((product) => {
                           return (
                             <div
                               className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
@@ -239,7 +246,11 @@ const Products = () => {
                             >
                               <div className="p-5">
                                 <Link
-                                  to={`/products/${product._id}`}
+                                  to={`/products/${product.mainCategory}/${
+                                    product.category
+                                  }/${product.subCategory}/${removeAccents(
+                                    product.name
+                                  )}?id=${product._id}`}
                                   onClick={() => {
                                     window.scrollTo(0, 0);
                                   }}
@@ -255,7 +266,7 @@ const Products = () => {
 
                               <div className="p-5">
                                 <Link
-                                  to={`/products/${product._id}`}
+                                  to={`/products/${mainCategory}/${category}/${subCategory}/${product._id}`}
                                   className="block text-base font-medium uppercase text-red-500"
                                   onClick={() => {
                                     window.scrollTo(0, 0);
@@ -265,7 +276,7 @@ const Products = () => {
                                 </Link>
 
                                 <Link
-                                  to={`/products/${product._id}`}
+                                  to={`/products/${mainCategory}/${category}/${subCategory}/${product._id}`}
                                   className="inline-block h-24 py-2"
                                   onClick={() => {
                                     window.scrollTo(0, 0);

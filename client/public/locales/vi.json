@@ -27,6 +27,7 @@
   "noResult": "Không có kết quả nào",
   "description": "Miêu tả",
   "save": "Lưu",
+  "image": "Hình ảnh",
   "message": {
     "validation": {
       "required": "{{field}} không được để trống",

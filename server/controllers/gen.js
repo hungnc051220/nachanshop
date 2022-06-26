@@ -5,15 +5,32 @@ const getRequest = async (link) => {
   try {
     const response = await axios.get(link);
     const $ = cheerio.load(response.data);
-    const name = $(".detail-product").find('[itemprop="name"]').text();
+    const name = $(".product-detail-heading .product-name").text();
+    const description = $(".article-content").html();
 
-    const productCode = link.slice(link.indexOf("sp-") + 3);
+    const listLinkImages = $(
+      ".product-detail-images-wrap .swiper-slide .img"
+    ).find("img");
 
-    const description = await getDesc(link, productCode);
+    const url = "https://sakukostore.com.vn/";
+    let images = [];
+    listLinkImages.map((i, el) => {
+      const image = url + $(el).attr("data-src");
+      images.push(image);
+    });
+
+    const strSplit = link.split("/");
+    const mainCategory = strSplit[3];
+    const category = strSplit[4];
+    const subCategory = strSplit[5];
 
     const data = {
-      title: name,
+      name,
       description,
+      productImages: images,
+      mainCategory,
+      category,
+      subCategory,
     };
     return data;
   } catch (error) {
@@ -62,17 +79,17 @@ const generateMultiLink = async (req, res) => {
   const { link } = req.body;
   const response = await axios.get(link);
   const $ = cheerio.load(response.data);
-  const listLink = [];
+  const listData = [];
 
   await Promise.all(
-    $(".item-product-custom").map(async (i, el) => {
+    $(".product-list .product-item").map(async (i, el) => {
       const links = $(el).find("a").attr("href");
       const data = await getRequest(links);
-      listLink.push(data);
+      listData.push(data);
     })
   );
 
-  res.json(listLink);
+  res.json(listData);
 };
 
 module.exports = {

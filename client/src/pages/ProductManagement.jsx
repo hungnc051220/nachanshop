@@ -98,21 +98,28 @@ const ProductManagement = () => {
             }`}
             alt={data.name}
             className="h-10 w-10"
+            loading="lazy"
           />
           <p>{params.row.name}</p>
         </div>
       ),
     },
     {
-      field: "typeParent",
-      headerName: t("typeParent"),
-      valueGetter: getNameTypeParent,
+      field: "mainCategory",
+      headerName: t("mainCategory"),
+      // valueGetter: getNameTypeParent,
       minWidth: 200,
     },
     {
-      field: "typeChild",
-      headerName: t("typeChild"),
-      valueGetter: getNameTypeChild,
+      field: "category",
+      headerName: t("category"),
+      // valueGetter: getNameTypeChild,
+      minWidth: 200,
+    },
+    {
+      field: "subCategory",
+      headerName: t("subCategory"),
+      // valueGetter: getNameTypeChild,
       minWidth: 200,
     },
     {

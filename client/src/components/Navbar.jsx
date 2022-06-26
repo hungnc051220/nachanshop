@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
@@ -20,59 +20,64 @@ const categories = [
   {
     code: "cssd",
     name: "Chăm sóc sắc đẹp",
-    route: "/products?type=cssd",
-    subItems: [
+    route: "/products/cham-soc-sac-dep",
+    subCategories: [
       {
         name: "Chăm sóc da",
-        subItems: [
-          { name: "Kem dưỡng da", href: "#" },
-          { name: "Rửa mặt", href: "#" },
-          { name: "Mặt nạ dưỡng mặt", href: "#" },
-          { name: "Nước hoa hồng", href: "#" },
-          { name: "Tẩy da chết", href: "#" },
-          { name: "Tẩy trang", href: "#" },
-          { name: "Tinh chất dưỡng da", href: "#" },
-          { name: "Phụ kiện chăm sóc da", href: "#" },
+        route: "/products/cham-soc-sac-dep/cham-soc-da",
+        subCategories: [
+          { name: "Kem dưỡng da", href: "/products/cham-soc-sac-dep/cham-soc-da/kem-duong-da" },
+          { name: "Rửa mặt", href: "/products/cham-soc-sac-dep/cham-soc-da/rua-mat" },
+          { name: "Mặt nạ dưỡng mặt", href: "/products/cham-soc-sac-dep/cham-soc-da/mat-na-duong-da" },
+          { name: "Nước hoa hồng", href: "/products/cham-soc-sac-dep/cham-soc-da/nuoc-hoa-hong" },
+          { name: "Tẩy da chết", href: "/products/cham-soc-sac-dep/cham-soc-da/tay-da-chet" },
+          { name: "Tẩy trang", href: "/products/cham-soc-sac-dep/cham-soc-da/tay-trang" },
+          { name: "Tinh chất dưỡng da", href: "/products/cham-soc-sac-dep/cham-soc-da/tinh-chat-duong-da" },
+          { name: "Phụ kiện chăm sóc da", href: "/products/cham-soc-sac-dep/cham-soc-da/phu-kien-cham-soc-da" },
         ],
       },
       {
         name: "Chăm sóc tóc",
-        subItems: [
-          { name: "Dưỡng tóc", href: "#" },
-          { name: "Dầu gội, dầu xả", href: "#" },
-          { name: "Nhuộm tóc", href: "#" },
-          { name: "Dụng cụ chăm sóc tóc", href: "#" },
+        route: "/products/cham-soc-sac-dep/cham-soc-toc",
+        subCategories: [
+          { name: "Dưỡng tóc", href: "/products/cham-soc-sac-dep/cham-soc-toc/duong-toc" },
+          { name: "Dầu gội, dầu xả", href: "/products/cham-soc-sac-dep/cham-soc-toc/dau-goi-dau-xa" },
+          { name: "Nhuộm tóc", href: "/products/cham-soc-sac-dep/cham-soc-toc/nhuom-toc" },
+          { name: "Dụng cụ chăm sóc tóc", href: "/products/cham-soc-sac-dep/cham-soc-toc/dung-cu-cham-soc-toc" },
         ],
       },
       {
         name: "Chăm sóc cơ thể",
-        subItems: [
-          { name: "Chống nắng", href: "#" },
-          { name: "Dưỡng môi", href: "#" },
-          { name: "Dưỡng thể", href: "#" },
-          { name: "Khử mùi mồ hôi", href: "#" },
-          { name: "Sữa tắm", href: "#" },
-          { name: "Tẩy lông", href: "#" },
-          { name: "Dao cạo, bấm móng", href: "#" },
+        route: "/products/cham-soc-sac-dep/cham-soc-co-the",
+        subCategories: [
+          { name: "Chống nắng", href: "/products/cham-soc-sac-dep/cham-soc-co-the/chong-nang" },
+          { name: "Dưỡng môi", href: "/products/cham-soc-sac-dep/cham-soc-co-the/duong-moi" },
+          { name: "Dưỡng thể", href: "/products/cham-soc-sac-dep/cham-soc-co-the/duong-the" },
+          { name: "Khử mùi mồ hôi", href: "/products/cham-soc-sac-dep/cham-soc-co-the/khu-mui-mo-hoi" },
+          { name: "Sữa tắm", href: "/products/cham-soc-sac-dep/cham-soc-co-the/sua-tam" },
+          { name: "Tẩy lông", href: "/products/cham-soc-sac-dep/cham-soc-co-the/tay-long" },
+          { name: "Dao cạo, bấm móng", href: "/products/cham-soc-sac-dep/cham-soc-co-the/dao-cao-bam-mong" },
         ],
       },
       {
         name: "Thực phẩm làm đẹp",
-        subItems: [
-          { name: "Chống lão hoá", href: "#" },
-          { name: "Collagen", href: "#" },
-          { name: "Làm đẹp da", href: "#" },
-          { name: "Giảm cân", href: "#" },
+        route: "/products/cham-soc-sac-dep/thuc-pham-lam-dep",
+        subCategories: [
+          { name: "Chống lão hoá", href: "/products/cham-soc-sac-dep/thuc-pham-lam-dep/chong-lao-hoa" },
+          { name: "Collagen", href: "/products/cham-soc-sac-dep/thuc-pham-lam-dep/collagen" },
+          { name: "Làm đẹp da", href: "/products/cham-soc-sac-dep/thuc-pham-lam-dep/lam-dep-da" },
+          { name: "Giảm cân", href: "/products/cham-soc-sac-dep/thuc-pham-lam-dep/giam-can" },
         ],
       },
       {
         name: "Trang điểm",
-        subItems: [
-          { name: "Kem nền", href: "#" },
-          { name: "Phấn", href: "#" },
-          { name: "Son môi", href: "#" },
-          { name: "Trang điểm mắt", href: "#" },
-          { name: "Dụng cụ trang điểm", href: "#" },
+        route: "/products/cham-soc-sac-dep/trang-diem",
+        subCategories: [
+          { name: "Kem nền", href: "/products/cham-soc-sac-dep/trang-diem/kem-nen" },
+          { name: "Phấn", href: "/products/cham-soc-sac-dep/trang-diem/phan" },
+          { name: "Son môi", href: "/products/cham-soc-sac-dep/trang-diem/son-moi" },
+          { name: "Trang điểm mắt", href: "/products/cham-soc-sac-dep/trang-diem/trang-diem-mat" },
+          { name: "Dụng cụ trang điểm", href: "/products/cham-soc-sac-dep/trang-diem/dung-cu-trang-diem" },
         ],
       },
     ],
@@ -80,38 +85,41 @@ const categories = [
   {
     code: "cssk",
     name: "Chăm sóc sức khoẻ",
-    route: "/products?type=cssk",
-    subItems: [
+    route: "/products/cham-soc-suc-khoe",
+    subCategories: [
       {
         name: "Thực phẩm chức năng",
-        subItems: [
-          { name: "Bổ sung canxi", href: "#" },
-          { name: "Bổ sung DHA", href: "#" },
-          { name: "Bổ sung Glocosamin", href: "#" },
-          { name: "Bổ sung Vitamin", href: "#" },
-          { name: "Ổn định huyết áp", href: "#" },
-          { name: "Tảo", href: "#" },
-          { name: "Chống lão hóa", href: "#" },
-          { name: "Collagen", href: "#" },
-          { name: "Làm đẹp da", href: "#" },
-          { name: "Giảm cân", href: "#" },
+        route: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang",
+        subCategories: [
+          { name: "Bổ sung canxi", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/bo-xung-canxi" },
+          { name: "Bổ sung DHA", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/bo-sung-dha" },
+          { name: "Bổ sung Glocosamin", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/bo-sung-glocosamin" },
+          { name: "Bổ sung Vitamin", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/bo-sung-vitamin" },
+          { name: "Ổn định huyết áp", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/on-dinh-huyet-ap" },
+          { name: "Tảo", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/tao" },
+          { name: "Chống lão hóa", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/chong-lao-hoa" },
+          { name: "Collagen", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/collagen" },
+          { name: "Làm đẹp da", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/lam-dep-da" },
+          { name: "Giảm cân", href: "/products/cham-soc-suc-khoe/thuc-pham-chuc-nang/giam-can" },
         ],
       },
       {
         name: "Chăm sóc răng miệng",
-        subItems: [
-          { name: "Bàn chải đánh răng", href: "#" },
-          { name: "Kem đánh răng", href: "#" },
-          { name: "Khử mùi răng miệng", href: "#" },
-          { name: "Vật dụng nha khoa", href: "#" },
+        route: "/products/cham-soc-suc-khoe/cham-soc-rang-mieng",
+        subCategories: [
+          { name: "Bàn chải đánh răng", href: "/products/cham-soc-suc-khoe/cham-soc-rang-mieng/ban-chai-danh-rang" },
+          { name: "Kem đánh răng", href: "/products/cham-soc-suc-khoe/cham-soc-rang-mieng/kem-danh-rang" },
+          { name: "Khử mùi răng miệng", href: "/products/cham-soc-suc-khoe/cham-soc-rang-mieng/khu-mui-rang-mieng" },
+          { name: "Vật dụng nha khoa", href: "/products/cham-soc-suc-khoe/cham-soc-rang-mieng/vat-dung-nha-khoa" },
         ],
       },
       {
         name: "Chăm sóc tai, mắt, mũi",
-        subItems: [
-          { name: "Chăm sóc tai", href: "#" },
-          { name: "Chăm sóc mắt", href: "#" },
-          { name: "Chăm sóc mũi", href: "#" },
+        route: "/products/cham-soc-suc-khoe/cham-soc-tai-mat-mui",
+        subCategories: [
+          { name: "Chăm sóc tai", href: "/products/cham-soc-suc-khoe/cham-soc-tai-mat-mui/cham-soc-tai" },
+          { name: "Chăm sóc mắt", href: "/products/cham-soc-suc-khoe/cham-soc-tai-mat-mui/cham-soc-mat" },
+          { name: "Chăm sóc mũi", href: "/products/cham-soc-suc-khoe/cham-soc-tai-mat-mui/cham-soc-mui" },
         ],
       },
     ],
@@ -119,38 +127,41 @@ const categories = [
   {
     code: "mvb",
     name: "Mẹ và Bé",
-    route: "/products?type=mvb",
-    subItems: [
+    route: "/products/me-va-be",
+    subCategories: [
       {
         name: "Thực phẩm cho bé",
-        subItems: [
-          { name: "Bánh ăn dặm", href: "#" },
-          { name: "Bột ăn dặm", href: "#" },
-          { name: "Cháo soup ăn dặm", href: "#" },
-          { name: "Cơm trộn", href: "#" },
-          { name: "Mỳ ăn dặm", href: "#" },
-          { name: "Nước ép cho bé", href: "#" },
-          { name: "Sốt ăn dặm", href: "#" },
-          { name: "Thạch bổ sung vitamin", href: "#" },
-          { name: "Trà lúa mạch", href: "#" },
+        route: "/products/me-va-be/thuc-pham-cho-be",
+        subCategories: [
+          { name: "Bánh ăn dặm", href: "/products/me-va-be/thuc-pham-cho-be/banh-an-dam" },
+          { name: "Bột ăn dặm", href: "/products/me-va-be/thuc-pham-cho-be/bot-an-dam" },
+          { name: "Cháo soup ăn dặm", href: "/products/me-va-be/thuc-pham-cho-be/chao-soup-an-dam" },
+          { name: "Cơm trộn", href: "/products/me-va-be/thuc-pham-cho-be/com-tron" },
+          { name: "Mỳ ăn dặm", href: "/products/me-va-be/thuc-pham-cho-be/my-an-dam" },
+          { name: "Nước ép cho bé", href: "/products/me-va-be/thuc-pham-cho-be/nuoc-ep-cho-be" },
+          { name: "Sốt ăn dặm", href: "/products/me-va-be/thuc-pham-cho-be/sot-an-dam" },
+          { name: "Thạch bổ sung vitamin", href: "/products/me-va-be/thuc-pham-cho-be/thach-bo-sung-vitamin" },
+          { name: "Trà lúa mạch", href: "/products/me-va-be/thuc-pham-cho-be/tra-lua-mach" },
         ],
       },
       {
         name: "Chăm sóc cơ thể bé",
-        subItems: [
-          { name: "Chống muỗi, chống côn trùng", href: "#" },
-          { name: "Chống nắng cho bé", href: "#" },
-          { name: "Hạ sốt, trị ho, sổ mũi", href: "#" },
-          { name: "Kem dưỡng massage cho bé", href: "#" },
-          { name: "Bịt ổ điện, chặn cửa", href: "#" },
+        route: "/products/me-va-be/cham-soc-co-the-be",
+        subCategories: [
+          { name: "Chống muỗi, chống côn trùng", href: "/products/me-va-be/cham-soc-co-the-be/chong-muoi-chong-con-trung" },
+          { name: "Chống nắng cho bé", href: "/products/me-va-be/cham-soc-co-the-be/chong-nang-cho-be" },
+          { name: "Hạ sốt, trị ho, sổ mũi", href: "/products/me-va-be/cham-soc-co-the-be/ha-sot-tri-ho-so-mui" },
+          { name: "Kem dưỡng massage cho bé", href: "/products/me-va-be/cham-soc-co-the-be/kem-duong-massage-cho-be" },
+          { name: "Bịt ổ điện, chặn cửa", href: "/products/me-va-be/cham-soc-co-the-be/bit-o-dien-chan-cua" },
         ],
       },
       {
         name: "Dành cho mẹ bầu",
-        subItems: [
-          { name: "Thực phẩm chức năng", href: "#" },
-          { name: "Sữa bầu", href: "#" },
-          { name: "Thấm sữa", href: "#" },
+        route: "/products/me-va-be/danh-cho-me-bau",
+        subCategories: [
+          { name: "Thực phẩm chức năng", href: "/products/me-va-be/danh-cho-me-bau/thuc-pham-chuc-nang" },
+          { name: "Sữa bầu", href: "/products/me-va-be/danh-cho-me-bau/sua-bau" },
+          { name: "Thấm sữa", href: "/products/me-va-be/danh-cho-me-bau/tham-sua" },
         ],
       },
     ],
@@ -158,27 +169,29 @@ const categories = [
   {
     code: "tp",
     name: "Thực phẩm",
-    route: "/products?type=tp",
-    subItems: [
+    route: "/products/thuc-pham",
+    subCategories: [
       {
         name: "Đồ uống, pha chế",
-        subItems: [
-          { name: "Đồ uống có ga", href: "#" },
-          { name: "Nguyên liệu pha chế", href: "#" },
-          { name: "Nước hoa quả", href: "#" },
-          { name: "Thức uống từ sữa", href: "#" },
-          { name: "Trà gói, hộp", href: "#" },
-          { name: "Trà, cà phê đóng sẵn", href: "#" },
+        route: "/products/thuc-pham/do-uong-pha-che",
+        subCategories: [
+          { name: "Đồ uống có ga", href: "/products/thuc-pham/do-uong-pha-che/do-uong-co-ga" },
+          { name: "Nguyên liệu pha chế", href: "/products/thuc-pham/do-uong-pha-che/nguyen-lieu-pha-che" },
+          { name: "Nước hoa quả", href: "/products/thuc-pham/do-uong-pha-che/nuoc-hoa-qua" },
+          { name: "Thức uống từ sữa", href: "/products/thuc-pham/do-uong-pha-che/thuc-uong-tu-sua" },
+          { name: "Trà gói, hộp", href: "/products/thuc-pham/do-uong-pha-che/tra-goi-hop" },
+          { name: "Trà, cà phê đóng sẵn", href: "/products/thuc-pham/do-uong-pha-che/tra-ca-phe-dong-san" },
         ],
       },
       {
         name: "Bánh kẹo, đồ ăn vặt",
-        subItems: [
-          { name: "Bánh", href: "#" },
-          { name: "Bánh kẹo cho trẻ em", href: "#" },
-          { name: "Hoa quả hạt khô", href: "#" },
-          { name: "Ngũ cốc", href: "#" },
-          { name: "Thạch", href: "#" },
+        route: "/products/thuc-pham/banh-keo-do-an",
+        subCategories: [
+          { name: "Bánh", href: "/products/thuc-pham/banh-keo-do-an/banh" },
+          { name: "Bánh kẹo cho trẻ em", href: "/products/thuc-pham/banh-keo-do-an/banh-keo-cho-tre-em" },
+          { name: "Hoa quả hạt khô", href: "/products/thuc-pham/banh-keo-do-an/hoa-qua-hat-kho" },
+          { name: "Ngũ cốc", href: "/products/thuc-pham/banh-keo-do-an/ngu-coc" },
+          { name: "Thạch", href: "/products/thuc-pham/banh-keo-do-an/thach" },
         ],
       },
     ],
@@ -191,6 +204,7 @@ function classNames(...classes) {
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(null);
@@ -233,14 +247,14 @@ const Navbar = () => {
                 <div className="flex h-16 items-center justify-between">
                   {/* Logo (lg+) */}
                   <div className="hidden lg:flex lg:items-center">
-                    <a href="#">
+                    <Link to="/">
                       <span className="sr-only">Workflow</span>
                       <img
                         className="h-auto w-40"
                         src="/images/logo.png"
                         alt="logo"
                       />
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="hidden h-full lg:flex">
@@ -261,10 +275,11 @@ const Navbar = () => {
                                 setIsShowing(false);
                               }}
                             >
-                              {({ open }) => (
+                              {() => (
                                 <>
                                   <div className="relative flex">
                                     <Popover.Button
+                                      onClick={() => navigate(category.route)}
                                       className={classNames(
                                         menuOpen === categoryIdx
                                           ? "border-red-600 text-red-600"
@@ -304,32 +319,31 @@ const Navbar = () => {
                                         <div className="mx-auto max-w-7xl px-8">
                                           <div className="grid grid-cols-1 items-start gap-y-10 gap-x-8 pt-10 pb-12">
                                             <div className="grid grid-cols-5 gap-y-10 gap-x-8">
-                                              {category.subItems.map(
+                                              {category.subCategories.map(
                                                 (item, index) => (
                                                   <div key={index}>
-                                                    <p
-                                                      id={`desktop-featured-heading-${categoryIdx}`}
+                                                    <Link to={item.route}
                                                       className="font-medium text-gray-900"
                                                     >
                                                       {item.name}
-                                                    </p>
+                                                    </Link>
                                                     <ul
                                                       role="list"
                                                       aria-labelledby={`desktop-featured-heading-${categoryIdx}`}
                                                       className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                                     >
-                                                      {item.subItems.map(
+                                                      {item.subCategories.map(
                                                         (item) => (
                                                           <li
                                                             key={item.name}
                                                             className="flex"
                                                           >
-                                                            <a
-                                                              href={item.href}
+                                                            <Link
+                                                              to={item.href}
                                                               className="hover:text-gray-800"
                                                             >
                                                               {item.name}
-                                                            </a>
+                                                            </Link>
                                                           </li>
                                                         )
                                                       )}
