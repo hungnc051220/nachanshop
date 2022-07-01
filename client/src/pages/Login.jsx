@@ -29,12 +29,12 @@ const Login = () => {
       toast.error(message);
     }
 
-    if (isSuccess || user) {
+    if (isSuccess) {
       navigate("/dashboard");
     }
 
     dispatch(reset());
-  }, [isError, isSuccess, message, dispatch]);
+  }, [isError, isSuccess]);
 
   const handleChange = (e) => {
     setUserData((prevState) => ({

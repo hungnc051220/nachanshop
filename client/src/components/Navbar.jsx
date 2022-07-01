@@ -26,7 +26,7 @@ const categories = [
         name: "Chăm sóc da",
         route: "/products/cham-soc-sac-dep/cham-soc-da",
         subCategories: [
-          { name: "Kem dưỡng da", href: "/products/cham-soc-sac-dep/cham-soc-da/kem-duong-da" },
+          { name: "Kem dưỡng da", href: "/products/cham-soc-sac-dep/cham-soc-da/kem-duong" },
           { name: "Rửa mặt", href: "/products/cham-soc-sac-dep/cham-soc-da/rua-mat" },
           { name: "Mặt nạ dưỡng mặt", href: "/products/cham-soc-sac-dep/cham-soc-da/mat-na-duong-da" },
           { name: "Nước hoa hồng", href: "/products/cham-soc-sac-dep/cham-soc-da/nuoc-hoa-hong" },
