@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../components";
-import categories from "../data/categories.json";
 import { typeParent } from "../data/categoriesSelect";
 import { addToCart } from "../features/cart/cartSlice";
 import { useGetProductsQuery } from "../services/apiSlice";
@@ -35,50 +34,23 @@ function classNames(...classes) {
 
 const Products = () => {
   let { mainCategory, category, subCategory } = useParams();
-  console.log(mainCategory);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { type, page = 1, typeChild } = queryString.parse(location.search);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [subCategories, setSubCategories] = useState([]);
 
-  const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
-    page,
+  const { data, isLoading } = useGetProductsQuery({
     mainCategory,
     category,
     subCategory
   });
 
-  useEffect(() => {
-    const category = categories.find((x) => x.code === type);
-
-    if (category?.sub_items) setSubCategories(category.sub_items);
-    else {
-      setSubCategories([]);
-    }
-  }, [type]);
-
-  const onChangePagination = (page, pageSize) => {
-    navigate(`/products?type=${type}&page=${page}`);
-    window.scrollTo(0, 0);
-  };
-
-  const getNameType = () => {
-    let name = "";
-    const parent = typeParent.find((x) => x.id === type);
-    if (parent) {
-      name = parent.name;
-    }
-
-    return name;
-  };
-
   return (
     <section>
       <div className="mx-auto max-w-7xl py-2 pb-16">
-        {/* <Breadcrumbs /> */}
+        <Breadcrumbs />
 
         <div className="mt-2 rounded-xl bg-white shadow">
           <div>
@@ -132,7 +104,7 @@ const Products = () => {
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pt-6 pb-6">
                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
-                  {getNameType()}
+
                 </h1>
 
                 <div className="flex items-center">
@@ -246,7 +218,7 @@ const Products = () => {
                             >
                               <div className="p-5">
                                 <Link
-                                  to={`/products/${product.mainCategory}/${
+                                  to={`/${product.mainCategory}/${
                                     product.category
                                   }/${product.subCategory}/${removeAccents(
                                     product.name
@@ -266,7 +238,7 @@ const Products = () => {
 
                               <div className="p-5">
                                 <Link
-                                  to={`/products/${mainCategory}/${category}/${subCategory}/${product._id}`}
+                                  to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
                                   className="block text-base font-medium uppercase text-red-500"
                                   onClick={() => {
                                     window.scrollTo(0, 0);
@@ -276,7 +248,7 @@ const Products = () => {
                                 </Link>
 
                                 <Link
-                                  to={`/products/${mainCategory}/${category}/${subCategory}/${product._id}`}
+                                  to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
                                   className="inline-block h-24 py-2"
                                   onClick={() => {
                                     window.scrollTo(0, 0);

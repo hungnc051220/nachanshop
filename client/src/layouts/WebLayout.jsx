@@ -6,8 +6,6 @@ const WebLayout = () => {
   return (
     <>
       <header>
-        {/* <TopHeader />
-        <MainHeader /> */}
         <Navbar />
       </header>
       <main className="bg-gray-50">

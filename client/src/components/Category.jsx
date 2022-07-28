@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { formatMoney } from "../utils/commonFunction";
+import { formatMoney, removeAccents } from "../utils/commonFunction";
 import { addToCart } from "../features/cart/cartSlice";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
@@ -49,7 +49,9 @@ const Category = ({ name, products, icon, link, loading }) => {
             >
               <div className="relative p-5">
                 <Link
-                  to={`/products/${product._id}`}
+                  to={`/${product.mainCategory}/${product.category}/${
+                    product.subCategory
+                  }/${removeAccents(product.name)}?id=${product._id}`}
                   onClick={() => {
                     window.scrollTo(0, 0);
                   }}
@@ -66,7 +68,9 @@ const Category = ({ name, products, icon, link, loading }) => {
 
               <div className="p-5">
                 <Link
-                  to={`/products/${product._id}`}
+                  to={`/${product.mainCategory}/${product.category}/${
+                    product.subCategory
+                  }/${removeAccents(product.name)}?id=${product._id}`}
                   className="block text-base font-medium uppercase text-red-500"
                   onClick={() => {
                     window.scrollTo(0, 0);
@@ -75,7 +79,12 @@ const Category = ({ name, products, icon, link, loading }) => {
                   {product?.typeChildName}
                 </Link>
 
-                <Link to={`/products/${product._id}`} className="line-clamp-2">
+                <Link
+                  to={`/${product.mainCategory}/${product.category}/${
+                    product.subCategory
+                  }/${removeAccents(product.name)}?id=${product._id}`}
+                  className="line-clamp-2"
+                >
                   <h3 className="text-sm text-gray-600">{product.name}</h3>
                 </Link>
 

@@ -3,28 +3,28 @@ import { useGetProductsQuery } from "../services/apiSlice";
 import Category from "./Category";
 
 const Categories = () => {
-  const { data: dataCssk, isLoadingCssk } = useGetProductsQuery({
+  const { data: dataCssd, isLoadingCssk } = useGetProductsQuery({
     page: 1,
-    type: "cssd",
-    limit: 5,
+    mainCategory: "cham-soc-sac-dep",
+    limit: 10,
   });
 
-  const { data: dataCsdm, isLoadingCsdm } = useGetProductsQuery({
+  const { data: dataCssk, isLoadingCsdm } = useGetProductsQuery({
     page: 1,
-    type: "cssk",
-    limit: 5,
+    mainCategory: "cham-soc-suc-khoe",
+    limit: 10,
   });
 
   const { data: dataMvb, isLoadingMvb } = useGetProductsQuery({
     page: 1,
-    type: "mvb",
-    limit: 5,
+    mainCategory: "me-va-be",
+    limit: 10,
   });
 
   const { data: dataTpnb, isLoadingTpnb } = useGetProductsQuery({
     page: 1,
-    type: "tp",
-    limit: 5,
+    mainCategory: "thuc-pham",
+    limit: 10,
   });
 
   return (
@@ -32,28 +32,28 @@ const Categories = () => {
       <Category
         name="Chăm sóc sắc đẹp"
         icon="lipstick"
-        link="/products?type=tpld"
-        products={dataCsdm?.content}
+        link="/cham-soc-sac-dep"
+        products={dataCssd?.content}
         loading={isLoadingCsdm}
       />
       <Category
         name="Chăm sóc sức khoẻ"
         icon="shield"
         products={dataCssk?.content}
-        link="/products?type=cssk"
+        link="/cham-soc-suc-khoe"
         loading={isLoadingCssk}
       />
       <Category
         name="Mẹ và Bé"
         icon="feeding-bottle"
-        link="/products?type=mvb"
+        link="/me-va-be"
         products={dataMvb?.content}
         loading={isLoadingMvb}
       />
       <Category
         name="Thực phẩm"
         icon="bibimbap"
-        link="/products?type=tpnb"
+        link="/thuc-pham"
         products={dataTpnb?.content}
         loading={isLoadingTpnb}
       />

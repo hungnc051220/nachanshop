@@ -1,5 +1,6 @@
 import decode from "jwt-decode";
 import confetti from "canvas-confetti";
+import { categories } from "../data/categories";
 
 export const formatMoney = (value) => {
   let val = (value / 1).toFixed(0).replace(".", ",");
@@ -68,4 +69,35 @@ export const removeAccents = (str) => {
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D");
   return name.replace(/\s/g, "-").replace(".", "").toLowerCase();
+};
+
+export const getNameCategory = (code) => {
+  let name = "";
+
+  for (let i = 0; i <= categories.length; i++) {
+    if (categories[i]?.route === code) {
+      return (name = categories[i].name);
+    }
+
+    if (categories[i]) {
+      for (let j = 0; j < categories[i].subCategories.length; j++) {
+        if (categories[i]?.subCategories[j].route === code) {
+          return (name = categories[i].subCategories[j].name);
+        }
+
+        for (
+          let k = 0;
+          k < categories[i].subCategories[j].subCategories.length;
+          k++
+        ) {
+          if (categories[i].subCategories[j].subCategories[k].href === code) {
+            return (name =
+              categories[i].subCategories[j].subCategories[k].name);
+          }
+        }
+      }
+    }
+  }
+
+  return name;
 };

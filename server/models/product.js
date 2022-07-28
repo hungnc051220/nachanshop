@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
+  productCode: {
+    type: String,
+  },
   name: {
     type: String,
     require: true,
@@ -31,7 +34,7 @@ const productSchema = mongoose.Schema({
   },
   productImage: Array,
   color: {
-    type: String,
+    type: Array,
   },
   weight: {
     type: String,

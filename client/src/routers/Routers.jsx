@@ -26,10 +26,10 @@ const Routers = () => {
     <Routes>
       <Route path="/" element={<WebLayout />}>
         <Route index element={<Home />} />
-        <Route path="products/:mainCategory" element={<Products />} />
-        <Route path="products/:mainCategory/:category" element={<Products />} />
-        <Route path="products/:mainCategory/:category/:subCategory" element={<Products />} />
-        <Route path="products/:mainCategory/:category/:subCategory/:id" element={<ProductDetail />} />
+        <Route path=":mainCategory" element={<Products />} />
+        <Route path=":mainCategory/:category" element={<Products />} />
+        <Route path=":mainCategory/:category/:subCategory" element={<Products />} />
+        <Route path=":mainCategory/:category/:subCategory/:id" element={<ProductDetail />} />
         <Route path="shopping-cart" element={<ShoppingCart />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="success" element={<Success />} />

@@ -86,6 +86,7 @@ const ProductManagement = () => {
 
   const columns = [
     { field: "no", headerName: t("no"), width: 50 },
+    { field: "productCode", headerName: t("productCode"), minWidth: 120 },
     {
       field: "name",
       headerName: t("productName"),
@@ -97,7 +98,7 @@ const ProductManagement = () => {
               params.row.productImage[0]
             }`}
             alt={data.name}
-            className="h-10 w-10"
+            className="h-14 w-14"
             loading="lazy"
           />
           <p>{params.row.name}</p>

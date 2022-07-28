@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Product = require("../models/product");
+const Hashids = require("hashids/cjs");
 const { downloadFile } = require("../download2");
 
 const getProducts = async (req, res) => {
@@ -61,8 +62,13 @@ const addProduct = async (req, res) => {
     return item.path;
   });
 
+  const hashids = new Hashids();
+  const d1 = new Date();
+  const productCode = hashids.encode(d1.getTime()).toUpperCase();
+
   const newProduct = new Product({
     ...product,
+    productCode,
     productImage: images,
   });
 
@@ -131,6 +137,10 @@ const addMultiProduct = async (req, res) => {
   const newList = await Promise.all(
     products.map(async (item) => {
       const fileName = await downloadFile(item.productImages[0]);
+      const hashids = new Hashids();
+      const d1 = new Date();
+      const productCode = hashids.encode(d1.getTime()).toUpperCase();
+      item.productCode = productCode;
       item.productImage = fileName;
       return item;
     })

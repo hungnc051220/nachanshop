@@ -12,7 +12,7 @@ export const apiSlice = createApi({
           props.mainCategory ? `&mainCategory=${props.mainCategory}` : ""
         }${props.category ? `&category=${props.category}` : ""}${
           props.subCategory ? `&subCategory=${props.subCategory}` : ""
-        }`,
+        }${props.limit ? `&limit=${props.limit}` : ""}`,
       providesTags: ["Products"],
     }),
     getProduct: builder.query({
