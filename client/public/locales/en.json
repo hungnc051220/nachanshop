@@ -39,5 +39,8 @@
       "assigned": "Assigned {{from}} to {{to}} successfully!",
       "published": "Published Jobs successfully!"
     }
-  }
+  },
+  "mainCategory": "Main category",
+  "category": "Category",
+  "subCategory": "Sub category"
 }

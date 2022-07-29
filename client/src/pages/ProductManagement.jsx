@@ -17,6 +17,7 @@ import { BsTrash } from "react-icons/bs";
 import Tooltip from "@mui/material/Tooltip";
 
 import { Button } from "@mui/material";
+import { getNameCategory } from "../utils/commonFunction";
 
 const ProductManagement = () => {
   const { t } = useTranslation();
@@ -41,17 +42,7 @@ const ProductManagement = () => {
   });
 
   const getNameTypeParent = (params) => {
-    return typeParent.find((x) => x.id === params.row.typeParent).name;
-  };
-
-  const getNameTypeChild = (params) => {
-    let name = "";
-    if (params.row.typeParent !== "gc" && params.row.typeParent !== "mvb")
-      name = typeChildData[params.row.typeParent].find(
-        (x) => x.id === params.row.typeChild
-      )?.name;
-
-    return name;
+    return getNameCategory(params.row.typeParent);
   };
 
   const getStatusName = (params) => {
@@ -119,19 +110,19 @@ const ProductManagement = () => {
     {
       field: "mainCategory",
       headerName: t("mainCategory"),
-      // valueGetter: getNameTypeParent,
+      valueGetter: (params) => getNameCategory(params.row.mainCategory),
       minWidth: 200,
     },
     {
       field: "category",
       headerName: t("category"),
-      // valueGetter: getNameTypeChild,
+      valueGetter: (params) => getNameCategory(params.row.category),
       minWidth: 200,
     },
     {
       field: "subCategory",
       headerName: t("subCategory"),
-      // valueGetter: getNameTypeChild,
+      valueGetter: (params) => getNameCategory(params.row.subCategory),
       minWidth: 200,
     },
     {

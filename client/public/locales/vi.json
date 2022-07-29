@@ -37,5 +37,9 @@
       "add": "Đã thêm {{field}} thành công!",
       "delete": "Đã xoá {{field}} thành công!"
     }
-  }
+  },
+  "productCode": "Mã sản phẩm",
+  "mainCategory": "Loại hàng chính",
+  "category": "Loại hàng",
+  "subCategory": "Loại hàng con"
 }
