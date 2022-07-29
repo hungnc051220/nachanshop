@@ -27,6 +27,7 @@ const ProductManagement = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
     page,
+    limit: 100
   });
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const [deleteProducts, { isLoading: isDeletingMulti }] = useDeleteProductsMutation();

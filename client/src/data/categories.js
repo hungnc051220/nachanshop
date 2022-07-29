@@ -34,10 +34,10 @@ export const categories = [
           { name: "Chống nắng", href: "chong-nang" },
           { name: "Dưỡng môi", href: "duong-moi" },
           { name: "Dưỡng thể", href: "duong-the" },
-          { name: "Khử mùi mồ hôi", href: "khu-mui-mo-hoi" },
+          { name: "Khử mùi, giảm mồ hôi", href: "khu-mui-giam-mo-hoi" },
           { name: "Sữa tắm", href: "sua-tam" },
           { name: "Tẩy lông", href: "tay-long" },
-          { name: "Dao cạo, bấm móng", href: "dao-cao-bam-mong" },
+          { name: "Dao cạo, bấm móng", href: "dao-cao-bam-mong-nhip" },
         ],
       },
       {
@@ -106,7 +106,7 @@ export const categories = [
   },
   {
     name: "Mẹ và Bé",
-    route: "me-va-be",
+    route: "me-be",
     subCategories: [
       {
         name: "Thực phẩm cho bé",
@@ -125,22 +125,22 @@ export const categories = [
       },
       {
         name: "Chăm sóc cơ thể bé",
-        route: "cham-soc-co-the-be",
+        route: "be-khoe",
         subCategories: [
-          { name: "Chống muỗi, chống côn trùng", href: "chong-muoi-chong-con-trung" },
+          { name: "Chống muỗi, chống côn trùng", href: "chong-muoi-con-trung" },
           { name: "Chống nắng cho bé", href: "chong-nang-cho-be" },
-          { name: "Hạ sốt, trị ho, sổ mũi", href: "ha-sot-tri-ho-so-mui" },
-          { name: "Kem dưỡng massage cho bé", href: "kem-duong-massage-cho-be" },
+          { name: "Hạ sốt, trị ho, sổ mũi", href: "ha-sot-cho-be" },
+          { name: "Kem dưỡng massage cho bé", href: "kem-duong-dau-massage-cho-be" },
           { name: "Bịt ổ điện, chặn cửa", href: "bit-o-dien-chan-cua" },
         ],
       },
       {
         name: "Dành cho mẹ bầu",
-        route: "danh-cho-me-bau",
+        route: "cham-soc-me-bau",
         subCategories: [
-          { name: "Thực phẩm chức năng", href: "thuc-pham-chuc-nang" },
+          { name: "Thực phẩm chức năng", href: "tpcn-me-bau" },
           { name: "Sữa bầu", href: "sua-bau" },
-          { name: "Thấm sữa", href: "tham-sua" },
+          { name: "Thấm sữa", href: "tham-sua-cho-me-bau" },
         ],
       },
     ],

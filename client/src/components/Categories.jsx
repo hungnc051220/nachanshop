@@ -17,7 +17,7 @@ const Categories = () => {
 
   const { data: dataMvb, isLoadingMvb } = useGetProductsQuery({
     page: 1,
-    mainCategory: "me-va-be",
+    mainCategory: "me-be",
     limit: 10,
   });
 
