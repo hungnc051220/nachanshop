@@ -33,6 +33,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
+    deleteProducts: builder.mutation({
+      query: (body) => ({
+        url: "/products/deleteMulti",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Products"],
+    }),
     getOrders: builder.query({
       query: () => "orders",
       providesTags: ["Orders"],
@@ -49,6 +57,7 @@ export const {
   useGetProductQuery,
   useAddProductMutation,
   useDeleteProductMutation,
+  useDeleteProductsMutation,
   useGetOrdersQuery,
   useGetDashboardQuery,
 } = apiSlice;

@@ -8,8 +8,7 @@ import {
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import queryString from "query-string";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -19,6 +18,7 @@ import { addToCart } from "../features/cart/cartSlice";
 import { useGetProductsQuery } from "../services/apiSlice";
 import { formatMoney } from "../utils/commonFunction";
 import { removeAccents } from "../utils/commonFunction";
+import Pagination from "@mui/material/Pagination";
 
 const sortOptions = [
   { name: "Phổ biến nhất", href: "#", current: true },
@@ -40,12 +40,19 @@ const Products = () => {
   const { t } = useTranslation();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [subCategories, setSubCategories] = useState([]);
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useGetProductsQuery({
+    page,
     mainCategory,
     category,
-    subCategory
+    subCategory,
+    limit: 20,
   });
+
+  const handleChangePagination = (event, value) => {
+    setPage(value);
+  }
 
   return (
     <section>
@@ -103,9 +110,7 @@ const Products = () => {
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pt-6 pb-6">
-                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
-
-                </h1>
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-900"></h1>
 
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
@@ -210,75 +215,85 @@ const Products = () => {
                       </Box>
                     ) : (
                       <div className="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        {data?.content?.length > 0 && data?.content?.map((product) => {
-                          return (
-                            <div
-                              className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
-                              key={product._id}
-                            >
-                              <div className="p-5">
-                                <Link
-                                  to={`/${product.mainCategory}/${
-                                    product.category
-                                  }/${product.subCategory}/${removeAccents(
-                                    product.name
-                                  )}?id=${product._id}`}
-                                  onClick={() => {
-                                    window.scrollTo(0, 0);
-                                  }}
-                                >
-                                  <img
-                                    src={`${import.meta.env.VITE_API_URL}/${
-                                      product.productImage[0]
-                                    }`}
-                                    alt={product.name}
-                                  />
-                                </Link>
-                              </div>
-
-                              <div className="p-5">
-                                <Link
-                                  to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
-                                  className="block text-base font-medium uppercase text-red-500"
-                                  onClick={() => {
-                                    window.scrollTo(0, 0);
-                                  }}
-                                >
-                                  {product?.typeChildName}
-                                </Link>
-
-                                <Link
-                                  to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
-                                  className="inline-block h-24 py-2"
-                                  onClick={() => {
-                                    window.scrollTo(0, 0);
-                                  }}
-                                >
-                                  <h3 className="text-sm text-gray-600 line-clamp-2">
-                                    {product.name}
-                                  </h3>
-                                </Link>
-
-                                <div className="flex flex-col gap-2">
-                                  <p className="mb-0 text-xl font-semibold">
-                                    {formatMoney(product.price)}₫
-                                  </p>
-                                  <Button
-                                    variant="contained"
-                                    color="error"
-                                    size="small"
-                                    onClick={() => dispatch(addToCart(product))}
+                        {data?.content?.length > 0 &&
+                          data?.content?.map((product) => {
+                            return (
+                              <div
+                                className="group overflow-hidden rounded-lg border border-solid border-gray-200 bg-white transition-all duration-200 ease-in-out hover:shadow-xl"
+                                key={product._id}
+                              >
+                                <div className="p-5">
+                                  <Link
+                                    to={`/${product.mainCategory}/${
+                                      product.category
+                                    }/${product.subCategory}/${removeAccents(
+                                      product.name
+                                    )}?id=${product._id}`}
+                                    onClick={() => {
+                                      window.scrollTo(0, 0);
+                                    }}
                                   >
-                                    {t("buyNow")}
-                                  </Button>
+                                    <img
+                                      src={`${import.meta.env.VITE_API_URL}/${
+                                        product.productImage[0]
+                                      }`}
+                                      alt={product.name}
+                                    />
+                                  </Link>
+                                </div>
+
+                                <div className="p-5">
+                                  <Link
+                                    to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
+                                    className="block text-base font-medium uppercase text-red-500"
+                                    onClick={() => {
+                                      window.scrollTo(0, 0);
+                                    }}
+                                  >
+                                    {product?.typeChildName}
+                                  </Link>
+
+                                  <Link
+                                    to={`/${mainCategory}/${category}/${subCategory}/${product._id}`}
+                                    className="inline-block h-24 py-2"
+                                    onClick={() => {
+                                      window.scrollTo(0, 0);
+                                    }}
+                                  >
+                                    <h3 className="text-sm text-gray-600 line-clamp-2">
+                                      {product.name}
+                                    </h3>
+                                  </Link>
+
+                                  <div className="flex flex-col gap-2">
+                                    <p className="mb-0 text-xl font-semibold">
+                                      {formatMoney(product.price)}₫
+                                    </p>
+                                    <Button
+                                      variant="contained"
+                                      color="error"
+                                      size="small"
+                                      onClick={() =>
+                                        dispatch(addToCart(product))
+                                      }
+                                    >
+                                      {t("buyNow")}
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
                       </div>
                     )}
                   </div>
+                </div>
+                <div className="float-right">
+                  <Pagination
+                    count={Math.ceil(data?.total / 20)}
+                    shape="rounded"
+                    onChange={handleChangePagination}
+                  />
                 </div>
               </section>
             </main>

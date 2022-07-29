@@ -9,6 +9,7 @@ import {
 } from "../data/categoriesSelect";
 import {
   useDeleteProductMutation,
+  useDeleteProductsMutation,
   useGetProductsQuery,
 } from "../services/apiSlice";
 import toast from "react-hot-toast";
@@ -28,6 +29,7 @@ const ProductManagement = () => {
     page,
   });
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+  const [deleteProducts, { isLoading: isDeletingMulti }] = useDeleteProductsMutation();
 
   let rows = [];
   let counter = 0;
@@ -79,6 +81,14 @@ const ProductManagement = () => {
     try {
       await deleteProduct(id);
       setOpenModalDelete(false);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const onDeleteMulti = async () => {
+    try {
+      await deleteProducts(selectedProducts);
     } catch (error) {
       toast.error(error);
     }
@@ -168,6 +178,7 @@ const ProductManagement = () => {
           <p className="mt-2 text-sm text-gray-700">
             Danh sách tất cả các sản phẩm
           </p>
+          <LoadingButton onClick={onDeleteMulti}>Delete</LoadingButton>
         </div>
         <div className="mt-4 flex gap-2 sm:mt-0 sm:ml-16">
           <AddProduct

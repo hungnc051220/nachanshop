@@ -71,9 +71,9 @@ export const categories = [
         name: "Thực phẩm chức năng",
         route: "thuc-pham-chuc-nang",
         subCategories: [
-          { name: "Bổ sung canxi", href: "bo-xung-canxi" },
+          { name: "Bổ sung canxi", href: "bo-sung-canxi" },
           { name: "Bổ sung DHA", href: "bo-sung-dha" },
-          { name: "Bổ sung Glocosamin", href: "bo-sung-glocosamin" },
+          { name: "Bổ sung Glocosamin", href: "bo-sung-glucosamin" },
           { name: "Bổ sung Vitamin", href: "bo-sung-vitamin" },
           { name: "Ổn định huyết áp", href: "on-dinh-huyet-ap" },
           { name: "Tảo", href: "tao" },

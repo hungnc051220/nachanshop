@@ -11,6 +11,7 @@ const AddMultiProduct = ({ open, onClose }) => {
   const { t } = useTranslation();
   const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [products, setProducts] = useState([]);
 
   const columns = [
@@ -44,12 +45,13 @@ const AddMultiProduct = ({ open, onClose }) => {
   };
 
   const addMulti = async () => {
+    setLoadingSubmit(true);
     try {
       const response = await addMultiProduct(products);
-      console.log(response.data);
     } catch (error) {
-      
+      console.log(error)
     }
+    setLoadingSubmit(false);
   }
 
   return (
@@ -97,7 +99,7 @@ const AddMultiProduct = ({ open, onClose }) => {
               //onSelectionModelChange={onRowSelected}
             />
             <div className="flex justify-end pt-4">
-              <LoadingButton variant="contained" color="primary" onClick={addMulti}>
+              <LoadingButton variant="contained" color="primary" onClick={addMulti} loading={loadingSubmit}>
                 {t("save")}
               </LoadingButton>
             </div>
