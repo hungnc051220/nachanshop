@@ -8,6 +8,7 @@ import {
   typeParent,
   typeChild as typesChild,
 } from "../../data/categoriesSelect";
+import { categories } from "../../data/categories";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { generateLink } from "../../api/productsApi";
@@ -49,6 +50,8 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [childData, setChildData] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([])
   const [addProduct, { isLoading }] = useAddProductMutation();
 
   const schema = yup.object().shape({
@@ -80,39 +83,47 @@ const AddProduct = ({ product, setSelectedProduct }) => {
     resolver: yupResolver(schema),
   });
 
-  // useEffect(() => {
-  //   if (product) {
-  //     const {
-  //       name,
-  //       status,
-  //       typeParent,
-  //       typeChild,
-  //       countInStock,
-  //       price,
-  //       description,
-  //     } = product;
-  //     setOpen(true);
+  useEffect(() => {
+    if (product) {
+      const {
+        name,
+        status,
+        typeParent,
+        mainCategory,
+        category,
+        subCategory,
+        typeChild,
+        countInStock,
+        price,
+        description,
+      } = product;
 
-  //     setValue("name", name);
-  //     setValue("status", status);
-  //     setValue("typeParent", typeParent);
+      setOpen(true);
+      setValue("name", name);
+      setValue("status", status);
+      setValue("mainCategory", mainCategory);
+      handleChange(mainCategory);
+      setValue("category", category);
+      onChangeCategory(category);
+      setValue("subCategory", subCategory);
 
-  //     if (typesChild[typeParent]) setChildData(typesChild[typeParent]);
-  //     else setChildData([]);
+      setValue("typeChild", typeChild);
+      setValue("countInStock", countInStock);
+      setValue("price", price);
+      setValue("description", description);
+    } else {
+      reset();
+    }
+  }, [product]);
 
-  //     setValue("typeChild", typeChild);
-  //     setValue("countInStock", countInStock);
-  //     setValue("price", price);
-  //     setValue("description", description);
-  //   } else {
-  //     reset();
-  //   }
-  // }, [product]);
+  const handleChange = (value) => {
+    const data = categories.find(x => x.route === value).subCategories;
+    setCategory(data);
+  };
 
-  const handleChange = (event) => {
-    if (typesChild[event.target.value])
-      setChildData(typesChild[event.target.value]);
-    else setChildData([]);
+  const onChangeCategory = (value) => {
+    const data = category.find(x => x.route === value)?.subCategories;
+    setSubCategory(data);
   };
 
   const onSubmit = async (data) => {
@@ -176,7 +187,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                 className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
                   <div className="bg-indigo-700 py-6 px-4 sm:px-6">
                     <div className="flex items-start justify-between">
                       <h2 className="text-lg font-medium text-white">
@@ -254,7 +265,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
 
                         <div className="sm:col-span-3">
                           <Controller
-                            name="typeParent"
+                            name="mainCategory"
                             control={control}
                             defaultValue=""
                             render={({ field: { onChange, value } }) => (
@@ -262,22 +273,22 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                                 select
                                 onChange={(e) => {
                                   onChange(e);
-                                  handleChange(e);
+                                  handleChange(e.target.value);
                                 }}
                                 value={value}
                                 variant="outlined"
                                 size="small"
-                                label="Loại hàng cha"
+                                label={t("mainCategory")}
                                 fullWidth
-                                error={!!errors.typeParent}
+                                error={!!errors.mainCategory}
                                 helperText={
-                                  errors.typeParent
-                                    ? errors.typeParent?.message
+                                  errors.mainCategory
+                                    ? errors.mainCategory?.message
                                     : ""
                                 }
                               >
-                                {typeParent?.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
+                                {categories?.map((item) => (
+                                  <MenuItem key={item.route} value={item.route}>
                                     {item.name}
                                   </MenuItem>
                                 ))}
@@ -288,7 +299,41 @@ const AddProduct = ({ product, setSelectedProduct }) => {
 
                         <div className="sm:col-span-3">
                           <Controller
-                            name="typeChild"
+                            name="category"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => (
+                              <TextField
+                                select
+                                onChange={(e) => {
+                                  onChange(e);
+                                  onChangeCategory(e.target.value);
+                                }}
+                                value={value}
+                                variant="outlined"
+                                size="small"
+                                label={t("category")}
+                                fullWidth
+                                error={!!errors.category}
+                                helperText={
+                                  errors.category
+                                    ? errors.category?.message
+                                    : ""
+                                }
+                              >
+                                {category?.map((item) => (
+                                  <MenuItem key={item.route} value={item.route}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            )}
+                          />
+                        </div>
+
+                        <div className="sm:col-span-3">
+                          <Controller
+                            name="subCategory"
                             control={control}
                             defaultValue=""
                             render={({ field }) => (
@@ -297,11 +342,11 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                                 select
                                 variant="outlined"
                                 size="small"
-                                label="Loại hàng con"
+                                label={t("subCategory")}
                                 fullWidth
                               >
-                                {childData?.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
+                                {subCategory?.map((item) => (
+                                  <MenuItem key={item.href} value={item.href}>
                                     {item.name}
                                   </MenuItem>
                                 ))}
@@ -315,8 +360,9 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                             name="countInStock"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange } }) => (
+                            render={({ field: { value, onChange } }) => (
                               <NumberFormat
+                                value={value}
                                 customInput={TextField}
                                 thousandSeparator={true}
                                 onValueChange={(v) => {

@@ -68,7 +68,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <section className="mx-auto max-w-7xl pb-10 md:pb-20">
+    <section className="mx-auto max-w-7xl pb-10 md:pb-20 relative">
       <div className="py-2">
         <Breadcrumbs product={data} />
       </div>
@@ -77,7 +77,7 @@ const ProductDetail = () => {
           <div className="grid-cols mb-6 grid gap-5 rounded-2xl bg-white p-4 shadow md:p-10 lg:grid-cols-2">
             <div className="py-5">
               <img
-                className="mx-auto h-auto w-full rounded-2xl object-cover object-center shadow transition duration-300 ease-in-out md:h-[500px] md:w-[500px]"
+                className="mx-auto h-auto w-full rounded-2xl object-cover object-center shadow transition duration-300 ease-in-out md:h-[500px] md:w-[500px] relative"
                 src={`${import.meta.env.VITE_API_URL}/${
                   data.productImage[indexImage]
                 }`}

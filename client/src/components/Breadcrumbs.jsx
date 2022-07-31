@@ -8,7 +8,7 @@ const Breadcrumbs = ({ product }) => {
   const pathnames = pathname.split("/").filter((x) => x);
 
   return (
-    <nav className="flex py-2 px-4 sm:px-6" aria-label="Breadcrumb">
+    <nav className="flex py-2 px-4 sm:px-6 relative" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <div>

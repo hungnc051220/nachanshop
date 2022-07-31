@@ -17,7 +17,7 @@ const ShoppingCart = () => {
   const { cartItems, total } = useSelector((state) => state.cart);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0 ">
+    <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0 relative">
       <div className="rounded-lg bg-white p-4 shadow md:p-10">
         <h1 className="racking-tight text-2xl font-extrabold text-gray-900">
           Giỏ hàng của bạn

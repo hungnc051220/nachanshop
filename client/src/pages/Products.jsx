@@ -55,7 +55,7 @@ const Products = () => {
   }
 
   return (
-    <section>
+    <section className="relative">
       <div className="mx-auto max-w-7xl py-2 pb-16">
         <Breadcrumbs />
 

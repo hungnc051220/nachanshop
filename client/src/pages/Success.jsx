@@ -9,7 +9,7 @@ const Success = () => {
     runConfetti();
   }, []);
   return (
-    <div className="mx-auto flex max-w-2xl items-center justify-center px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0">
+    <div className="mx-auto flex max-w-2xl items-center justify-center px-4 pt-10 pb-10 md:px-6 md:pb-24 lg:max-w-7xl lg:px-0 relative">
       <div className="flex flex-col items-start rounded-xl bg-white p-10 shadow md:items-center md:p-16">
         <BsFillCartCheckFill className="h-20 w-20 text-green-500" />
         <h2 className="mt-6 text-2xl font-semibold">Đặt hàng thành công!</h2>

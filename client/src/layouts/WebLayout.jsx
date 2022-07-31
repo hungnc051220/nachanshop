@@ -8,8 +8,9 @@ const WebLayout = () => {
       <header>
         <Navbar />
       </header>
-      <main className="bg-gray-50">
-        <Outlet />
+      <main className="bg-pink-50 relative">
+        <img src="/images/shape-bg.png" alt="shape background" className="absolute inset-0 w-full h-full object-cover mix-blend-soft-light" />
+        <Outlet/>
       </main>
       <Footer />
     </>

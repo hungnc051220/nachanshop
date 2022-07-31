@@ -3,19 +3,16 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { AddMultiProduct, AddProduct, DeleteProduct } from "../components";
-import {
-  typeChild as typeChildData,
-  typeParent,
-} from "../data/categoriesSelect";
+import LinearProgress from "@mui/material/LinearProgress";
 import {
   useDeleteProductMutation,
   useDeleteProductsMutation,
   useGetProductsQuery,
+  useUpdateProductMutation,
 } from "../services/apiSlice";
 import toast from "react-hot-toast";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsPencilFill } from "react-icons/bs";
 import Tooltip from "@mui/material/Tooltip";
-
 import { Button } from "@mui/material";
 import { getNameCategory } from "../utils/commonFunction";
 
@@ -28,10 +25,12 @@ const ProductManagement = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
     page,
-    limit: 100
+    limit: 100,
   });
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
-  const [deleteProducts, { isLoading: isDeletingMulti }] = useDeleteProductsMutation();
+  const [deleteProducts, { isLoading: isDeletingMulti }] =
+    useDeleteProductsMutation();
+  const [updateProduct] = useUpdateProductMutation();
 
   let rows = [];
   let counter = 0;
@@ -40,10 +39,6 @@ const ProductManagement = () => {
     let no = data?.pageSize * (data?.currentPage - 1) + counter;
     return { ...item, no };
   });
-
-  const getNameTypeParent = (params) => {
-    return getNameCategory(params.row.typeParent);
-  };
 
   const getStatusName = (params) => {
     return params.row.status === 1 ? t("stocking") : t("outOfStock");
@@ -83,6 +78,18 @@ const ProductManagement = () => {
       await deleteProducts(selectedProducts);
     } catch (error) {
       toast.error(error);
+    }
+  };
+
+  const onUpdatePrice = async (props, event) => {
+    if (props.row.price === props.value) {
+      return;
+    }
+
+    try {
+      await updateProduct({ id: props.id, price: props.value });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -148,14 +155,24 @@ const ProductManagement = () => {
       field: "action",
       headerName: "",
       renderCell: (params) => (
-        <Tooltip title={t("delete")} placement="right-start" arrow>
-          <a
-            className="group cursor-pointer rounded-lg border border-gray-200 p-1 transition duration-300 ease-in-out hover:bg-red-500"
-            onClick={() => onShowModalDelete(params.row._id)}
-          >
-            <BsTrash className="h-4 w-4 text-red-500 transition duration-300 ease-in-out group-hover:text-white" />
-          </a>
-        </Tooltip>
+        <div className="flex gap-2">
+          <Tooltip title={t("edit")} placement="right-start" arrow>
+            <a
+              className="group cursor-pointer rounded-lg border border-gray-200 p-1 transition duration-300 ease-in-out hover:bg-red-500"
+              onClick={() => setSelectedProduct(params.row)}
+            >
+              <BsPencilFill className="h-4 w-4 text-indigo-500 transition duration-300 ease-in-out group-hover:text-white" />
+            </a>
+          </Tooltip>
+          <Tooltip title={t("delete")} placement="right-start" arrow>
+            <a
+              className="group cursor-pointer rounded-lg border border-gray-200 p-1 transition duration-300 ease-in-out hover:bg-red-500"
+              onClick={() => onShowModalDelete(params.row._id)}
+            >
+              <BsTrash className="h-4 w-4 text-red-500 transition duration-300 ease-in-out group-hover:text-white" />
+            </a>
+          </Tooltip>
+        </div>
       ),
     },
   ];
@@ -188,12 +205,15 @@ const ProductManagement = () => {
           )}
         </div>
       </div>
-      <div className="mt-6 h-[calc(100vh_-_190px)] w-full">
+      <div className="mt-6 h-[calc(100vh_-_200px)] w-full">
         <DataGrid
+          components={{
+            LoadingOverlay: LinearProgress,
+          }}
+          loading={isLoading || isFetching}
           rows={rows || []}
           getRowId={(row) => row._id}
           columns={columns}
-          loading={isLoading || isFetching}
           rowCount={data?.total || 0}
           pageSize={data?.pageSize || 50}
           paginationMode="server"
@@ -202,6 +222,7 @@ const ProductManagement = () => {
           checkboxSelection
           disableSelectionOnClick
           onSelectionModelChange={onRowSelected}
+          onCellEditCommit={onUpdatePrice}
         />
       </div>
       <DeleteProduct
