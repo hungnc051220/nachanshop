@@ -23,7 +23,7 @@ const ProductManagement = () => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openAddMulti, setOpenAddMulti] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
+  const { data, isLoading, isFetching, refetch, isError, error } = useGetProductsQuery({
     page,
     limit: 100,
   });
@@ -193,6 +193,7 @@ const ProductManagement = () => {
           <AddProduct
             product={selectedProduct}
             setSelectedProduct={setSelectedProduct}
+            refetch={refetch}
           />
           <Button variant="outlined" onClick={handleOpenAddMulti}>
             Thêm nhiều

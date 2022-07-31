@@ -41,8 +41,8 @@ const Category = ({ name, products, icon, link, loading, image, reverse }) => {
           <CircularProgress />
         </Box>
       ) : (
-        <div className={`w-full flex gap-2 ${reverse ? "flex-row-reverse" : ""}`}>
-          <div className="grid-cols grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-4/6">
+        <div className={`w-full lg:flex gap-2 ${reverse ? "flex-row-reverse" : ""}`}>
+          <div className="grid-cols grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full lg:w-4/6">
             {products?.map((product) => (
               <div
                 key={product._id}
@@ -106,7 +106,7 @@ const Category = ({ name, products, icon, link, loading, image, reverse }) => {
               </div>
             ))}
           </div>
-          <div className="w-2/6 relative overflow-hidden">
+          <div className="w-2/6 relative overflow-hidden hidden lg:block">
             <img className="absolute inset-0 w-full h-full object-cover object-center rounded-lg" src={`/images/${image}.png`} alt={image}/>
           </div>
         </div>

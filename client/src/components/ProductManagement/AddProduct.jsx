@@ -4,10 +4,6 @@ import { XIcon } from "@heroicons/react/outline";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import {
-  typeParent,
-  typeChild as typesChild,
-} from "../../data/categoriesSelect";
 import { categories } from "../../data/categories";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -20,6 +16,7 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useTranslation } from "react-i18next";
+import { updateProduct } from "../../api/productsApi";
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
   props,
@@ -46,21 +43,27 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
   );
 });
 
-const AddProduct = ({ product, setSelectedProduct }) => {
+const AddProduct = ({ product, setSelectedProduct, refetch }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [childData, setChildData] = useState([]);
   const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([])
+  const [subCategory, setSubCategory] = useState([]);
   const [addProduct, { isLoading }] = useAddProductMutation();
 
   const schema = yup.object().shape({
     name: yup
       .string()
       .required(t("message.validation.required", { field: t("productName") })),
-    typeParent: yup
+    mainCategory: yup
       .string()
-      .required(t("message.validation.required", { field: t("typeParent") })),
+      .required(t("message.validation.required", { field: t("mainCategory") })),
+    category: yup
+      .string()
+      .required(t("message.validation.required", { field: t("category") })),
+    subCategory: yup
+      .string()
+      .required(t("message.validation.required", { field: t("subCategory") })),
     countInStock: yup
       .number()
       .required("message.validation.required", { field: t("countInStock") })
@@ -88,11 +91,9 @@ const AddProduct = ({ product, setSelectedProduct }) => {
       const {
         name,
         status,
-        typeParent,
         mainCategory,
         category,
         subCategory,
-        typeChild,
         countInStock,
         price,
         description,
@@ -106,8 +107,6 @@ const AddProduct = ({ product, setSelectedProduct }) => {
       setValue("category", category);
       onChangeCategory(category);
       setValue("subCategory", subCategory);
-
-      setValue("typeChild", typeChild);
       setValue("countInStock", countInStock);
       setValue("price", price);
       setValue("description", description);
@@ -117,32 +116,25 @@ const AddProduct = ({ product, setSelectedProduct }) => {
   }, [product]);
 
   const handleChange = (value) => {
-    const data = categories.find(x => x.route === value).subCategories;
+    const data = categories.find((x) => x.route === value).subCategories;
     setCategory(data);
   };
 
   const onChangeCategory = (value) => {
-    const data = category.find(x => x.route === value)?.subCategories;
+    const data = category.find((x) => x.route === value)?.subCategories;
     setSubCategory(data);
   };
 
   const onSubmit = async (data) => {
-    const {
-      name,
-      status,
-      typeParent,
-      typeChild,
-      countInStock,
-      price,
-      description,
-      productImage,
-    } = data;
+    const { name, status, countInStock, mainCategory, subCategory, category, price, description, productImage } =
+      data;
 
     const fd = new FormData();
     fd.append("name", name);
     fd.append("status", status);
-    fd.append("typeParent", typeParent);
-    fd.append("typeChild", typeChild);
+    fd.append("mainCategory", mainCategory);
+    fd.append("category", category);
+    fd.append("subCategory", subCategory);
     fd.append("countInStock", countInStock);
     fd.append("price", price);
     fd.append("description", description);
@@ -152,9 +144,27 @@ const AddProduct = ({ product, setSelectedProduct }) => {
     }
 
     try {
-      await addProduct(fd).unwrap();
-      toast.success(t("message.success.add", { field: t("product") }));
+      if (product) {
+        await updateProduct(product._id, fd);
+        refetch();
+        toast.success(t("message.success.update", { field: t("product") }));
+      } else {
+        await addProduct(fd).unwrap();
+        toast.success(t("message.success.add", { field: t("product") }));
+      }
       setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getInfo = async () => {
+    try {
+      const data = await generateLink(link);
+      const { title, description } = data;
+
+      setValue("name", title, { shouldValidate: true });
+      setValue("description", description);
     } catch (error) {
       console.log(error);
     }
@@ -460,7 +470,7 @@ const AddProduct = ({ product, setSelectedProduct }) => {
                     variant="contained"
                     loading={isLoading}
                   >
-                    {product ? t("edit") : t("confirm")}
+                    {product ? t("save") : t("confirm")}
                   </LoadingButton>
                 </div>
               </form>

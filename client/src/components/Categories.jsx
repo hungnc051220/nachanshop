@@ -28,7 +28,7 @@ const Categories = () => {
   });
 
   return (
-    <section className="mx-auto my-6 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8 relative">
+    <section className="mx-auto my-6 max-w-[1400px] space-y-4 px-4 sm:px-6 lg:px-8 relative">
       <Category
         name="Chăm sóc sắc đẹp"
         icon="lipstick"
